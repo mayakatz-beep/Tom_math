@@ -54,10 +54,13 @@
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: max-content; }
+  .toc-home { flex-shrink: 0; text-decoration: none; background: #1e3a8a; color: white !important; font-weight: 700; border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; white-space: nowrap; }
+  .toc-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; flex: 1; }
+  .toc-inner { display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: max-content; }
   .toc span { font-weight: 700; color: var(--blue); margin-left: 8px; }
   .toc a {
     text-decoration: none;
@@ -275,17 +278,19 @@
 </div>
 
 <nav class="toc">
-  <div class="toc-inner">
-    <a href="index.html" style="background:#1e3a8a; color:white; font-weight:700;">🏠 דף הבית</a>
-    <span>נושאים:</span>
-    <a href="#s1">מרחב מדגם</a>
-    <a href="#s2">הסתברות בסיסית</a>
-    <a href="#s3">הסתברות מותנית</a>
-    <a href="#s4">כלל המכפלה</a>
-    <a href="#s5">עץ הסתברות</a>
-    <a href="#s6">אירועים בלתי תלויים</a>
-    <a href="#s7">משפט בייס</a>
-    <a href="#s8">תרגול מסכם</a>
+  <a href="index.html" class="toc-home">🏠 דף הבית</a>
+  <div class="toc-scroll">
+    <div class="toc-inner">
+      <span>נושאים:</span>
+      <a href="#s1">מרחב מדגם</a>
+      <a href="#s2">הסתברות בסיסית</a>
+      <a href="#s3">הסתברות מותנית</a>
+      <a href="#s4">כלל המכפלה</a>
+      <a href="#s5">עץ הסתברות</a>
+      <a href="#s6">אירועים בלתי תלויים</a>
+      <a href="#s7">משפט בייס</a>
+      <a href="#s8">תרגול מסכם</a>
+    </div>
   </div>
 </nav>
 

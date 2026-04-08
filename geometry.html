@@ -26,8 +26,10 @@
   .back-link { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 16px; color:white; text-decoration:none; font-size:0.85rem; margin-bottom:16px; }
   .back-link:hover { background:rgba(255,255,255,0.25); }
 
-  .toc { background: white; border-bottom: 2px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: max-content; }
+  .toc { background: white; border-bottom: 2px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 10px; }
+  .toc-home { flex-shrink: 0; text-decoration: none; background: #1e3a8a; color: white !important; font-weight: 700; border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; white-space: nowrap; }
+  .toc-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; flex: 1; }
+  .toc-inner { display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: max-content; }
   .toc span { font-weight: 700; color: var(--rose); margin-left: 8px; flex-shrink:0; }
   .toc a { text-decoration: none; color: var(--gray); background: var(--gray-light); border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; transition: all .2s; white-space: nowrap; }
   .toc a:hover { background: var(--rose); color: white; }
@@ -162,17 +164,19 @@
 </div>
 
 <nav class="toc">
-  <div class="toc-inner">
-    <a href="index.html" style="background:#1e3a8a; color:white; font-weight:700;">🏠 דף הבית</a>
-    <span>נושאים:</span>
-    <a href="#s1">זוויות במעגל</a>
-    <a href="#s2">מיתרים ומשיקים</a>
-    <a href="#s3">דמיון משולשים</a>
-    <a href="#s4">גיאומטריה אנליטית</a>
-    <a href="#s5">ערכי טריגונומטריה</a>
-    <a href="#s6">משפטי סינוס/קוסינוס</a>
-    <a href="#s7">תרגול מסכם</a>
-    <a href="#s8">שאלות בגרות</a>
+  <a href="index.html" class="toc-home">🏠 דף הבית</a>
+  <div class="toc-scroll">
+    <div class="toc-inner">
+      <span>נושאים:</span>
+      <a href="#s1">זוויות במעגל</a>
+      <a href="#s2">מיתרים ומשיקים</a>
+      <a href="#s3">דמיון משולשים</a>
+      <a href="#s4">גיאומטריה אנליטית</a>
+      <a href="#s5">ערכי טריגונומטריה</a>
+      <a href="#s6">משפטי סינוס/קוסינוס</a>
+      <a href="#s7">תרגול מסכם</a>
+      <a href="#s8">שאלות בגרות</a>
+    </div>
   </div>
 </nav>
 
