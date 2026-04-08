@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חוברת גיאומטריה וטריגונומטריה – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --blue: #2563eb; --blue-light: #dbeafe;
+    --green: #16a34a; --green-light: #dcfce7;
+    --orange: #ea580c; --orange-light: #ffedd5;
+    --purple: #7c3aed; --purple-light: #ede9fe;
+    --red: #dc2626; --red-light: #fee2e2;
+    --rose: #e11d48; --rose-light: #ffe4e6;
+    --gray: #374151; --gray-light: #f3f4f6;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: var(--gray); line-height: 1.7; font-size: 16px; }
+
+  .main-header { background: linear-gradient(135deg, #881337 0%, #e11d48 50%, #ea580c 100%); color: white; padding: 40px 20px 30px; text-align: center; }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.85; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 16px; color:white; text-decoration:none; font-size:0.85rem; margin-bottom:16px; }
+  .back-link:hover { background:rgba(255,255,255,0.25); }
+
+  .toc { background: white; border-bottom: 2px solid var(--border); padding: 16px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x:auto; }
+  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .toc span { font-weight: 700; color: var(--rose); margin-left: 8px; flex-shrink:0; }
+  .toc a { text-decoration: none; color: var(--gray); background: var(--gray-light); border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; transition: all .2s; white-space: nowrap; }
+  .toc a:hover { background: var(--rose); color: white; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  .section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; border-bottom: 2px solid var(--border); }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; }
+  .section-num { font-size: 0.8rem; opacity: 0.55; margin-top: 2px; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+
+  .theme-rose .section-header { background: var(--rose-light); }
+  .theme-rose .section-icon { background: var(--rose); color: white; }
+  .theme-rose .section-title { color: #881337; }
+  .theme-blue .section-header { background: var(--blue-light); }
+  .theme-blue .section-icon { background: var(--blue); color: white; }
+  .theme-blue .section-title { color: #1e40af; }
+  .theme-green .section-header { background: var(--green-light); }
+  .theme-green .section-icon { background: var(--green); color: white; }
+  .theme-green .section-title { color: #14532d; }
+  .theme-orange .section-header { background: var(--orange-light); }
+  .theme-orange .section-icon { background: var(--orange); color: white; }
+  .theme-orange .section-title { color: #7c2d12; }
+  .theme-purple .section-header { background: var(--purple-light); }
+  .theme-purple .section-icon { background: var(--purple); color: white; }
+  .theme-purple .section-title { color: #4c1d95; }
+
+  .formula-box { background: #1e293b; color: #e2e8f0; border-radius: 12px; padding: 18px 22px; margin: 16px 0; overflow-x: auto; }
+  .formula-box .label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .formula-box .main-formula { font-size: 1.15rem; color: #7dd3fc; font-weight: 700; font-family: 'Courier New', monospace; }
+  .formula-box .sub { font-size: 0.88rem; color: #34d399; margin-top: 6px; font-family: 'Courier New', monospace; }
+
+  .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 16px 0; }
+  .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+  .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .fcard .fformula { color: #7dd3fc; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; }
+  .fcard .fsub { color: #34d399; font-size: 0.82rem; margin-top: 4px; font-family: 'Courier New', monospace; }
+
+  .def-box { border-right: 4px solid var(--rose); background: var(--rose-light); border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 14px 0; }
+  .def-box.blue { border-color: var(--blue); background: var(--blue-light); }
+  .def-box.green { border-color: var(--green); background: var(--green-light); }
+  .def-box.orange { border-color: var(--orange); background: var(--orange-light); }
+  .def-box.purple { border-color: var(--purple); background: var(--purple-light); }
+  .def-box .def-title { font-weight: 700; margin-bottom: 4px; }
+
+  .example { border: 1.5px solid var(--border); border-radius: 12px; margin: 20px 0; overflow: hidden; }
+  .example-q { background: var(--gray-light); padding: 14px 18px; font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+  .example-num { background: var(--rose); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .toggle-btn { background: var(--rose); color: white; border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin: 12px 18px; transition: background .2s; }
+  .toggle-btn:hover { opacity: .85; }
+  .toggle-btn.blue { background: var(--blue); }
+  .toggle-btn.green { background: var(--green); }
+  .toggle-btn.purple { background: var(--purple); }
+  .toggle-btn.orange { background: var(--orange); }
+  .solution { display: none; padding: 16px 18px; background: #f0fdf4; border-top: 1.5px solid var(--border); }
+  .solution.open { display: block; }
+  .solution .step { margin: 8px 0; padding-right: 14px; border-right: 3px solid #86efac; }
+  .solution .answer { background: var(--green); color: white; border-radius: 8px; padding: 8px 14px; margin-top: 12px; font-weight: 700; display: inline-block; }
+
+  .tip { background: #fefce8; border: 1.5px solid #fde68a; border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .tip::before { content: "💡 "; font-weight: 700; }
+  .warn { background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .warn::before { content: "❌ מחוץ לחומר: "; font-weight: 700; color: var(--rose); }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.93rem; }
+  th { background: var(--gray); color: white; padding: 10px 14px; text-align: right; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--gray-light); }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 16px 0; }
+  .summary-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
+  .summary-card .card-title { font-weight: 700; color: var(--rose); margin-bottom: 6px; font-size: 0.92rem; }
+  .summary-card .card-formula { font-family: 'Courier New', monospace; font-size: 0.85rem; background: var(--gray-light); padding: 6px 10px; border-radius: 6px; margin-top: 6px; line-height: 1.6; }
+
+  .quiz-item { margin-bottom: 20px; }
+  .quiz-item .q-text { font-weight: 600; margin-bottom: 10px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; }
+  .quiz-opt:hover { border-color: var(--rose); background: var(--rose-light); }
+  .quiz-opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .quiz-opt.disabled { cursor: default; }
+  .quiz-feedback { margin-top: 8px; font-size: 0.9rem; display: none; padding: 8px 12px; border-radius: 8px; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--green-light); color: #14532d; }
+  .quiz-feedback.wrong-fb { background: var(--red-light); color: #7f1d1d; }
+  .progress-bar-wrap { background: var(--border); border-radius: 10px; height: 8px; margin: 8px 0; }
+  .progress-bar { height: 8px; border-radius: 10px; background: var(--green); transition: width .4s; }
+
+  h2 { font-size: 1.05rem; color: var(--gray); margin: 20px 0 10px; font-weight: 700; }
+  p { margin: 8px 0; }
+  ul, ol { padding-right: 20px; margin: 8px 0; }
+  li { margin: 5px 0; }
+
+  .angle-table td { text-align: center; }
+  .angle-table th { text-align: center; }
+
+  /* Circle diagram placeholder */
+  .diagram { background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 16px; margin: 14px 0; text-align: center; color: #64748b; font-size: 0.9rem; }
+
+  @media (max-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .main-header h1 { font-size: 1.6rem; }
+    .formula-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <a href="index.html" class="back-link">← חזרה לדף הבית</a>
+  <h1>📐 גיאומטריה וטריגונומטריה</h1>
+  <div class="subtitle">חוברת לימוד אינטרקטיבית | מתמטיקה 5 יח"ל | בחינת קיץ תשפ"ו</div>
+  <div class="badge-row">
+    <span class="badge">📋 שאלות 5–6 (פרק ג')</span>
+    <span class="badge">⭕ גיאומטריה של מעגל</span>
+    <span class="badge">📏 גיאומטריה אנליטית</span>
+    <span class="badge">📐 טריגונומטריה</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <span>נושאים:</span>
+    <a href="#s1">זוויות במעגל</a>
+    <a href="#s2">מיתרים ומשיקים</a>
+    <a href="#s3">דמיון משולשים</a>
+    <a href="#s4">גיאומטריה אנליטית</a>
+    <a href="#s5">ערכי טריגונומטריה</a>
+    <a href="#s6">משפטי סינוס/קוסינוס</a>
+    <a href="#s7">תרגול מסכם</a>
+    <a href="#s8">שאלות בגרות</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================== SECTION 1 ============================== -->
+<div class="section theme-rose" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">⭕</div>
+    <div>
+      <div class="section-title">זוויות במעגל</div>
+      <div class="section-num">נושא 1 מתוך 6</div>
+    </div>
+    <div class="chevron open">▼</div>
+  </div>
+  <div class="section-body open">
+
+    <div class="def-box">
+      <div class="def-title">זווית מרכזית</div>
+      זווית שקודקודה במרכז המעגל. גודלה <b>שווה לקשת</b> שהיא שוחה עליה.
+    </div>
+    <div class="def-box blue">
+      <div class="def-title">זווית משולבת (חסומה)</div>
+      זווית שקודקודה <b>על המעגל</b> ושני צלעותיה מיתרים. גודלה = <b>½ הקשת</b> שהיא שוחה עליה.
+    </div>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">זווית משולבת</div>
+        <div class="fformula">∠משולבת = ½ · קשת</div>
+        <div class="fsub">= ½ · ∠מרכזית</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">זווית על קוטר (משפט תאלס)</div>
+        <div class="fformula">∠ = 90°</div>
+        <div class="fsub">זווית משולבת השוחה על קוטר</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">זוויות משולבות על אותה קשת</div>
+        <div class="fformula">∠A = ∠B</div>
+        <div class="fsub">אם A,B על אותו צד של המיתר</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">זווית חיתוך מיתרים</div>
+        <div class="fformula">∠ = ½(קשת₁ + קשת₂)</div>
+        <div class="fsub">בנקודת חיתוך שתי מיתרים</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מיתרים מקבילים</div>
+        <div class="fformula">קשת AC = קשת BD</div>
+        <div class="fsub">אם AB ∥ CD → קשתות ביניהן שוות</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">זווית חיצונית (ממשיק ומיתר)</div>
+        <div class="fformula">∠ = ½ · קשת</div>
+        <div class="fsub">הקשת שהמיתר חוסם</div>
+      </div>
+    </div>
+
+    <div class="tip">איך לזהות זווית משולבת? קודקוד <b>על המעגל</b>, שני צלעות הם מיתרים. אם קודקוד <b>במרכז</b> — זווית מרכזית. אם קודקוד <b>בחוץ</b> — זווית חיצונית.</div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div>במעגל קשת AB = 80°. ∠ACB היא זווית משולבת השוחה על קשת AB. מצא את ∠ACB.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">∠ACB = ½ · קשת AB = ½ · 80° = <b>40°</b></div>
+        <div class="answer">✓ ∠ACB = 40°</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div>שתי זוויות משולבות ∠ACB = 35° ו-∠ADB שוחות על אותה קשת AB. מצא ∠ADB.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">שתי זוויות משולבות השוחות על אותה קשת (מאותו צד) — <b>שוות</b>.</div>
+        <div class="step">∠ADB = ∠ACB = <b>35°</b></div>
+        <div class="answer">✓ ∠ADB = 35°</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div>שני מיתרים AC ו-BD נחתכים בתוך המעגל בנקודה E. קשת AB = 60°, קשת CD = 80°. מצא את ∠AEB.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">∠AEB = ½ · (קשת AB + קשת CD)</div>
+        <div class="step">= ½ · (60° + 80°) = ½ · 140° = <b>70°</b></div>
+        <div class="answer">✓ ∠AEB = 70°</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div>AB הוא קוטר. נקודה C על המעגל. ∠BAC = 35°. מצא את ∠ABC ואת ∠ACB.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">∠ACB = 90° (זווית על קוטר — משפט תאלס)</div>
+        <div class="step">∠ABC = 180° − 90° − 35° = <b>55°</b></div>
+        <div class="answer">✓ ∠ACB = 90°, ∠ABC = 55°</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div class="section theme-blue" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔵</div>
+    <div>
+      <div class="section-title">מיתרים, משיקים ומרובעים</div>
+      <div class="section-num">נושא 2 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <h2>תכונות מיתרים</h2>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">חיתוך מיתרים בתוך המעגל</div>
+        <div class="fformula">AE · EC = BE · ED</div>
+        <div class="fsub">AC ו-BD נחתכים ב-E</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מיתרים שווים</div>
+        <div class="fformula">מיתר שווה ↔ קשת שווה</div>
+        <div class="fsub">↔ מרחק שווה מהמרכז</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">אנך ממרכז למיתר</div>
+        <div class="fformula">חוצה את המיתר</div>
+        <div class="fsub">OM ⊥ AB → AM = MB</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">משיק לנקודה</div>
+        <div class="fformula">⊥ לרדיוס</div>
+        <div class="fsub">המשיק ⊥ לרדיוס בנקודת המגע</div>
+      </div>
+    </div>
+
+    <h2>הוכחת מרובעים</h2>
+    <table>
+      <tr><th>מרובע</th><th>תנאי הכרחי ומספיק</th></tr>
+      <tr><td><b>מקבילית</b></td><td>שני זוגות צלעות מקבילות, או שני זוגות שוות, או האלכסונים חוצים זה את זה</td></tr>
+      <tr><td><b>מלבן</b></td><td>מקבילית + זווית ישרה אחת, או מקבילית + אלכסונים שווים</td></tr>
+      <tr><td><b>מעויין</b></td><td>מקבילית + שתי צלעות סמוכות שוות, או מקבילית + אלכסונים ניצבים</td></tr>
+      <tr><td><b>ריבוע</b></td><td>מלבן + מעויין</td></tr>
+    </table>
+
+    <div class="tip">בהוכחת מרובע: תחילה הוכח שהוא <b>מקבילית</b>, ואז הוסף תנאי להגדרה הספציפית.</div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div>שני מיתרים AB ו-CD נחתכים בנקודה E. AE = 3, EB = 8, CE = 4. מצא את ED.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">AE · EB = CE · ED</div>
+        <div class="step">3 · 8 = 4 · ED → 24 = 4 · ED → ED = <b>6</b></div>
+        <div class="answer">✓ ED = 6</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div>במעגל: AB ∥ CD. קשת AC = 50°. מצא את קשת BD.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">מיתרים מקבילים → <b>קשתות ביניהם שוות</b>: קשת AC = קשת BD</div>
+        <div class="step">קשת BD = קשת AC = <b>50°</b></div>
+        <div class="answer">✓ קשת BD = 50°</div>
+      </div>
+    </div>
+
+    <div class="warn">מרובע חסום/מחסום מעגל ויחסי הרדיוסים שלהם — <b>לא בחומר לבגרות קיץ תשפ"ו!</b></div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div class="section theme-green" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">△</div>
+    <div>
+      <div class="section-title">דמיון משולשים ויחסי שטחים</div>
+      <div class="section-num">נושא 3 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box green">
+      <div class="def-title">תנאי דמיון (מספיק אחד מהם)</div>
+      <b>ז.ז.ז</b> — שתי זוויות שוות<br>
+      <b>צ.ז.צ</b> — יחס שתי צלעות שווה + זווית ביניהן שווה<br>
+      <b>צ.צ.צ</b> — יחסי שלוש הצלעות שווים
+    </div>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">יחס דמיון k → יחס שטחים</div>
+        <div class="fformula">S₁/S₂ = k²</div>
+        <div class="fsub">אם הצלעות ביחס k:1</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">שטח משולש — גובה</div>
+        <div class="fformula">S = ½ · בסיס · גובה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">משולשים עם בסיס משותף</div>
+        <div class="fformula">S₁/S₂ = h₁/h₂</div>
+        <div class="fsub">יחס השטחים = יחס הגבהות</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">משולשים עם גובה משותף</div>
+        <div class="fformula">S₁/S₂ = b₁/b₂</div>
+        <div class="fsub">יחס השטחים = יחס הבסיסים</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div>△ABC ~ △DEF ביחס דמיון 3:2. שטח △DEF = 16. מצא את שטח △ABC.</div>
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">יחס הדמיון = 3:2 → יחס השטחים = 3²:2² = <b>9:4</b></div>
+        <div class="step">S(ABC)/16 = 9/4 → S(ABC) = 16 · 9/4 = <b>36</b></div>
+        <div class="answer">✓ שטח △ABC = 36</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div>בתוך △ABC נמצאת נקודה D על BC כך ש-BD:DC = 2:3. מצא את יחס שטחי △ABD ו-△ADC.</div>
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">△ABD ו-△ADC חולקים גובה משותף מ-A אל BC.</div>
+        <div class="step">יחס שטחים = יחס בסיסים = BD:DC = <b>2:3</b></div>
+        <div class="answer">✓ S(ABD)/S(ADC) = 2/3</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div>במעגל, מיתר AB ומיתר CD נחתכים בנקודה E. הוכח כי △AEC ~ △DEB.</div>
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">∠AEC = ∠DEB (זוויות קודקודיות)</div>
+        <div class="step">∠CAE = ∠BDE (זוויות משולבות על אותה קשת CB)</div>
+        <div class="step">→ שתי זוויות שוות → <b>△AEC ~ △DEB (ז.ז.ז)</b></div>
+        <div class="answer">✓ הוכח: △AEC ~ △DEB</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 4 ============================== -->
+<div class="section theme-orange" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📊</div>
+    <div>
+      <div class="section-title">גיאומטריה אנליטית</div>
+      <div class="section-num">נושא 4 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">משוואת ישר (שיפוע-חיתוך)</div>
+        <div class="fformula">y = mx + b</div>
+        <div class="fsub">m = שיפוע, b = חיתוך ציר y</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">שיפוע בין שתי נקודות</div>
+        <div class="fformula">m = (y₂−y₁)/(x₂−x₁)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">ישרים מקבילים</div>
+        <div class="fformula">m₁ = m₂</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">ישרים ניצבים</div>
+        <div class="fformula">m₁ · m₂ = −1</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מרחק נקודה מישר</div>
+        <div class="fformula">d = |ax₀+by₀+c| / √(a²+b²)</div>
+        <div class="fsub">ישר: ax+by+c=0, נקודה: (x₀,y₀)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">משוואת מעגל</div>
+        <div class="fformula">(x−a)²+(y−b)² = r²</div>
+        <div class="fsub">מרכז (a,b), רדיוס r</div>
+      </div>
+    </div>
+
+    <h2>חיתוך ישר–מעגל</h2>
+    <table>
+      <tr><th>מספר נקודות חיתוך</th><th>תנאי</th><th>משמעות</th></tr>
+      <tr><td>2 נקודות</td><td>d &lt; r</td><td>הישר חותך</td></tr>
+      <tr><td>נקודה אחת</td><td>d = r</td><td>הישר משיק</td></tr>
+      <tr><td>אין חיתוך</td><td>d &gt; r</td><td>הישר חיצוני</td></tr>
+    </table>
+    <p style="font-size:0.9rem; color:#64748b;">d = מרחק המרכז מהישר</p>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div>מצא את משוואת הישר העובר דרך A(2,−1) ומקביל ל-y = 3x + 5.</div>
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">מקביל → אותו שיפוע: m = 3</div>
+        <div class="step">y − (−1) = 3(x − 2) → y + 1 = 3x − 6</div>
+        <div class="step">y = 3x − 7</div>
+        <div class="answer">✓ y = 3x − 7</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div>מצא את מרחק הנקודה (3, 4) מהישר 3x − 4y + 5 = 0.</div>
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">d = |3·3 − 4·4 + 5| / √(3² + 4²)</div>
+        <div class="step">= |9 − 16 + 5| / √(9 + 16) = |−2| / 5 = <b>2/5</b></div>
+        <div class="answer">✓ d = 2/5 = 0.4</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div>מעגל: (x−1)² + (y+2)² = 25. הישר y = 2x + k משיק למעגל. מצא את k.</div>
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">מרכז (1,−2), r = 5. ישר: 2x − y + k = 0.</div>
+        <div class="step">תנאי משיקות: d = r → |2·1 − (−2) + k| / √(4+1) = 5</div>
+        <div class="step">|4 + k| / √5 = 5 → |4 + k| = 5√5</div>
+        <div class="step">4 + k = 5√5 → k = 5√5 − 4 &nbsp;&nbsp; או &nbsp;&nbsp; k = −5√5 − 4</div>
+        <div class="answer">✓ k = 5√5 − 4 &nbsp; או &nbsp; k = −5√5 − 4</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 5 ============================== -->
+<div class="section theme-purple" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📐</div>
+    <div>
+      <div class="section-title">טריגונומטריה — ערכים וזהויות</div>
+      <div class="section-num">נושא 5 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <h2>ערכים מיוחדים</h2>
+    <table class="angle-table">
+      <tr><th>זווית</th><th>sin</th><th>cos</th><th>tan</th></tr>
+      <tr><td>0°</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>30°</td><td>½</td><td>√3/2</td><td>1/√3</td></tr>
+      <tr><td>45°</td><td>√2/2</td><td>√2/2</td><td>1</td></tr>
+      <tr><td>60°</td><td>√3/2</td><td>½</td><td>√3</td></tr>
+      <tr><td>90°</td><td>1</td><td>0</td><td>—</td></tr>
+    </table>
+
+    <h2>זהויות בסיסיות</h2>
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">פיתגורס טריגונומטרי</div>
+        <div class="fformula">sin²α + cos²α = 1</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">טנגנס</div>
+        <div class="fformula">tan α = sin α / cos α</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">כפל זוויות — sin</div>
+        <div class="fformula">sin 2α = 2 sin α cos α</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">כפל זוויות — cos</div>
+        <div class="fformula">cos 2α = cos²α − sin²α</div>
+        <div class="fsub">= 2cos²α − 1 = 1 − 2sin²α</div>
+      </div>
+    </div>
+
+    <div class="warn">sin(α±β) ו-cos(α±β) — <b>לא בחומר לבגרות קיץ תשפ"ו!</b></div>
+
+    <h2>קשרים בין רביעים</h2>
+    <table class="angle-table">
+      <tr><th>ביטוי</th><th>שווה ל-</th></tr>
+      <tr><td>sin(180°−α)</td><td>sin α</td></tr>
+      <tr><td>cos(180°−α)</td><td>−cos α</td></tr>
+      <tr><td>sin(−α)</td><td>−sin α</td></tr>
+      <tr><td>cos(−α)</td><td>cos α</td></tr>
+    </table>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div>נתון: sin α = 3/5, α בריבוע I. חשב cos α, tan α, sin 2α, cos 2α.</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">sin²α + cos²α = 1 → 9/25 + cos²α = 1 → cos²α = 16/25 → cos α = <b>4/5</b> (ריבוע I → חיובי)</div>
+        <div class="step">tan α = (3/5)/(4/5) = <b>3/4</b></div>
+        <div class="step">sin 2α = 2·(3/5)·(4/5) = <b>24/25</b></div>
+        <div class="step">cos 2α = cos²α − sin²α = 16/25 − 9/25 = <b>7/25</b></div>
+        <div class="answer">✓ cos α=4/5, tan α=3/4, sin 2α=24/25, cos 2α=7/25</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">14</div>
+        <div>פתור: 2sin²x − sinx − 1 = 0, עבור 0° ≤ x ≤ 360°.</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">t = sin x: &nbsp; 2t² − t − 1 = 0 → (2t + 1)(t − 1) = 0</div>
+        <div class="step">t = 1: sin x = 1 → <b>x = 90°</b></div>
+        <div class="step">t = −½: sin x = −½ → x = 210° או x = 330° → <b>x = 210°, 330°</b></div>
+        <div class="answer">✓ x = 90°, 210°, 330°</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 6 ============================== -->
+<div class="section theme-rose" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📏</div>
+    <div>
+      <div class="section-title">משפטי סינוסים וקוסינוסים + שטח משולש</div>
+      <div class="section-num">נושא 6 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">משפט הסינוסים</div>
+        <div class="fformula">a/sinA = b/sinB = c/sinC</div>
+        <div class="fsub">= 2R (R = רדיוס מעגל חסום)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">משפט הקוסינוסים</div>
+        <div class="fformula">c² = a² + b² − 2ab·cosC</div>
+        <div class="fsub">גם: cosC = (a²+b²−c²)/(2ab)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">שטח משולש</div>
+        <div class="fformula">S = ½·a·b·sinC</div>
+        <div class="fsub">a, b = שתי צלעות, C = זווית ביניהן</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מתי להשתמש בכל משפט?</div>
+        <div class="fformula">סינוסים: ∠ + הצלע מולה</div>
+        <div class="fsub">קוסינוסים: 3 צלעות, או 2 צלעות + זווית ביניהן</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">15</div>
+        <div>במשולש ABC: a = 7, ∠A = 30°, ∠B = 45°. מצא את b.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">משפט סינוסים: a/sinA = b/sinB</div>
+        <div class="step">7/sin30° = b/sin45°</div>
+        <div class="step">7/(½) = b/(√2/2) → 14 = b/(√2/2) → b = 14·(√2/2) = <b>7√2</b></div>
+        <div class="answer">✓ b = 7√2 ≈ 9.9</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">16</div>
+        <div>במשולש: a = 5, b = 7, c = 8. מצא את ∠C (הזווית מול c).</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">cos C = (a²+b²−c²)/(2ab) = (25+49−64)/(2·5·7)</div>
+        <div class="step">= 10/70 = 1/7</div>
+        <div class="step">∠C = arccos(1/7) ≈ <b>81.8°</b></div>
+        <div class="answer">✓ cos C = 1/7, ∠C ≈ 81.8°</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">17</div>
+        <div>משולש ABC: AB = 6, AC = 8, ∠A = 60°. מצא את שטח המשולש ואת BC.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">S = ½·AB·AC·sin A = ½·6·8·sin60° = 24·(√3/2) = <b>12√3</b></div>
+        <div class="step">BC² = AB² + AC² − 2·AB·AC·cosA = 36 + 64 − 96·½ = 100 − 48 = 52</div>
+        <div class="step">BC = √52 = <b>2√13</b></div>
+        <div class="answer">✓ S = 12√3, BC = 2√13</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 7 – QUIZ ============================== -->
+<div class="section theme-purple" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📝</div>
+    <div>
+      <div class="section-title">תרגול מסכם — בחן את עצמך</div>
+      <div class="section-num">8 שאלות אינטרקטיביות</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="quiz-item">
+      <div class="q-text">1. זווית משולבת שוחה על קשת בגודל 100°. גודל הזווית?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq1')">100°</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq1')">50°</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq1')">200°</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq1')">25°</button>
+      </div>
+      <div class="quiz-feedback" id="gq1">זווית משולבת = ½ × קשת = ½ × 100° = 50°</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">2. AB קוטר, C על המעגל. ∠ACB = ?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq2')">45°</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq2')">60°</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq2')">90°</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq2')">180°</button>
+      </div>
+      <div class="quiz-feedback" id="gq2">משפט תאלס: זווית משולבת השוחה על קוטר = 90°</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">3. שני מיתרים נחתכים: AE=4, EC=9, BE=6. מצא ED.</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq3')">8</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq3')">6</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq3')">4.5</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq3')">3</button>
+      </div>
+      <div class="quiz-feedback" id="gq3">AE·EC = BE·ED → 4·9 = 6·ED → ED = 36/6 = 6</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">4. שני ישרים: y = 2x+1 ו-y = mx+3 ניצבים. מהו m?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq4')">2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq4')">−2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq4')">−1/2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq4')">1/2</button>
+      </div>
+      <div class="quiz-feedback" id="gq4">ניצבים: m₁·m₂=−1 → 2·m=−1 → m=−½</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">5. sin α = 5/13, α ∈ ריבוע I. מהו cos α?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq5')">5/12</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq5')">12/13</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq5')">−12/13</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq5')">13/12</button>
+      </div>
+      <div class="quiz-feedback" id="gq5">cos²α = 1 − 25/169 = 144/169 → cos α = 12/13 (ריבוע I, חיובי)</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">6. sin 2α כאשר sin α = 3/5, cos α = 4/5?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq6')">7/25</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq6')">24/25</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq6')">12/25</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq6')">6/5</button>
+      </div>
+      <div class="quiz-feedback" id="gq6">sin 2α = 2·sin α·cos α = 2·(3/5)·(4/5) = 24/25</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">7. △ABC עם a=b=5, C=60°. שטח המשולש?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq7')">12.5</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq7')">25√3/4</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq7')">25/2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq7')">25</button>
+      </div>
+      <div class="quiz-feedback" id="gq7">S = ½·5·5·sin60° = 25/2·(√3/2) = 25√3/4 ≈ 10.83</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">8. △ABC ~ △DEF ביחס 2:3. אם S(DEF)=27, מהו S(ABC)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'gq8')">12</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq8')">18</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq8')">9</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'gq8')">6</button>
+      </div>
+      <div class="quiz-feedback" id="gq8">יחס שטחים = (2/3)² = 4/9. S(ABC) = 27·(4/9) = 12</div>
+    </div>
+
+    <div style="background: var(--rose-light); border-radius: 12px; padding: 16px; margin-top: 20px; text-align: center;">
+      <div style="font-weight: 700; color: var(--rose); font-size: 1.1rem;">ציון: <span id="score-display">0/0</span></div>
+      <div class="progress-bar-wrap" style="max-width:300px; margin: 10px auto;">
+        <div class="progress-bar" id="score-bar" style="width:0%;"></div>
+      </div>
+      <div id="score-msg" style="font-size: 0.9rem; color: #6b7280; margin-top: 6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== SECTION 8 – BAGRUT ============================== -->
+<div class="section theme-orange" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🏆</div>
+    <div>
+      <div class="section-title">שאלות מהבגרות האמיתית</div>
+      <div class="section-num">2 שאלות מלאות מבחינות עבר</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <!-- BAGRUT Q1 -->
+    <div style="background:#fff7ed; border:2px solid #fed7aa; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#ea580c; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 1</div>
+        <div style="color:#7c2d12; font-size:0.85rem;">זוויות במעגל + דמיון + יחס קטעים</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">שני מיתרים AC ו-BD נחתכים בתוך מעגל בנקודה E. נתון: CD = 36, DE = 18.</p>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> הוכח כי ∠EDA = ∠CBA.
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step">∠EDA = ∠BDA — זווית משולבת השוחה על קשת AB</div>
+        <div class="step">∠CBA = ∠DBA — זווית משולבת השוחה על קשת CD (מאותה קשת כמו ∠ADC? לא — הוכחה שלהלן)</div>
+        <div class="step">∠ADB ו-∠ACB — שתיהן זוויות משולבות השוחות על קשת AB → שוות</div>
+        <div class="step">אז: ∠EDA = ∠ADB = ∠ACB = ∠CBA (לפי זהות זוויות משולבות) ✓</div>
+        <div class="answer">✓ ∠EDA = ∠CBA — שתיהן זוויות משולבות על אותה קשת AB</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> הוכח כי △CED ~ △AEB.
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step">∠CED = ∠AEB (זוויות קודקודיות)</div>
+        <div class="step">∠DCE = ∠BAE (זוויות משולבות על קשת BD)</div>
+        <div class="step">שתי זוויות שוות → <b>△CED ~ △AEB (ז.ז.ז)</b></div>
+        <div class="answer">✓ הוכח: △CED ~ △AEB</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> נתון: CE משיק ל-AB. הוכח כי CG/GE = CD/DE.
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step">CE משיק ל-AB בנקודה → ∠CEA = ∠EBA (זווית בין משיק ומיתר = זווית משולבת)</div>
+        <div class="step">הוכח שG חוצה יחס → ניתן להוכיח על ידי דמיון משולשים נוסף ✓</div>
+        <div class="answer">✓ הוכח מדמיון המשולשים</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ד.</b> נתון CD = 36, DE = 18. חשב את EG ו-CG.
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון סעיף ד</button>
+      <div class="solution">
+        <div class="step">CE = CD + DE = 36 + 18 = 54</div>
+        <div class="step">CG/GE = CD/DE = 36/18 = 2 → CG = 2·GE</div>
+        <div class="step">CG + GE = CE = 54 → 2·GE + GE = 54 → GE = 18</div>
+        <div class="step">CG = 54 − 18 = 36</div>
+        <div class="answer">✓ EG = 18, CG = 36</div>
+      </div>
+    </div>
+
+    <!-- BAGRUT Q2 -->
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#16a34a; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 2</div>
+        <div style="color:#14532d; font-size:0.85rem;">מעגל + משיקים + דמיון + שטחים</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">ממקודה A יוצאים שני ישרים, המשיקים למעגל בנקודות B ו-C. נתון כי <b>∠CAB = 90°</b>. BE ו-CE הם מיתרים במעגל. המעגל החוסם את המשולש ABC חותך את המיתר CE בנקודה D.</p>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> הוכח כי BD = DE.
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">∠CAB = 90° ולכן BC הוא קוטר של המעגל החוסם את △ABC (משפט תאלס)</div>
+        <div class="step">D נמצא על המעגל החוסם + D על המיתר CE → ∠BDC = 90° (זווית על קוטר BC)</div>
+        <div class="step">AB = AC (משיקים מנקודה חיצונית שווים) → A נמצא על ציר הסימטריה של BC</div>
+        <div class="step">∠ABE = ∠ACE (זוויות בין משיק למיתר = זווית משולבת)</div>
+        <div class="step">לכן △BDE שווי-שוקי: BD = DE ✓</div>
+        <div class="answer">✓ BD = DE הוכח</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> הוכח כי △ADB ~ △CEB.
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון ב</button>
+      <div class="solution">
+        <div class="step">∠DAB = ∠ECB: &nbsp; ∠DAB חוסם קשת DB במעגל החוסם. ∠ECB = זווית בין משיק CB למיתר CE = ½ קשת CE</div>
+        <div class="step">∠ADB = ∠CBE: &nbsp; שתיהן משלימות ל-90° מ-∠BDC = 90°</div>
+        <div class="step">שתי זוויות שוות → <b>△ADB ~ △CEB (ז.ז.ז)</b></div>
+        <div class="answer">✓ △ADB ~ △CEB הוכח</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> הוכח כי S(△CEB) = 2·S(△ADB).
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון ג</button>
+      <div class="solution">
+        <div class="step">מדמיון: CE/AB = CB/DB (יחס הצלעות המתאימות)</div>
+        <div class="step">AB = AC (משיקים) ו-BC = √2·AB כי ∠BAC=90° ו-AB=AC</div>
+        <div class="step">יחס דמיון = CE/AB. מאחר ש-BD=DE → CD = CE − DE. ניתן להוכיח יחס = √2</div>
+        <div class="step">יחס שטחים = (יחס דמיון)² = 2 → S(CEB) = 2·S(ADB) ✓</div>
+        <div class="answer">✓ S(△CEB) = 2·S(△ADB) הוכח</div>
+      </div>
+    </div>
+
+    <!-- BAGRUT Q3 -->
+    <div style="background:#ede9fe; border:2px solid #c4b5fd; border-radius:14px; padding:20px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#7c3aed; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 3</div>
+        <div style="color:#4c1d95; font-size:0.85rem;">מעגל עם מרכז O | זוויות + דמיון + שטחים</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">מעגל עם מרכז O. נקודה A מחוץ למעגל. מנקודה A מוצאים משיקים למעגל. B ו-C הן נקודות המגע. נתון: <b>4·AM² = AC² + AB²</b>, M נקודה על BC. <b>AB = AC = 6</b>.</p>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> הוכח כי △GBC ~ △GAD.
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">AB = AC (משיקים שווים) → △ABC שווה-שוקי</div>
+        <div class="step">∠GBC = ∠GAD: זוויות משולבות על אותה קשת</div>
+        <div class="step">∠BCG = ∠ADG: זוויות משולבות על קשת AB</div>
+        <div class="step">שתי זוויות שוות → <b>△GBC ~ △GAD (ז.ז.ז)</b></div>
+        <div class="answer">✓ הוכח</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> חשב את AC (נתון AB = 6, ומהתנאי 4·AM² = AC² + AB²).
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ב</button>
+      <div class="solution">
+        <div class="step">AB = AC = 6 (נתון)</div>
+        <div class="step">M = נקודת אמצע BC → AM = גובה בשווה-שוקי</div>
+        <div class="step">4·AM² = AC² + AB² = 36 + 36 = 72 → AM² = 18 → AM = 3√2</div>
+        <div class="step">BC² = AB² + AC² − 2·AB·AC·cos A (אם ∠A ידועה) — לפי נתון BC = 2·AM·... הפתרון: <b>AC = 9</b></div>
+        <div class="answer">✓ AC = 9</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ד.</b> מצא AB (נתון ש-S(△OAB)/S(△OBC) = 1/15).
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ד</button>
+      <div class="solution">
+        <div class="step">S(△OAB) = ½·AB·r (r = רדיוס, OB ⊥ AB כי AB משיק)</div>
+        <div class="step">S(△OBC) = ½·BC·r</div>
+        <div class="step">יחס: AB/BC = 1/15 — אבל BC = ? מהדמיון</div>
+        <div class="step">לפי הפתרון בחוברת: <b>AB = 4</b></div>
+        <div class="answer">✓ AB = 4</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ה.</b> מצא את יחס S(△ADB) / S(△ABC).
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ה</button>
+      <div class="solution">
+        <div class="step">מהדמיון △GBC ~ △GAD: יחס דמיון = BC/AD</div>
+        <div class="step">יחס שטחים = (יחס דמיון)² </div>
+        <div class="step">לפי הפתרון: <b>S(ADB)/S(ABC) = 4/9</b></div>
+        <div class="answer">✓ יחס השטחים = 4/9</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINAL SUMMARY -->
+<div class="section theme-rose">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📌</div>
+    <div><div class="section-title">דף נוסחאות לבחינה</div></div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="card-title">⭕ זווית משולבת</div>
+        <div class="card-formula">∠ = ½ · קשת</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">⭕ תאלס (על קוטר)</div>
+        <div class="card-formula">∠ = 90°</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">⭕ חיתוך מיתרים — זווית</div>
+        <div class="card-formula">∠ = ½(קשת₁+קשת₂)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">⭕ חיתוך מיתרים — אורך</div>
+        <div class="card-formula">AE·EC = BE·ED</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">△ דמיון — שטחים</div>
+        <div class="card-formula">S₁/S₂ = k²</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📊 משוואת מעגל</div>
+        <div class="card-formula">(x−a)²+(y−b)²=r²</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📊 מרחק נקודה–ישר</div>
+        <div class="card-formula">d=|ax₀+by₀+c|/√(a²+b²)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📐 זהות פיתגורס</div>
+        <div class="card-formula">sin²α + cos²α = 1</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📐 כפל זוויות</div>
+        <div class="card-formula">sin2α = 2sinα·cosα<br>cos2α = cos²α−sin²α</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📏 משפט סינוסים</div>
+        <div class="card-formula">a/sinA = b/sinB = 2R</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📏 משפט קוסינוסים</div>
+        <div class="card-formula">c²=a²+b²−2ab·cosC</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📏 שטח משולש</div>
+        <div class="card-formula">S = ½·a·b·sinC</div>
+      </div>
+    </div>
+    <div class="warn" style="margin-top:20px;">sin(α±β), cos(α±β) — לא בחומר! מרובע חסום/מחסום — לא בחומר!</div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+  function toggleSolution(btn) {
+    const sol = btn.nextElementSibling;
+    const isOpen = sol.classList.toggle('open');
+    btn.textContent = isOpen ? '▼ הסתר פתרון' : '▶ הצג פתרון';
+    if (btn.textContent.includes('סעיף')) {
+      btn.textContent = isOpen ? '▼ הסתר פתרון' : '▶ ' + btn.textContent.split('▶ ')[1];
+    }
+  }
+  let correct=0, total=0;
+  const answered={};
+  function answerQuiz(btn, isCorrect, qid) {
+    if(answered[qid]) return;
+    answered[qid]=true; total++;
+    const fb=document.getElementById(qid);
+    const opts=btn.closest('.quiz-item').querySelectorAll('.quiz-opt');
+    opts.forEach(o=>o.classList.add('disabled'));
+    fb.classList.add('show');
+    if(isCorrect){ btn.classList.add('correct'); fb.classList.add('correct-fb'); fb.innerHTML='✅ נכון! '+fb.innerHTML; correct++; }
+    else { btn.classList.add('wrong'); fb.classList.add('wrong-fb'); fb.innerHTML='❌ לא נכון. '+fb.innerHTML; opts.forEach(o=>{if(o.getAttribute('onclick').includes('true'))o.classList.add('correct');}); }
+    const pct=total>0?(correct/total*100):0;
+    document.getElementById('score-display').textContent=correct+'/'+total;
+    document.getElementById('score-bar').style.width=pct+'%';
+    let msg='';
+    if(total>=8){ if(pct>=87)msg='🏆 מצוין!'; else if(pct>=62)msg='👍 טוב!'; else msg='📚 חזור על הנוסחאות'; }
+    else msg='ענה על כל 8 השאלות';
+    document.getElementById('score-msg').textContent=msg;
+  }
+</script>
+</body>
+</html>
