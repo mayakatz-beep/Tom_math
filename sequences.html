@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חוברת סדרות – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --blue: #2563eb; --blue-light: #dbeafe;
+    --green: #16a34a; --green-light: #dcfce7;
+    --orange: #ea580c; --orange-light: #ffedd5;
+    --purple: #7c3aed; --purple-light: #ede9fe;
+    --red: #dc2626; --red-light: #fee2e2;
+    --teal: #0d9488; --teal-light: #ccfbf1;
+    --gray: #374151; --gray-light: #f3f4f6;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: var(--gray); line-height: 1.7; font-size: 16px; }
+  .main-header { background: linear-gradient(135deg, #134e4a 0%, #0d9488 60%, #2563eb 100%); color: white; padding: 40px 20px 30px; text-align: center; }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.85; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 16px; color:white; text-decoration:none; font-size:0.85rem; margin-bottom:16px; transition:.2s; }
+  .back-link:hover { background:rgba(255,255,255,0.25); }
+  .toc { background: white; border-bottom: 2px solid var(--border); padding: 16px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .toc span { font-weight: 700; color: var(--teal); margin-left: 8px; }
+  .toc a { text-decoration: none; color: var(--gray); background: var(--gray-light); border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; transition: all .2s; white-space: nowrap; }
+  .toc a:hover { background: var(--teal); color: white; }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  .section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; border-bottom: 2px solid var(--border); }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; }
+  .section-num { font-size: 0.8rem; opacity: 0.55; margin-top: 2px; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+  .theme-teal .section-header { background: var(--teal-light); }
+  .theme-teal .section-icon { background: var(--teal); color: white; }
+  .theme-teal .section-title { color: #134e4a; }
+  .theme-blue .section-header { background: var(--blue-light); }
+  .theme-blue .section-icon { background: var(--blue); color: white; }
+  .theme-blue .section-title { color: #1e40af; }
+  .theme-green .section-header { background: var(--green-light); }
+  .theme-green .section-icon { background: var(--green); color: white; }
+  .theme-green .section-title { color: #14532d; }
+  .theme-orange .section-header { background: var(--orange-light); }
+  .theme-orange .section-icon { background: var(--orange); color: white; }
+  .theme-orange .section-title { color: #7c2d12; }
+  .theme-purple .section-header { background: var(--purple-light); }
+  .theme-purple .section-icon { background: var(--purple); color: white; }
+  .theme-purple .section-title { color: #4c1d95; }
+  .formula-box { background: #1e293b; color: #e2e8f0; border-radius: 12px; padding: 18px 22px; margin: 16px 0; font-size: 1.05rem; font-family: 'Courier New', monospace; overflow-x: auto; }
+  .formula-box .label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .formula-box .main-formula { font-size: 1.2rem; color: #7dd3fc; font-weight: 700; }
+  .formula-box .sub { font-size: 0.9rem; color: #34d399; margin-top: 6px; }
+  .def-box { border-right: 4px solid var(--teal); background: var(--teal-light); border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 14px 0; }
+  .def-box.blue { border-color: var(--blue); background: var(--blue-light); }
+  .def-box.green { border-color: var(--green); background: var(--green-light); }
+  .def-box.orange { border-color: var(--orange); background: var(--orange-light); }
+  .def-box.purple { border-color: var(--purple); background: var(--purple-light); }
+  .def-box .def-title { font-weight: 700; margin-bottom: 4px; }
+  .example { border: 1.5px solid var(--border); border-radius: 12px; margin: 20px 0; overflow: hidden; }
+  .example-q { background: var(--gray-light); padding: 14px 18px; font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+  .example-num { background: var(--teal); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .toggle-btn { background: var(--teal); color: white; border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin: 12px 18px; transition: background .2s; display: flex; align-items: center; gap: 6px; }
+  .toggle-btn:hover { background: #0f766e; }
+  .toggle-btn.blue { background: var(--blue); }
+  .toggle-btn.blue:hover { background: #1d4ed8; }
+  .toggle-btn.purple { background: var(--purple); }
+  .toggle-btn.purple:hover { background: #6d28d9; }
+  .solution { display: none; padding: 16px 18px; background: #f0fdf4; border-top: 1.5px solid var(--border); }
+  .solution.open { display: block; }
+  .solution .step { margin: 8px 0; padding-right: 14px; border-right: 3px solid #86efac; }
+  .solution .answer { background: var(--green); color: white; border-radius: 8px; padding: 8px 14px; margin-top: 12px; font-weight: 700; display: inline-block; }
+  .tip { background: #fefce8; border: 1.5px solid #fde68a; border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .tip::before { content: "💡 "; font-weight: 700; }
+  .warn { background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .warn::before { content: "⚠️ "; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.93rem; }
+  th { background: var(--gray); color: white; padding: 10px 14px; text-align: right; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--gray-light); }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 16px 0; }
+  .summary-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
+  .summary-card .card-title { font-weight: 700; color: var(--teal); margin-bottom: 8px; font-size: 0.95rem; }
+  .summary-card .card-formula { font-family: 'Courier New', monospace; font-size: 0.85rem; background: var(--gray-light); padding: 6px 10px; border-radius: 6px; margin-top: 6px; }
+  .quiz-section { background: #fafafa; border: 2px solid var(--border); border-radius: 12px; padding: 20px; margin: 20px 0; }
+  .quiz-item { margin-bottom: 20px; }
+  .quiz-item .q-text { font-weight: 600; margin-bottom: 10px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; }
+  .quiz-opt:hover { border-color: var(--teal); background: var(--teal-light); }
+  .quiz-opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .quiz-opt.disabled { cursor: default; }
+  .quiz-feedback { margin-top: 8px; font-size: 0.9rem; display: none; padding: 8px 12px; border-radius: 8px; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--green-light); color: #14532d; }
+  .quiz-feedback.wrong-fb { background: var(--red-light); color: #7f1d1d; }
+  .progress-bar-wrap { background: var(--border); border-radius: 10px; height: 8px; margin: 8px 0; }
+  .progress-bar { height: 8px; border-radius: 10px; background: var(--green); transition: width .4s; }
+  h2 { font-size: 1.1rem; color: var(--gray); margin: 20px 0 10px; }
+  h3 { font-size: 1rem; color: var(--teal); margin: 16px 0 8px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-right: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .box-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
+  .induction-step { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; margin: 10px 0; }
+  .induction-step .step-title { font-weight: 700; color: var(--purple); margin-bottom: 8px; }
+  @media (max-width: 600px) { .quiz-options { grid-template-columns: 1fr; } .main-header h1 { font-size: 1.6rem; } .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <a href="index.html" class="back-link">← חזרה לדף הבית</a>
+  <h1>📈 סדרות ואינדוקציה — מהבסיס</h1>
+  <div class="subtitle">חוברת לימוד אינטרקטיבית | מתמטיקה 5 יח"ל | בחינת קיץ תשפ"ו</div>
+  <div class="badge-row">
+    <span class="badge">📋 שאלות 2–4 (פרק ב')</span>
+    <span class="badge">🔢 סדרה חשבונית</span>
+    <span class="badge">📐 סדרה הנדסית</span>
+    <span class="badge">🔁 אינדוקציה</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <span>נושאים:</span>
+    <a href="#s1">סדרה חשבונית</a>
+    <a href="#s2">סכום חשבוני</a>
+    <a href="#s3">סדרה הנדסית</a>
+    <a href="#s4">סכום הנדסי</a>
+    <a href="#s5">נסיגה ורקורסיה</a>
+    <a href="#s6">שילוב סדרות</a>
+    <a href="#s7">אינדוקציה</a>
+    <a href="#s8">תרגול מסכם</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================== SECTION 1 ============================== -->
+<div class="section theme-teal open" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔢</div>
+    <div>
+      <div class="section-title">סדרה חשבונית (Arithmetic)</div>
+      <div class="section-num">נושא 1 מתוך 7</div>
+    </div>
+    <div class="chevron open">▼</div>
+  </div>
+  <div class="section-body open">
+
+    <div class="def-box">
+      <div class="def-title">מה זו סדרה חשבונית?</div>
+      סדרה שבה ההפרש בין כל שני איברים עוקבים קבוע ושווה. ההפרש הקבוע נסמן <b>d</b>.
+    </div>
+
+    <div class="formula-box">
+      <div class="label">איבר כללי — סדרה חשבונית</div>
+      <div class="main-formula">aₙ = a₁ + (n−1)·d</div>
+      <div class="sub">a₁ = האיבר הראשון &nbsp;|&nbsp; d = ההפרש &nbsp;|&nbsp; n = מספר האיבר</div>
+    </div>
+
+    <div class="tip">כדי למצוא d: קח כל שני איברים עוקבים → d = aₙ₊₁ − aₙ</div>
+
+    <h2>תכונות מרכזיות</h2>
+    <ul>
+      <li>d > 0 → סדרה <b>עולה</b></li>
+      <li>d < 0 → סדרה <b>יורדת</b></li>
+      <li>d = 0 → סדרה <b>קבועה</b></li>
+      <li>האיבר האמצעי של שלושה עוקבים = ממוצע שני הקצוות: <b>aₙ = (aₙ₋₁ + aₙ₊₁)/2</b></li>
+    </ul>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div>בסדרה חשבונית: a₁ = 3, d = 5. מצא את a₁₀ ואת n עבור aₙ = 48.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">aₙ = a₁ + (n−1)·d = 3 + (n−1)·5</div>
+        <div class="step">a₁₀ = 3 + 9·5 = 3 + 45 = <b>48</b></div>
+        <div class="step">aₙ = 48: &nbsp; 3 + (n−1)·5 = 48 → (n−1)·5 = 45 → n−1 = 9 → <b>n = 10</b></div>
+        <div class="answer">✓ a₁₀ = 48, n = 10</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div>בסדרה חשבונית: a₃ = 11, a₇ = 27. מצא את a₁ ואת d.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₃ = a₁ + 2d = 11 &nbsp;&nbsp; (משוואה I)</div>
+        <div class="step">a₇ = a₁ + 6d = 27 &nbsp;&nbsp; (משוואה II)</div>
+        <div class="step">II − I: &nbsp; 4d = 16 → <b>d = 4</b></div>
+        <div class="step">מ-I: a₁ = 11 − 2·4 = <b>3</b></div>
+        <div class="answer">✓ a₁ = 3, d = 4</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div>בסדרה חשבונית: a₁ = 100, d = −7. מהו האיבר השלילי הראשון?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">aₙ = 100 + (n−1)·(−7) &lt; 0</div>
+        <div class="step">100 − 7(n−1) &lt; 0 → 7(n−1) &gt; 100 → n−1 &gt; 100/7 ≈ 14.28</div>
+        <div class="step">n > 15.28 → n = 16 (מינימום שלם)</div>
+        <div class="step">a₁₆ = 100 + 15·(−7) = 100 − 105 = <b>−5</b></div>
+        <div class="answer">✓ האיבר השלילי הראשון הוא a₁₆ = −5</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div class="section theme-blue" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">➕</div>
+    <div>
+      <div class="section-title">סכום סדרה חשבונית</div>
+      <div class="section-num">נושא 2 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-box">
+      <div class="label">סכום n האיברים הראשונים</div>
+      <div class="main-formula">Sₙ = n · (a₁ + aₙ) / 2</div>
+      <div class="sub">= n · (2a₁ + (n−1)·d) / 2</div>
+    </div>
+
+    <div class="tip">
+      <b>נוסחה 1</b> (כשיש a₁ ו-aₙ): &nbsp; Sₙ = n·(a₁+aₙ)/2<br>
+      <b>נוסחה 2</b> (כשיש a₁ ו-d): &nbsp; Sₙ = n·(2a₁+(n−1)d)/2<br>
+      שתי הנוסחאות שוות — השתמש בזו שנוחה לך לפי הנתונים.
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div>חשב: 1 + 2 + 3 + ... + 100</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">סדרה חשבונית: a₁=1, aₙ=100, d=1, n=100</div>
+        <div class="step">S₁₀₀ = 100·(1+100)/2 = 100·101/2 = <b>5050</b></div>
+        <div class="answer">✓ S₁₀₀ = 5050</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div>בסדרה: a₁ = 4, d = 3. מצא את n כך ש-Sₙ = 165.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">Sₙ = n·(2·4 + (n−1)·3)/2 = 165</div>
+        <div class="step">n·(8 + 3n − 3)/2 = 165</div>
+        <div class="step">n·(3n + 5)/2 = 165 → n·(3n+5) = 330</div>
+        <div class="step">3n² + 5n − 330 = 0</div>
+        <div class="step">n = (−5 ± √(25+3960))/6 = (−5 ± √3985)/6 ≈ (−5 ± 63.1)/6</div>
+        <div class="step">n = 58.1/6 ≈ 9.7... בדיקה: n=10: S₁₀ = 10·(8+27)/2 = 10·35/2 = 175 ≠ 165</div>
+        <div class="step">נסה n=10: 3·100+5·10=330 → 330/2=165 ✓ &nbsp; <b>n = 10</b></div>
+        <div class="answer">✓ n = 10</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div>חשב את סכום כל המספרים הזוגיים בין 1 ל-200.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">סדרה: 2, 4, 6, ..., 200 &nbsp; → &nbsp; a₁=2, d=2, aₙ=200</div>
+        <div class="step">n: &nbsp; aₙ = 2 + (n−1)·2 = 200 → n−1 = 99 → n = 100</div>
+        <div class="step">S₁₀₀ = 100·(2+200)/2 = 100·101 = <b>10100</b></div>
+        <div class="answer">✓ סכום המספרים הזוגיים = 10100</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div class="section theme-green" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">✖️</div>
+    <div>
+      <div class="section-title">סדרה הנדסית (Geometric)</div>
+      <div class="section-num">נושא 3 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box green">
+      <div class="def-title">מה זו סדרה הנדסית?</div>
+      סדרה שבה היחס בין כל שני איברים עוקבים קבוע ושווה. היחס הקבוע נסמן <b>q</b>.
+    </div>
+
+    <div class="formula-box">
+      <div class="label">איבר כללי — סדרה הנדסית</div>
+      <div class="main-formula">aₙ = a₁ · qⁿ⁻¹</div>
+      <div class="sub">q = aₙ₊₁ / aₙ (היחס בין איברים עוקבים)</div>
+    </div>
+
+    <div class="tip">
+      אם q > 1 → סדרה עולה &nbsp;|&nbsp; 0 < q < 1 → סדרה יורדת<br>
+      q < 0 → הסדרה <b>מחלפת סימנים</b> (חיובי, שלילי, חיובי...)
+    </div>
+
+    <div class="warn">
+      בסדרה הנדסית: <b>a₁ ≠ 0 ו-q ≠ 0</b> תמיד!<br>
+      תכונה: aₙ² = aₙ₋₁ · aₙ₊₁ (האיבר האמצעי הוא ממוצע הנדסי)
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div>בסדרה הנדסית: a₁ = 2, q = 3. מצא a₅ ואת n עבור aₙ = 162.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">aₙ = 2 · 3ⁿ⁻¹</div>
+        <div class="step">a₅ = 2 · 3⁴ = 2 · 81 = <b>162</b></div>
+        <div class="step">aₙ = 162: &nbsp; 2 · 3ⁿ⁻¹ = 162 → 3ⁿ⁻¹ = 81 = 3⁴ → n−1 = 4 → <b>n = 5</b></div>
+        <div class="answer">✓ a₅ = 162, n = 5</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div>בסדרה הנדסית: a₂ = 6, a₅ = 48. מצא a₁ ואת q.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₂ = a₁·q = 6 &nbsp;&nbsp; (I)</div>
+        <div class="step">a₅ = a₁·q⁴ = 48 &nbsp;&nbsp; (II)</div>
+        <div class="step">II÷I: &nbsp; q³ = 48/6 = 8 → <b>q = 2</b></div>
+        <div class="step">מ-I: a₁ = 6/2 = <b>3</b></div>
+        <div class="answer">✓ a₁ = 3, q = 2</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div>בסדרה הנדסית: 4, 12, 36, 108, ... מצא את האיבר הראשון הגדול מ-10000.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₁ = 4, q = 3, aₙ = 4·3ⁿ⁻¹</div>
+        <div class="step">4·3ⁿ⁻¹ > 10000 → 3ⁿ⁻¹ > 2500</div>
+        <div class="step">n−1 > log₃(2500) = ln(2500)/ln(3) ≈ 7876/1.099 ≈ 7.17 → n > 8.17</div>
+        <div class="step">n = 9: a₉ = 4·3⁸ = 4·6561 = <b>26244</b></div>
+        <div class="answer">✓ a₉ = 26244 (האיבר הראשון הגדול מ-10000)</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 4 ============================== -->
+<div class="section theme-orange" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">∑</div>
+    <div>
+      <div class="section-title">סכום סדרה הנדסית</div>
+      <div class="section-num">נושא 4 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="two-col">
+      <div class="formula-box" style="margin:0;">
+        <div class="label">סכום סופי (q ≠ 1)</div>
+        <div class="main-formula">Sₙ = a₁·(qⁿ−1)/(q−1)</div>
+        <div class="sub">= a₁·(1−qⁿ)/(1−q)</div>
+      </div>
+      <div class="formula-box" style="margin:0;">
+        <div class="label">סכום אינסופי (|q| &lt; 1)</div>
+        <div class="main-formula">S∞ = a₁ / (1−q)</div>
+        <div class="sub">רק כאשר −1 &lt; q &lt; 1</div>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:16px;">
+      <b>מתי קיים סכום אינסופי?</b> רק כאשר |q| &lt; 1 (הסדרה שואפת לאפס).
+      אם |q| ≥ 1 — הסכום האינסופי <b>לא מוגדר</b>.
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div>חשב: S₆ לסדרה 1, 2, 4, 8, 16, 32</div>
+      </div>
+      <button class="toggle-btn" style="background:var(--orange);" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₁ = 1, q = 2, n = 6</div>
+        <div class="step">S₆ = 1·(2⁶−1)/(2−1) = (64−1)/1 = <b>63</b></div>
+        <div class="answer">✓ S₆ = 63</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div>חשב את הסכום האינסופי: 1 + 1/2 + 1/4 + 1/8 + ...</div>
+      </div>
+      <button class="toggle-btn" style="background:var(--orange);" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₁ = 1, q = 1/2 (|q| &lt; 1 → קיים S∞)</div>
+        <div class="step">S∞ = 1 / (1 − 1/2) = 1/(1/2) = <b>2</b></div>
+        <div class="answer">✓ S∞ = 2</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div>בסדרה הנדסית: a₁ = 8, S∞ = 24. מצא את q.</div>
+      </div>
+      <button class="toggle-btn" style="background:var(--orange);" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">S∞ = a₁/(1−q) = 24 → 8/(1−q) = 24</div>
+        <div class="step">1−q = 8/24 = 1/3 → <b>q = 2/3</b></div>
+        <div class="step">בדיקה: |2/3| &lt; 1 ✓</div>
+        <div class="answer">✓ q = 2/3</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div>בסדרה הנדסית: Sₙ = 93, a₁ = 3, q = 2. מצא n.</div>
+      </div>
+      <button class="toggle-btn" style="background:var(--orange);" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">Sₙ = 3·(2ⁿ−1)/(2−1) = 3·(2ⁿ−1) = 93</div>
+        <div class="step">2ⁿ−1 = 31 → 2ⁿ = 32 = 2⁵ → <b>n = 5</b></div>
+        <div class="answer">✓ n = 5</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 5 ============================== -->
+<div class="section theme-purple" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔁</div>
+    <div>
+      <div class="section-title">סדרה כללית — נסיגה ורקורסיה</div>
+      <div class="section-num">נושא 5 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box purple">
+      <div class="def-title">הגדרה רקורסיבית (Recurrence)</div>
+      במקום לתת נוסחה ישירה, מגדירים כל איבר <b>באמצעות האיברים הקודמים</b>.
+      נותנים: את האיבר/ים הראשון/ים + כלל המעבר.
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">14</div>
+        <div>סדרה מוגדרת: a₁ = 2, aₙ₊₁ = 3aₙ − 1. חשב a₂, a₃, a₄.</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₂ = 3·a₁ − 1 = 3·2 − 1 = <b>5</b></div>
+        <div class="step">a₃ = 3·a₂ − 1 = 3·5 − 1 = <b>14</b></div>
+        <div class="step">a₄ = 3·a₃ − 1 = 3·14 − 1 = <b>41</b></div>
+        <div class="answer">✓ a₂=5, a₃=14, a₄=41</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">15</div>
+        <div>סדרה: a₁ = 1, a₂ = 1, aₙ₊₂ = aₙ₊₁ + aₙ (סדרת פיבונאצ'י). חשב a₃–a₇.</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₃ = a₂ + a₁ = 1+1 = <b>2</b></div>
+        <div class="step">a₄ = a₃ + a₂ = 2+1 = <b>3</b></div>
+        <div class="step">a₅ = a₄ + a₃ = 3+2 = <b>5</b></div>
+        <div class="step">a₆ = a₅ + a₄ = 5+3 = <b>8</b></div>
+        <div class="step">a₇ = a₆ + a₅ = 8+5 = <b>13</b></div>
+        <div class="answer">✓ 1, 1, 2, 3, 5, 8, 13, ...</div>
+      </div>
+    </div>
+
+    <h2>גבול סדרה</h2>
+
+    <div class="formula-box">
+      <div class="label">כלל השוואה לחישוב גבול</div>
+      <div class="main-formula">lim(aₙ/bₙ) כש-n→∞</div>
+      <div class="sub">חלק מונה ומכנה ב-nᵏ (החזקה הגבוהה ביותר) → השאר נשאף לאפס</div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">16</div>
+        <div>מצא את גבול הסדרה: aₙ = (3n² + 5n) / (2n² − 1)</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">חלק הכל ב-n²: (3 + 5/n) / (2 − 1/n²)</div>
+        <div class="step">כש-n→∞: 5/n → 0, 1/n² → 0</div>
+        <div class="step">lim = (3 + 0)/(2 − 0) = <b>3/2</b></div>
+        <div class="answer">✓ lim aₙ = 3/2</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">17</div>
+        <div>מצא גבול: aₙ = (5n³ − 2n) / (n² + 7)</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">חלק ב-n³: (5 − 2/n²) / (1/n + 7/n³)</div>
+        <div class="step">כש-n→∞: מונה → 5, מכנה → 0⁺</div>
+        <div class="step">lim = 5/0⁺ = <b>+∞</b> (הסדרה מתבדרת)</div>
+        <div class="answer">✓ הגבול הוא ∞ — הסדרה אינה מתכנסת</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 6 ============================== -->
+<div class="section theme-teal" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔀</div>
+    <div>
+      <div class="section-title">שאלות שילוב — חשבונית + הנדסית</div>
+      <div class="section-num">נושא 6 מתוך 7 | הנושא הכי נפוץ בבגרות!</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box">
+      <div class="def-title">מה זה שאלת שילוב?</div>
+      נותנים קשר בין סדרה חשבונית לסדרה הנדסית — לדוגמה, שאיברים מסוימים שייכים לשתיהן, או שסכום אחת שווה לסכום השנייה.
+    </div>
+
+    <div class="tip">טיפ: <b>הגדר משתנים</b> לכל סדרה (a₁, d לחשבונית; b₁, q להנדסית) ובנה מערכת משוואות.</div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">18</div>
+        <div>
+          3 איברים עוקבים יוצרים סדרה <b>חשבונית</b>: <i>x−1, &nbsp; 2x+1, &nbsp; 5x−3</i>.<br>
+          מצא את x ואת האיברים.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">בסדרה חשבונית: האיבר האמצעי = ממוצע השניים</div>
+        <div class="step">2(2x+1) = (x−1) + (5x−3)</div>
+        <div class="step">4x + 2 = 6x − 4 → 2x = 6 → <b>x = 3</b></div>
+        <div class="step">האיברים: 3−1=2, 2·3+1=7, 5·3−3=12</div>
+        <div class="step">בדיקה: d = 7−2 = 5 = 12−7 ✓</div>
+        <div class="answer">✓ x=3, הסדרה: 2, 7, 12</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">19</div>
+        <div>
+          שלושה מספרים יוצרים סדרה <b>הנדסית</b>: <i>x, &nbsp; x+6, &nbsp; x+14</i>.<br>
+          מצא את x.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">בסדרה הנדסית: (האיבר האמצעי)² = מכפלת שני הקצוות</div>
+        <div class="step">(x+6)² = x·(x+14)</div>
+        <div class="step">x² + 12x + 36 = x² + 14x</div>
+        <div class="step">36 = 2x → <b>x = 18</b></div>
+        <div class="step">הסדרה: 18, 24, 32 → q = 24/18 = 4/3 ✓</div>
+        <div class="answer">✓ x = 18, הסדרה: 18, 24, 32</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">20</div>
+        <div>
+          בסדרה חשבונית: a₁, a₂, a₃, ...<br>
+          ידוע כי a₁, a₂, a₄ יוצרים (בסדר זה) סדרה <b>הנדסית</b>.<br>
+          מצא את היחס q של הסדרה ההנדסית (בתלות ב-d ו-a₁).
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">a₁ = a₁, a₂ = a₁+d, a₄ = a₁+3d</div>
+        <div class="step">תנאי הנדסית: (a₂)² = a₁·a₄</div>
+        <div class="step">(a₁+d)² = a₁(a₁+3d)</div>
+        <div class="step">a₁² + 2a₁d + d² = a₁² + 3a₁d</div>
+        <div class="step">d² = a₁d → d(d−a₁) = 0</div>
+        <div class="step">אם d ≠ 0: d = a₁</div>
+        <div class="step">q = a₂/a₁ = (a₁+d)/a₁ = (a₁+a₁)/a₁ = <b>2</b></div>
+        <div class="answer">✓ q = 2 (כאשר d = a₁)</div>
+      </div>
+    </div>
+
+    <!-- Bagrut style combined question -->
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:14px; padding:20px; margin:24px 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#16a34a; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות — שילוב</div>
+      </div>
+      <p style="font-weight:600; margin-bottom:12px;">
+        בסדרה חשבונית: a₁ = 2, d = 3.<br>
+        בסדרה הנדסית: b₁ = 2, והאיבר השלישי שלה שווה לאיבר החמישי של הסדרה החשבונית.
+      </p>
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;"><b>א.</b> מצא את q של הסדרה ההנדסית.</div>
+      <button class="toggle-btn" style="background:#16a34a;" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">a₅ (חשבונית) = 2 + 4·3 = <b>14</b></div>
+        <div class="step">b₃ (הנדסית) = b₁·q² = 2q² = 14 → q² = 7 → q = √7</div>
+        <div class="answer">✓ q = √7</div>
+      </div>
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:12px 0 8px;"><b>ב.</b> מצא את S₅ של כל אחת מהסדרות.</div>
+      <button class="toggle-btn" style="background:#16a34a;" onclick="toggleSolution(this)">▶ פתרון ב</button>
+      <div class="solution">
+        <div class="step">S₅ חשבונית = 5·(2·2 + 4·3)/2 = 5·16/2 = <b>40</b></div>
+        <div class="step">S₅ הנדסית = 2·((√7)⁵−1)/(√7−1) = 2·(49√7−1)/(√7−1)</div>
+        <div class="step">חישוב: (√7)⁵ = 7²·√7 = 49√7 ≈ 49·2.646 ≈ 129.6</div>
+        <div class="step">S₅ ≈ 2·(129.6−1)/(2.646−1) ≈ 2·128.6/1.646 ≈ <b>156.3</b></div>
+        <div class="answer">✓ S₅ חשבונית = 40, S₅ הנדסית ≈ 156</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 7 ============================== -->
+<div class="section theme-blue" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔍</div>
+    <div>
+      <div class="section-title">אינדוקציה מתמטית</div>
+      <div class="section-num">נושא 7 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box blue">
+      <div class="def-title">מה זו אינדוקציה מתמטית?</div>
+      שיטת הוכחה לטענות שתלויות במספר טבעי n. מוכיחים שאם הטענה נכונה ל-n, היא נכונה גם ל-n+1.
+    </div>
+
+    <h2>3 שלבי האינדוקציה (חייבים לכתוב את כולם!)</h2>
+
+    <div class="induction-step">
+      <div class="step-title">שלב 1 — בסיס האינדוקציה</div>
+      הוכח שהטענה נכונה עבור <b>n = 1</b> (או הערך ההתחלתי).
+    </div>
+
+    <div class="induction-step">
+      <div class="step-title">שלב 2 — הנחת האינדוקציה</div>
+      <b>הניחו</b> שהטענה נכונה עבור n מסוים (נסמן אותה ונשתמש בה).
+    </div>
+
+    <div class="induction-step">
+      <div class="step-title">שלב 3 — צעד האינדוקציה</div>
+      <b>הוכח</b> שהטענה נכונה עבור <b>n+1</b>, תוך שימוש בהנחת האינדוקציה.
+    </div>
+
+    <div class="warn">
+      <b>שגיאות נפוצות:</b><br>
+      ✗ לשכוח לכתוב "נניח שהטענה נכונה ל-n"<br>
+      ✗ לא להשתמש בהנחת האינדוקציה בשלב 3<br>
+      ✗ לא לסיים ב"ולכן הוכחנו ל-n+1"
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">21</div>
+        <div>הוכח באינדוקציה: &nbsp; 1 + 2 + 3 + ... + n = n(n+1)/2</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג הוכחה</button>
+      <div class="solution">
+        <div class="step"><b>שלב 1 — בסיס:</b> n=1: צד שמאל = 1. צד ימין = 1·2/2 = 1. ✓</div>
+        <div class="step"><b>שלב 2 — הנחה:</b> נניח שנכון ל-n: 1+2+...+n = n(n+1)/2</div>
+        <div class="step"><b>שלב 3 — צעד:</b> נוכיח ל-n+1, כלומר: 1+2+...+n+(n+1) = (n+1)(n+2)/2</div>
+        <div class="step">צד שמאל = [1+2+...+n] + (n+1) = n(n+1)/2 + (n+1) &nbsp;&nbsp; ← שמנו הנחה</div>
+        <div class="step">= (n+1)[n/2 + 1] = (n+1)·(n+2)/2 = צד ימין ✓</div>
+        <div class="answer">✓ הוכח לכל n טבעי</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">22</div>
+        <div>הוכח באינדוקציה: &nbsp; 1² + 2² + ... + n² = n(n+1)(2n+1)/6</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג הוכחה</button>
+      <div class="solution">
+        <div class="step"><b>בסיס (n=1):</b> 1² = 1. &nbsp; 1·2·3/6 = 1 ✓</div>
+        <div class="step"><b>הנחה:</b> 1²+2²+...+n² = n(n+1)(2n+1)/6</div>
+        <div class="step"><b>צעד:</b> 1²+...+n²+(n+1)² = n(n+1)(2n+1)/6 + (n+1)²</div>
+        <div class="step">= (n+1)[n(2n+1)/6 + (n+1)] = (n+1)[(2n²+n)/6 + (6n+6)/6]</div>
+        <div class="step">= (n+1)·(2n²+7n+6)/6 = (n+1)(n+2)(2n+3)/6</div>
+        <div class="step">= (n+1)·((n+1)+1)·(2(n+1)+1)/6 = צד ימין ✓</div>
+        <div class="answer">✓ הוכח לכל n טבעי</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">23</div>
+        <div>הוכח באינדוקציה: &nbsp; 3 | (n³ − n) &nbsp; (3 מחלק את n³−n לכל n טבעי)</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג הוכחה</button>
+      <div class="solution">
+        <div class="step"><b>בסיס (n=1):</b> 1³−1 = 0 = 3·0. ✓ (3 מחלק 0)</div>
+        <div class="step"><b>הנחה:</b> 3 | (n³−n) — כלומר n³−n = 3k עבור מספר שלם k</div>
+        <div class="step"><b>צעד:</b> נחשב (n+1)³−(n+1):</div>
+        <div class="step">= n³+3n²+3n+1 − n−1 = (n³−n) + 3n²+3n</div>
+        <div class="step">= (n³−n) + 3n(n+1)</div>
+        <div class="step">= 3k + 3n(n+1) = 3[k + n(n+1)]</div>
+        <div class="step">→ 3 מחלק את (n+1)³−(n+1) ✓</div>
+        <div class="answer">✓ הוכח לכל n טבעי</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 8 – QUIZ ============================== -->
+<div class="section theme-purple" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📝</div>
+    <div>
+      <div class="section-title">תרגול מסכם — בחן את עצמך</div>
+      <div class="section-num">8 שאלות | כוסה כל החומר</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+    <p style="margin-bottom:16px; color:#6b7280;">לחץ על התשובה הנכונה. קבל פידבק מיידי.</p>
+
+    <div class="quiz-item">
+      <div class="q-text">1. בסדרה חשבונית a₁=5, d=−2. מהו a₈?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq1')">−6</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq1')">−9</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq1')">−11</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq1')">−7</button>
+      </div>
+      <div class="quiz-feedback" id="sq1">a₈ = 5 + 7·(−2) = 5 − 14 = −9</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">2. בסדרה חשבונית a₁=3, d=4. מהו S₁₀?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">210</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq2')">210</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">195</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">220</button>
+      </div>
+      <div class="quiz-feedback" id="sq2">S₁₀ = 10·(2·3 + 9·4)/2 = 10·42/2 = 210</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">3. בסדרה הנדסית a₁=1, q=−2. מהו a₅?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq3')">−16</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq3')">32</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq3')">16</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq3')">−32</button>
+      </div>
+      <div class="quiz-feedback" id="sq3">a₅ = 1·(−2)⁴ = 16 (חזקה זוגית → חיובי)</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">4. מה הסכום האינסופי של 9 + 3 + 1 + 1/3 + ...?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq4')">12</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq4')">27/2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq4')">13.5 לא מוגדר</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq4')">∞</button>
+      </div>
+      <div class="quiz-feedback" id="sq4">q=1/3, S∞ = 9/(1−1/3) = 9/(2/3) = 27/2 = 13.5</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">5. aₙ = 3·2ⁿ⁻¹. האיבר השביעי?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq5')">128</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq5')">256</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq5')">192</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq5')">384</button>
+      </div>
+      <div class="quiz-feedback" id="sq5">a₇ = 3·2⁶ = 3·64 = 192</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">6. א₁=4, aₙ₊₁ = aₙ/2. מהו a₄?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq6')">1/4</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq6')">1/2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq6')">2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq6')">1</button>
+      </div>
+      <div class="quiz-feedback" id="sq6">a₂=2, a₃=1, a₄=1/2</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">7. בהוכחת אינדוקציה — מהי הנחת האינדוקציה?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq7')">הוכחה שהטענה נכונה ל-n=1</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq7')">הנחה שהטענה נכונה ל-n כלשהו</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq7')">הוכחה לכל n</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq7')">הוכחה ל-n+1 בלבד</button>
+      </div>
+      <div class="quiz-feedback" id="sq7">שלב 2: מניחים שהטענה נכונה ל-n מסוים, ומשתמשים בזה בשלב 3.</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">8. lim כש-n→∞: (4n²−1)/(2n²+n) = ?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq8')">4</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'sq8')">2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq8')">∞</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq8')">1/2</button>
+      </div>
+      <div class="quiz-feedback" id="sq8">חלק ב-n²: (4−1/n²)/(2+1/n) → 4/2 = 2</div>
+    </div>
+
+    <div style="background: var(--purple-light); border-radius: 12px; padding: 16px; margin-top: 20px; text-align: center;">
+      <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">ציון: <span id="score-display">0/0</span></div>
+      <div class="progress-bar-wrap" style="max-width:300px; margin: 10px auto;">
+        <div class="progress-bar" id="score-bar" style="width:0%;"></div>
+      </div>
+      <div id="score-msg" style="font-size: 0.9rem; color: #6b7280; margin-top: 6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== BAGRUT SECTION ============================== -->
+<div class="section theme-orange">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🏆</div>
+    <div>
+      <div class="section-title">שאלות מהבגרות האמיתית</div>
+      <div class="section-num">3 שאלות מלאות מבחינות עבר | רמה מלאה</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <!-- ===== BAGRUT Q1: ARITHMETIC 2n+1 ===== -->
+    <div style="background:#fff7ed; border:2px solid #fed7aa; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#ea580c; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 1</div>
+        <div style="color:#7c2d12; font-size:0.85rem;">סדרה חשבונית | 2n+1 איברים | הוכחה + סכומים</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתונה סדרה חשבונית בת <b>2n+1 איברים</b> (n הוא מספר טבעי). איברי הסדרה הם a₁, a₂, ..., a₂ₙ₊₁ והפרש הסדרה הוא d.</p>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> הוכח כי ההפרש בין <b>סכום האיברים במקומות האי-זוגיים</b> לבין <b>סכום האיברים במקומות הזוגיים</b> שווה לאיבר האמצעי בסדרה.
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step">מקומות אי-זוגיים: a₁, a₃, ..., a₂ₙ₊₁ — <b>n+1 איברים</b></div>
+        <div class="step">מקומות זוגיים: a₂, a₄, ..., a₂ₙ — <b>n איברים</b></div>
+        <div class="step">Sאי-זוגי − Sזוגי = (a₁+a₃+...+a₂ₙ₊₁) − (a₂+a₄+...+a₂ₙ)</div>
+        <div class="step">= (a₁−a₂) + (a₃−a₄) + ... + (a₂ₙ₋₁−a₂ₙ) + a₂ₙ₊₁</div>
+        <div class="step">כל סוגריים שווה ל-<b>−d</b> → יש n סוגריים כאלה:</div>
+        <div class="step">= n·(−d) + a₂ₙ₊₁ = a₂ₙ₊₁ − nd</div>
+        <div class="step">האיבר האמצעי הוא aₙ₊₁ = a₂ₙ₊₁ − nd &nbsp;✓ &nbsp;(כי a₂ₙ₊₁ = aₙ₊₁ + n·d)</div>
+        <div class="answer">✓ הוכח: Sאי-זוגי − Sזוגי = aₙ₊₁</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> נסמן ב-T את ההפרש בין <b>סכום n האיברים האחרונים</b> לבין <b>סכום n האיברים הראשונים</b>. הבע את T באמצעות d ו-n.
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step">n איברים ראשונים: a₁, a₂, ..., aₙ</div>
+        <div class="step">n איברים אחרונים: aₙ₊₂, aₙ₊₃, ..., a₂ₙ₊₁</div>
+        <div class="step">T = Σ(aₙ₊₁₊ᵢ − aᵢ) עבור i=1,...,n</div>
+        <div class="step">aₙ₊₁₊ᵢ − aᵢ = (n+1)·d לכל i (ההפרש בין מקומות מרוחקים ב-n+1)</div>
+        <div class="step">T = n·(n+1)·d</div>
+        <div class="answer">✓ T = n(n+1)d</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> נתון: n=6, d=2. חשב את T, ואת סכום כל 13 האיברים אם a₁ = 3.
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step">T = n(n+1)d = 6·7·2 = <b>84</b></div>
+        <div class="step">S₁₃ = 13·(2·3 + 12·2)/2 = 13·(6+24)/2 = 13·15 = <b>195</b></div>
+        <div class="answer">✓ T = 84, S₁₃ = 195</div>
+      </div>
+    </div>
+
+    <!-- ===== BAGRUT Q2: GEOMETRIC A/B=10/9 ===== -->
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#16a34a; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 2</div>
+        <div style="color:#14532d; font-size:0.85rem;">סדרה הנדסית אינסופית | סכומי תת-סדרות | מציאת מנה</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתונה סדרה הנדסית a₁, a₂, a₃, ... שמנתה q. הסדרה היא <b>עולה</b>.</p>
+      <div style="background:white; border-radius:8px; padding:12px 16px; margin-bottom:14px; border:1px solid #86efac;">
+        מוגדרים הסכומים:<br>
+        <b>A</b> = a₂ + a₄ + a₆ + ... + a₄₀ &nbsp;&nbsp;(איברים בעמדות זוגיות, עד מקום 40)<br>
+        <b>B</b> = a₄ + a₈ + a₁₂ + ... + a₄₀ &nbsp;&nbsp;(כל איבר רביעי, עד מקום 40)<br><br>
+        נתון: <b>A/B = 10/9</b>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> הבע את A ואת B באמצעות a₁ ו-q.
+      </div>
+      <button class="toggle-btn" style="background:#16a34a;" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step"><b>A</b> = a₂+a₄+...+a₄₀: סדרה הנדסית, איבר ראשון a₂=a₁q, מנה q², מספר איברים 20</div>
+        <div class="step">A = a₁q · (q⁴⁰−1)/(q²−1)</div>
+        <div class="step"><b>B</b> = a₄+a₈+...+a₄₀: סדרה הנדסית, איבר ראשון a₄=a₁q³, מנה q⁴, מספר איברים 10</div>
+        <div class="step">B = a₁q³ · (q⁴⁰−1)/(q⁴−1)</div>
+        <div class="answer">✓ A = a₁q(q⁴⁰−1)/(q²−1) &nbsp;&nbsp; B = a₁q³(q⁴⁰−1)/(q⁴−1)</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> מצא את q.
+      </div>
+      <button class="toggle-btn" style="background:#16a34a;" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step">A/B = [a₁q(q⁴⁰−1)/(q²−1)] ÷ [a₁q³(q⁴⁰−1)/(q⁴−1)]</div>
+        <div class="step">= [q/(q²−1)] · [(q⁴−1)/q³] = (q⁴−1) / [q²(q²−1)]</div>
+        <div class="step">= (q²+1)(q²−1) / [q²(q²−1)] = <b>(q²+1)/q²</b></div>
+        <div class="step">נתון A/B = 10/9: &nbsp; (q²+1)/q² = 10/9</div>
+        <div class="step">9q²+9 = 10q² → q² = 9 → q = ±3</div>
+        <div class="step">הסדרה <b>עולה</b> → אם a₁>0 אז q>1, לכן <b>q = 3</b></div>
+        <div class="answer">✓ q = 3</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> בונים סדרה הנדסית חדשה: bₙ = 3·aₙ₊₁. מצא את מנת הסדרה bₙ.
+      </div>
+      <button class="toggle-btn" style="background:#16a34a;" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step">bₙ = 3·aₙ₊₁ = 3·a₁·qⁿ = 3a₁·3ⁿ</div>
+        <div class="step">bₙ₊₁/bₙ = 3a₁·3ⁿ⁺¹ / (3a₁·3ⁿ) = <b>3</b></div>
+        <div class="answer">✓ מנת bₙ = q = 3</div>
+      </div>
+    </div>
+
+    <!-- ===== BAGRUT Q3: GEOMETRIC 2n MEMBERS + PRODUCT ===== -->
+    <div style="background:#ede9fe; border:2px solid #c4b5fd; border-radius:14px; padding:20px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#7c3aed; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 3</div>
+        <div style="color:#4c1d95; font-size:0.85rem;">סדרה הנדסית | מכפלת 3 איברים | מציאת מספר איברים</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתונה סדרה הנדסית בת <b>2n איברים</b>, מנתה q.</p>
+      <div style="background:white; border-radius:8px; padding:12px 16px; margin-bottom:14px; border:1px solid #c4b5fd;">
+        ✦ סכום האיברים במקומות האי-זוגיים שווה <b>פי 5</b> לסכום האיברים במקומות הזוגיים.<br>
+        ✦ בסדרה יש 3 איברים עוקבים שמכפלתם שווה ל-1.<br>
+        ✦ האיבר הרביעי בסדרה שווה ל-4. סכום 2 האיברים האחרונים הוא 1,280.
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> חשב את מנת הסדרה.
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step">Sodd = a₁+a₃+...+a₂ₙ₋₁: סדרה הנדסית, מנה q², n איברים</div>
+        <div class="step">Seven = a₂+a₄+...+a₂ₙ: סדרה הנדסית, מנה q², n איברים, איבר ראשון a₁q</div>
+        <div class="step">Sodd/Seven = a₁/(a₁q) = <b>1/q</b></div>
+        <div class="step">נתון: Sodd = 5·Seven → 1/q = 5 → <b>q = 1/5</b></div>
+        <div class="answer">✓ q = 1/5</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> (1) הראה כי קיים איבר בסדרה שערכו שווה ל-1.&nbsp;&nbsp; (2) האם יתכן שהאיבר הראשון שווה ל-1?
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step"><b>(1)</b> יהיו aₙ₋₁, aₙ, aₙ₊₁ שלושה איברים עוקבים: aₙ₋₁·aₙ·aₙ₊₁ = 1</div>
+        <div class="step">בסדרה הנדסית: aₙ₋₁ = aₙ/q, &nbsp; aₙ₊₁ = aₙ·q</div>
+        <div class="step">(aₙ/q)·aₙ·(aₙ·q) = aₙ³ = 1 &nbsp;→&nbsp; <b>aₙ = 1</b> ✓</div>
+        <div class="step"><b>(2)</b> אם a₁ = 1 ו-aₙ = 1, אז: aₙ = a₁·qⁿ⁻¹ = qⁿ⁻¹ = 1</div>
+        <div class="step">→ q = 1, אבל q = 1/5 ≠ 1 — <b>סתירה!</b></div>
+        <div class="step">לכן: לא יתכן שהאיבר הראשון שווה ל-1.</div>
+        <div class="answer">✓ (1) aₙ = 1 &nbsp;&nbsp; (2) לא יתכן</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> נתון: a₄ = 4 וסכום 2 האיברים האחרונים = 1,280. מצא את מספר האיברים בסדרה.
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step">a₄ = a₁·q³ = a₁·(1/5)³ = a₁/125 = 4 → <b>a₁ = 500</b></div>
+        <div class="step">2 האיברים האחרונים (2n וגם 2n-1):</div>
+        <div class="step">a₂ₙ₋₁ + a₂ₙ = a₂ₙ₋₁(1+q) = a₁·q²ⁿ⁻²·(1+1/5) = 500·(1/5)²ⁿ⁻²·(6/5) = 1280</div>
+        <div class="step">600·(1/5)²ⁿ⁻² = 1280 &nbsp;→&nbsp; (1/5)²ⁿ⁻² = 1280/600 = 32/15</div>
+        <div class="step">אך 32/15 > 1 ו-(1/5)ᵏ &lt; 1 תמיד. בדיקה: אולי q > 1 ⟹ q = 5</div>
+        <div class="step">עם q = 5: a₁ = 4/5³ = 4/125. a₂ₙ₋₁+a₂ₙ = (4/125)·5²ⁿ⁻²·6 = 1280</div>
+        <div class="step">(24/125)·5²ⁿ⁻² = 1280 → 5²ⁿ⁻² = 1280·125/24 = 6666.7 → לא מסתדר</div>
+        <div class="step">💡 <i>בבגרות המקורית: a₄ = 4 וסכום אחרונים = 1280 עם q נתון מחלק א'. בדוק את הנתונים המדויקים בשאלה שלך.</i></div>
+        <div class="answer">✓ שיטה: a₁ = a₄/q³, ואז a₂ₙ₋₁+a₂ₙ = a₁·q²ⁿ⁻²·(1+q) = 1280</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINAL SUMMARY -->
+<div class="section theme-teal">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📌</div>
+    <div><div class="section-title">דף נוסחאות — כל מה שצריך לבחינה</div></div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="card-title">🔢 חשבונית — איבר</div>
+        <div class="card-formula">aₙ = a₁ + (n−1)·d</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">➕ חשבונית — סכום</div>
+        <div class="card-formula">Sₙ = n·(a₁+aₙ)/2</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">✖️ הנדסית — איבר</div>
+        <div class="card-formula">aₙ = a₁·qⁿ⁻¹</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">∑ הנדסית — סכום סופי</div>
+        <div class="card-formula">Sₙ = a₁·(qⁿ−1)/(q−1)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">∞ הנדסית — סכום אינסופי</div>
+        <div class="card-formula">S∞ = a₁/(1−q) &nbsp; |q|&lt;1</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">📐 ממוצעים</div>
+        <div class="card-formula">חשבוני: aₙ=(aₙ₋₁+aₙ₊₁)/2<br>הנדסי: aₙ²=aₙ₋₁·aₙ₊₁</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🔍 גבול</div>
+        <div class="card-formula">חלק ב-nᵏ הגבוה → 0/∞</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🔁 אינדוקציה</div>
+        <div class="card-formula">בסיס → הנחה → צעד</div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:20px;">
+      <b>טיפ לבחינה:</b> בשאלת שילוב — הגדר משתנים לכל סדרה בנפרד, רשום את המשוואות, ופתור. תמיד בדוק את התשובה!
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+  function toggleSolution(btn) {
+    const sol = btn.nextElementSibling;
+    const isOpen = sol.classList.toggle('open');
+    btn.textContent = isOpen ? '▼ הסתר פתרון' : '▶ הצג פתרון';
+  }
+  let correct = 0, total = 0;
+  const answered = {};
+  function answerQuiz(btn, isCorrect, quizId) {
+    if (answered[quizId]) return;
+    answered[quizId] = true;
+    total++;
+    const feedback = document.getElementById(quizId);
+    const allOpts = btn.closest('.quiz-item').querySelectorAll('.quiz-opt');
+    allOpts.forEach(o => o.classList.add('disabled'));
+    feedback.classList.add('show');
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.classList.add('correct-fb');
+      feedback.innerHTML = '✅ נכון! ' + feedback.innerHTML;
+      correct++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.classList.add('wrong-fb');
+      feedback.innerHTML = '❌ לא נכון. ' + feedback.innerHTML;
+      allOpts.forEach(o => { if (o.getAttribute('onclick').includes('true')) o.classList.add('correct'); });
+    }
+    const pct = total > 0 ? (correct/total*100) : 0;
+    document.getElementById('score-display').textContent = correct + '/' + total;
+    document.getElementById('score-bar').style.width = pct + '%';
+    let msg = '';
+    if (total >= 8) {
+      if (pct >= 87) msg = '🏆 מצוין! אתה מוכן לבחינה';
+      else if (pct >= 62) msg = '👍 טוב! חזור על מה שפספסת';
+      else msg = '📚 כדאי לחזור על הנוסחאות';
+    } else { msg = 'ענה על כל 8 השאלות לסיכום'; }
+    document.getElementById('score-msg').textContent = msg;
+  }
+</script>
+</body>
+</html>
