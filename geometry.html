@@ -232,7 +232,7 @@
       <div class="fcard">
         <div class="flabel">זווית חיצונית (ממשיק ומיתר)</div>
         <div class="fformula">∠ = ½ · קשת</div>
-        <div class="fsub">הקשת שהמיתר חוסם</div>
+        <div class="fsub">הקשת הנמצאת בתוך הזווית (לא הקשת הגדולה)</div>
       </div>
     </div>
 
@@ -1287,13 +1287,14 @@
       </div>
 
       <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
-        <b>ג.</b> נתון: CE משיק ל-AB. הוכח כי CG/GE = CD/DE.
+        <b>ג.</b> נתון: CE משיק ל-AB בנקודה E. G היא נקודת חיתוך של CE עם המיתר CD. הוכח כי CG/GE = CD/DE.
       </div>
       <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
       <div class="solution">
-        <div class="step">CE משיק ל-AB בנקודה → ∠CEA = ∠EBA (זווית בין משיק ומיתר = זווית משולבת)</div>
-        <div class="step">הוכח שG חוצה יחס → ניתן להוכיח על ידי דמיון משולשים נוסף ✓</div>
-        <div class="answer">✓ הוכח מדמיון המשולשים</div>
+        <div class="step">CE משיק ל-AB בנקודה E → ∠CEA = ∠EBA (זווית בין משיק למיתר = זווית משולבת על קשת AE)</div>
+        <div class="step">∠ECB = ∠EAB (זוויות משולבות על קשת BE) → △ECG ~ △EAD (ז.ז.ז)</div>
+        <div class="step">מהדמיון: CG/GE = CD/DE (יחס צלעות מתאימות) ✓</div>
+        <div class="answer">✓ CG/GE = CD/DE הוכח מדמיון △ECG ~ △EAD</div>
       </div>
 
       <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
@@ -1360,55 +1361,54 @@
     <div style="background:#ede9fe; border:2px solid #c4b5fd; border-radius:14px; padding:20px;">
       <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
         <div style="background:#7c3aed; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 3</div>
-        <div style="color:#4c1d95; font-size:0.85rem;">מעגל עם מרכז O | זוויות + דמיון + שטחים</div>
+        <div style="color:#4c1d95; font-size:0.85rem;">מעגל עם מרכז O | משיקים + שטחים + רדיוס</div>
       </div>
 
-      <p style="font-weight:600; margin-bottom:12px;">מעגל עם מרכז O. נקודה A מחוץ למעגל. מנקודה A מוצאים משיקים למעגל. B ו-C הן נקודות המגע. נתון: <b>4·AM² = AC² + AB²</b>, M נקודה על BC. <b>AB = AC = 6</b>.</p>
+      <p style="font-weight:600; margin-bottom:12px;">מעגל עם מרכז O ורדיוס r. נקודה A מחוץ למעגל. מנקודה A מוצאים משיקים למעגל — B ו-C הן נקודות המגע. נתון: <b>AB = AC = 6</b> ו-<b>4·AM² = AC² + AB²</b>, כאשר M נקודת אמצע של BC.</p>
 
       <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
-        <b>א.</b> הוכח כי △GBC ~ △GAD.
+        <b>א.</b> הוכח כי ∠BAC = 90°.
       </div>
       <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון א</button>
       <div class="solution">
-        <div class="step">AB = AC (משיקים שווים) → △ABC שווה-שוקי</div>
-        <div class="step">∠GBC = ∠GAD: זוויות משולבות על אותה קשת</div>
-        <div class="step">∠BCG = ∠ADG: זוויות משולבות על קשת AB</div>
-        <div class="step">שתי זוויות שוות → <b>△GBC ~ △GAD (ז.ז.ז)</b></div>
-        <div class="answer">✓ הוכח</div>
+        <div class="step">M נקודת אמצע BC → AM הוא חציון במשולש ABC.</div>
+        <div class="step">נוסחת החציון (אפולוניוס): 4·AM² = 2·AB² + 2·AC² − BC²</div>
+        <div class="step">נתון: 4·AM² = AB² + AC² = 36 + 36 = 72</div>
+        <div class="step">לכן: 2·AB² + 2·AC² − BC² = AB² + AC² → BC² = AB² + AC² = 72</div>
+        <div class="step">לפי המשפט ההפוך לפיתגורס: <b>∠BAC = 90°</b> ✓</div>
+        <div class="answer">✓ ∠BAC = 90° הוכח</div>
       </div>
 
       <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
-        <b>ב.</b> חשב את AM (נתון AB = AC = 6, ומהתנאי 4·AM² = AC² + AB²).
+        <b>ב.</b> חשב את AM.
       </div>
       <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ב</button>
       <div class="solution">
-        <div class="step">AB = AC = 6 (משיקים שווים מנקודה חיצונית)</div>
-        <div class="step">4·AM² = AC² + AB² = 6² + 6² = 36 + 36 = 72</div>
+        <div class="step">4·AM² = AB² + AC² = 36 + 36 = 72</div>
         <div class="step">AM² = 18 → AM = √18 = <b>3√2</b></div>
         <div class="answer">✓ AM = 3√2</div>
       </div>
 
       <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
-        <b>ד.</b> מצא AB (נתון ש-S(△OAB)/S(△OBC) = 1/15).
+        <b>ג.</b> מצא את הרדיוס r, בהינתן S(△OAB) / S(△OBC) = 1/15.
       </div>
-      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ד</button>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ג</button>
       <div class="solution">
-        <div class="step">S(△OAB) = ½·AB·r &nbsp; (OB ⊥ AB כי AB משיק → הגובה מ-O אל AB שווה r) ✓</div>
-        <div class="step">S(△OBC): OB = OC = r, אך OB <b>אינו ניצב</b> ל-BC. הגובה מ-O אל BC הוא d = √(r² − (BC/2)²) (אפותמה).</div>
-        <div class="step">לכן: S(△OBC) = ½·BC·√(r² − (BC/2)²) &nbsp; אפשרות שקולה: S(△OBC) = ½·r²·sin∠BOC.</div>
-        <div class="step">מהיחס S(△OAB)/S(△OBC) = 1/15 ומנתוני הדמיון בשאלה (יחס BC/AB מסעיף א) מציבים ומקבלים: <b>AB = 4</b>.</div>
-        <div class="answer">✓ AB = 4</div>
+        <div class="step">OB ⊥ AB (רדיוס למשיק) → S(△OAB) = ½·AB·r = ½·6·r = 3r</div>
+        <div class="step">מסעיף א: ∠BAC = 90°. ב-OBAC: ∠OBA + ∠OCA + ∠BAC + ∠BOC = 360° → ∠BOC = 90°</div>
+        <div class="step">S(△OBC) = ½·OB·OC·sin∠BOC = ½·r·r·sin90° = r²/2</div>
+        <div class="step">יחס: 3r / (r²/2) = 6/r = 1/15 → <b>r = 90</b></div>
+        <div class="answer">✓ r = 90</div>
       </div>
 
       <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
-        <b>ה.</b> מצא את יחס S(△ADB) / S(△ABC).
+        <b>ד.</b> חשב את S(△OAB).
       </div>
-      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ה</button>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ד</button>
       <div class="solution">
-        <div class="step">מהדמיון △GBC ~ △GAD: יחס דמיון = BC/AD</div>
-        <div class="step">יחס שטחים = (יחס דמיון)² </div>
-        <div class="step">לפי הפתרון: <b>S(ADB)/S(ABC) = 4/9</b></div>
-        <div class="answer">✓ יחס השטחים = 4/9</div>
+        <div class="step">מסעיף ג: r = 90</div>
+        <div class="step">S(△OAB) = 3r = 3·90 = <b>270</b></div>
+        <div class="answer">✓ S(△OAB) = 270</div>
       </div>
     </div>
 

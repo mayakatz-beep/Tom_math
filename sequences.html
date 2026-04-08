@@ -283,17 +283,16 @@
     <div class="example">
       <div class="example-q">
         <div class="example-num">5</div>
-        <div>בסדרה: a₁ = 4, d = 3. מצא את n כך ש-Sₙ = 165.</div>
+        <div>בסדרה: a₁ = 4, d = 3. מצא את n כך ש-Sₙ = 175.</div>
       </div>
       <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
       <div class="solution">
-        <div class="step">Sₙ = n·(2·4 + (n−1)·3)/2 = 165</div>
-        <div class="step">n·(8 + 3n − 3)/2 = 165</div>
-        <div class="step">n·(3n + 5)/2 = 165 → n·(3n+5) = 330</div>
-        <div class="step">3n² + 5n − 330 = 0</div>
-        <div class="step">n = (−5 ± √(25+3960))/6 = (−5 ± √3985)/6 ≈ (−5 ± 63.1)/6</div>
-        <div class="step">n = 58.1/6 ≈ 9.7... בדיקה: n=10: S₁₀ = 10·(8+27)/2 = 10·35/2 = 175 ≠ 165</div>
-        <div class="step">נסה n=10: 3·100+5·10=330 → 330/2=165 ✓ &nbsp; <b>n = 10</b></div>
+        <div class="step">Sₙ = n·(2·4 + (n−1)·3)/2 = 175</div>
+        <div class="step">n·(8 + 3n − 3)/2 = 175 → n·(3n+5) = 350</div>
+        <div class="step">3n² + 5n − 350 = 0</div>
+        <div class="step">n = (−5 ± √(25 + 4200))/6 = (−5 ± √4225)/6 = (−5 ± 65)/6</div>
+        <div class="step">n = 60/6 = <b>10</b> &nbsp; (פסלנו n = −70/6 &lt; 0)</div>
+        <div class="step">בדיקה: S₁₀ = 10·(8+27)/2 = 10·35/2 = 175 ✓</div>
         <div class="answer">✓ n = 10</div>
       </div>
     </div>
@@ -386,7 +385,7 @@
       <div class="solution">
         <div class="step">a₁ = 4, q = 3, aₙ = 4·3ⁿ⁻¹</div>
         <div class="step">4·3ⁿ⁻¹ > 10000 → 3ⁿ⁻¹ > 2500</div>
-        <div class="step">n−1 > log₃(2500) = ln(2500)/ln(3) ≈ 7876/1.099 ≈ 7.17 → n > 8.17</div>
+        <div class="step">n−1 > log₃(2500) = ln(2500)/ln(3) ≈ 7.824/1.099 ≈ 7.12 → n > 8.12</div>
         <div class="step">n = 9: a₉ = 4·3⁸ = 4·6561 = <b>26244</b></div>
         <div class="answer">✓ a₉ = 26244 (האיבר הראשון הגדול מ-10000)</div>
       </div>
@@ -799,7 +798,7 @@
     <div class="quiz-item">
       <div class="q-text">2. בסדרה חשבונית a₁=3, d=4. מהו S₁₀?</div>
       <div class="quiz-options">
-        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">210</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">200</button>
         <button class="quiz-opt" onclick="answerQuiz(this,true,'sq2')">210</button>
         <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">195</button>
         <button class="quiz-opt" onclick="answerQuiz(this,false,'sq2')">220</button>
@@ -1036,19 +1035,17 @@
       </div>
 
       <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
-        <b>ג.</b> נתון: a₄ = 4 וסכום 2 האיברים האחרונים = 1,280. מצא את מספר האיברים בסדרה.
+        <b>ג.</b> נתון: a₄ = 4 וסכום 2 האיברים האחרונים הוא 24. מצא את מספר האיברים בסדרה.
       </div>
       <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
       <div class="solution">
-        <div class="step">a₄ = a₁·q³ = a₁·(1/5)³ = a₁/125 = 4 → <b>a₁ = 500</b></div>
-        <div class="step">2 האיברים האחרונים (2n וגם 2n-1):</div>
-        <div class="step">a₂ₙ₋₁ + a₂ₙ = a₂ₙ₋₁(1+q) = a₁·q²ⁿ⁻²·(1+1/5) = 500·(1/5)²ⁿ⁻²·(6/5) = 1280</div>
-        <div class="step">600·(1/5)²ⁿ⁻² = 1280 &nbsp;→&nbsp; (1/5)²ⁿ⁻² = 1280/600 = 32/15</div>
-        <div class="step">אך 32/15 > 1 ו-(1/5)ᵏ &lt; 1 תמיד. בדיקה: אולי q > 1 ⟹ q = 5</div>
-        <div class="step">עם q = 5: a₁ = 4/5³ = 4/125. a₂ₙ₋₁+a₂ₙ = (4/125)·5²ⁿ⁻²·6 = 1280</div>
-        <div class="step">(24/125)·5²ⁿ⁻² = 1280 → 5²ⁿ⁻² = 1280·125/24 = 6666.7 → לא מסתדר</div>
-        <div class="step">💡 <i>בבגרות המקורית: a₄ = 4 וסכום אחרונים = 1280 עם q נתון מחלק א'. בדוק את הנתונים המדויקים בשאלה שלך.</i></div>
-        <div class="answer">✓ שיטה: a₁ = a₄/q³, ואז a₂ₙ₋₁+a₂ₙ = a₁·q²ⁿ⁻²·(1+q) = 1280</div>
+        <div class="step">מסעיף א: q = 1/5. מהנתון: a₄ = a₁·q³ = a₁/125 = 4 → <b>a₁ = 500</b></div>
+        <div class="step">שני האיברים האחרונים: a₂ₙ₋₁ + a₂ₙ = a₁·q²ⁿ⁻²·(1+q)</div>
+        <div class="step">= 500·(1/5)²ⁿ⁻²·(6/5) = 600·(1/5)²ⁿ⁻² = 24</div>
+        <div class="step">(1/5)²ⁿ⁻² = 24/600 = 1/25 = (1/5)²</div>
+        <div class="step">2n − 2 = 2 → n = 2 → מספר האיברים = 2n = <b>4</b></div>
+        <div class="step">בדיקה: a₃ = 500·(1/5)² = 20, &nbsp; a₄ = 4, &nbsp; 20 + 4 = 24 ✓</div>
+        <div class="answer">✓ מספר האיברים בסדרה = 4</div>
       </div>
     </div>
 
