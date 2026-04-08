@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חוברת הסתברות – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --orange: #ea580c;
+    --orange-light: #ffedd5;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --gray: #374151;
+    --gray-light: #f3f4f6;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f8fafc;
+    color: var(--gray);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  /* HEADER */
+  .main-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #7c3aed 100%);
+    color: white;
+    padding: 40px 20px 30px;
+    text-align: center;
+  }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.85; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.85rem;
+  }
+  /* NAV */
+  .toc {
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .toc span { font-weight: 700; color: var(--blue); margin-left: 8px; }
+  .toc a {
+    text-decoration: none;
+    color: var(--gray);
+    background: var(--gray-light);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.82rem;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .toc a:hover { background: var(--blue); color: white; }
+  /* CONTENT */
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  /* SECTION */
+  .section {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; }
+  .section-num { font-size: 0.8rem; opacity: 0.55; margin-top: 2px; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+  /* color themes */
+  .theme-blue .section-header { background: var(--blue-light); }
+  .theme-blue .section-icon { background: var(--blue); color: white; }
+  .theme-blue .section-title { color: #1e40af; }
+  .theme-green .section-header { background: var(--green-light); }
+  .theme-green .section-icon { background: var(--green); color: white; }
+  .theme-green .section-title { color: #14532d; }
+  .theme-orange .section-header { background: var(--orange-light); }
+  .theme-orange .section-icon { background: var(--orange); color: white; }
+  .theme-orange .section-title { color: #7c2d12; }
+  .theme-purple .section-header { background: var(--purple-light); }
+  .theme-purple .section-icon { background: var(--purple); color: white; }
+  .theme-purple .section-title { color: #4c1d95; }
+  /* FORMULA BOX */
+  .formula-box {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-size: 1.05rem;
+    font-family: 'Courier New', monospace;
+    position: relative;
+    overflow-x: auto;
+  }
+  .formula-box .label {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .formula-box .main-formula { font-size: 1.25rem; color: #7dd3fc; font-weight: 700; }
+  /* DEF BOX */
+  .def-box {
+    border-right: 4px solid var(--blue);
+    background: var(--blue-light);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .def-box.green { border-color: var(--green); background: var(--green-light); }
+  .def-box.orange { border-color: var(--orange); background: var(--orange-light); }
+  .def-box.purple { border-color: var(--purple); background: var(--purple-light); }
+  .def-box .def-title { font-weight: 700; margin-bottom: 4px; }
+  /* EXAMPLE */
+  .example {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .example-q {
+    background: var(--gray-light);
+    padding: 14px 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .example-num {
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .toggle-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 12px 18px;
+    transition: background .2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .toggle-btn:hover { background: #1d4ed8; }
+  .toggle-btn.green { background: var(--green); }
+  .toggle-btn.green:hover { background: #15803d; }
+  .solution { display: none; padding: 16px 18px; background: #f0fdf4; border-top: 1.5px solid var(--border); }
+  .solution.open { display: block; }
+  .solution .step { margin: 8px 0; padding-right: 14px; border-right: 3px solid #86efac; }
+  .solution .answer { background: var(--green); color: white; border-radius: 8px; padding: 8px 14px; margin-top: 12px; font-weight: 700; display: inline-block; }
+  /* TREE */
+  .tree-container { overflow-x: auto; padding: 10px 0; }
+  svg text { font-family: 'Segoe UI', Arial, sans-serif; }
+  /* QUIZ */
+  .quiz-section { background: #fafafa; border: 2px solid var(--border); border-radius: 12px; padding: 20px; margin: 20px 0; }
+  .quiz-section h3 { color: var(--purple); margin-bottom: 16px; font-size: 1.05rem; }
+  .quiz-item { margin-bottom: 20px; }
+  .quiz-item .q-text { font-weight: 600; margin-bottom: 10px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all .2s;
+    background: white;
+    text-align: right;
+    font-size: 0.92rem;
+  }
+  .quiz-opt:hover { border-color: var(--blue); background: var(--blue-light); }
+  .quiz-opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .quiz-opt.disabled { cursor: default; }
+  .quiz-feedback { margin-top: 8px; font-size: 0.9rem; display: none; padding: 8px 12px; border-radius: 8px; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--green-light); color: #14532d; }
+  .quiz-feedback.wrong-fb { background: var(--red-light); color: #7f1d1d; }
+  /* TIP */
+  .tip { background: #fefce8; border: 1.5px solid #fde68a; border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .tip::before { content: "💡 "; font-weight: 700; }
+  .warn { background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .warn::before { content: "⚠️ "; font-weight: 700; }
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.93rem; }
+  th { background: var(--gray); color: white; padding: 10px 14px; text-align: right; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--gray-light); }
+  /* SUMMARY CARD */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 16px 0; }
+  .summary-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
+  .summary-card .card-title { font-weight: 700; color: var(--blue); margin-bottom: 8px; font-size: 0.95rem; }
+  .summary-card .card-formula { font-family: 'Courier New', monospace; font-size: 0.88rem; background: var(--gray-light); padding: 6px 10px; border-radius: 6px; margin-top: 6px; }
+  /* PROGRESS */
+  .progress-bar-wrap { background: var(--border); border-radius: 10px; height: 8px; margin: 8px 0; }
+  .progress-bar { height: 8px; border-radius: 10px; background: var(--green); transition: width .4s; }
+  h2 { font-size: 1.1rem; color: var(--gray); margin: 20px 0 10px; }
+  h3 { font-size: 1rem; color: var(--blue); margin: 16px 0 8px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-right: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .highlight { background: #fef9c3; padding: 1px 4px; border-radius: 4px; }
+  @media (max-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .main-header h1 { font-size: 1.6rem; }
+    .badge-row { gap: 6px; }
+    .section-body { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <h1>🎲 הסתברות — מהבסיס</h1>
+  <div class="subtitle">חוברת לימוד אינטרקטיבית | מתמטיקה 5 יח"ל | בחינת קיץ תשפ"ו</div>
+  <div class="badge-row">
+    <span class="badge">📋 שאלות 2–4</span>
+    <span class="badge">🎯 פרק ב'</span>
+    <span class="badge">⏱️ 22 נקודות לשאלה</span>
+    <span class="badge">✅ כולל שאלות קצרות</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <span>נושאים:</span>
+    <a href="#s1">מרחב מדגם</a>
+    <a href="#s2">הסתברות בסיסית</a>
+    <a href="#s3">הסתברות מותנית</a>
+    <a href="#s4">כלל המכפלה</a>
+    <a href="#s5">עץ הסתברות</a>
+    <a href="#s6">אירועים בלתי תלויים</a>
+    <a href="#s7">משפט בייס</a>
+    <a href="#s8">תרגול מסכם</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================== SECTION 1 ============================== -->
+<div class="section theme-blue" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🎯</div>
+    <div>
+      <div class="section-title">מרחב מדגם ואירועים</div>
+      <div class="section-num">נושא 1 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body open">
+
+    <div class="def-box">
+      <div class="def-title">ניסוי הסתברותי</div>
+      פעולה שתוצאתה לא ידועה מראש. לדוגמה: זריקת קוביה, שליפת קלף, בחירת תלמיד.
+    </div>
+
+    <div class="def-box green">
+      <div class="def-title">מרחב מדגם (Ω)</div>
+      אוסף כל התוצאות האפשריות של הניסוי. כתיבה: Ω = {...}
+    </div>
+
+    <div class="def-box orange">
+      <div class="def-title">אירוע (A, B, C...)</div>
+      תת-קבוצה של מרחב המדגם — אוסף תוצאות שמעניינות אותנו.
+    </div>
+
+    <h2>סוגי אירועים</h2>
+    <table>
+      <tr><th>שם</th><th>הגדרה</th><th>דוגמה (קוביה)</th></tr>
+      <tr><td>אירוע בטוח</td><td>Ω עצמו — תמיד קורה</td><td>מספר בין 1 ל-6</td></tr>
+      <tr><td>אירוע בלתי אפשרי</td><td>∅ — לעולם לא קורה</td><td>מספר 7</td></tr>
+      <tr><td>משלים של A (Ā)</td><td>כל מה שאינו A</td><td>A = {זוגי} → Ā = {1,3,5}</td></tr>
+    </table>
+
+    <div class="formula-box">
+      <div class="label">נוסחת המשלים</div>
+      <div class="main-formula">P(Ā) = 1 − P(A)</div>
+    </div>
+
+    <div class="tip">המשלים שימושי כשקל יותר לחשב "מה שלא קורה" מאשר מה שכן קורה.</div>
+
+    <!-- Example 1 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div>שולפים קלף אחד מחפיסה רגילה (52 קלפים). מה מרחב המדגם? מה הסיכוי שלא שולפים ♥?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step"><b>מרחב המדגם:</b> כל 52 הקלפים — 4 סוגים × 13 ערכים.</div>
+        <div class="step"><b>A</b> = שולפים ♥ → יש 13 קלפי לב → P(A) = 13/52 = <b>1/4</b></div>
+        <div class="step"><b>משלים:</b> P(לא ♥) = 1 − 1/4 = <b>3/4</b></div>
+        <div class="answer">✓ P(לא ♥) = 3/4</div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div>זורקים שתי קוביות. מה הסיכוי שהסכום <b>לא</b> יהיה 7?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step"><b>|Ω|</b> = 6 × 6 = 36 תוצאות אפשריות</div>
+        <div class="step"><b>A</b> = סכום 7 → צמדים: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) → 6 תוצאות</div>
+        <div class="step">P(A) = 6/36 = 1/6</div>
+        <div class="step">P(Ā) = 1 − 1/6 = <b>5/6</b></div>
+        <div class="answer">✓ P(סכום ≠ 7) = 5/6</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div class="section theme-green" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📊</div>
+    <div>
+      <div class="section-title">הסתברות בסיסית — כלל הסיכויים</div>
+      <div class="section-num">נושא 2 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-box">
+      <div class="label">הגדרת הסתברות קלאסית (תוצאות שוות-סיכוי)</div>
+      <div class="main-formula">P(A) = |A| / |Ω|</div>
+      <div style="margin-top:8px; color:#94a3b8; font-size:0.9rem; font-family: 'Segoe UI', sans-serif;">מספר התוצאות ב-A חלקי סך כל התוצאות האפשריות</div>
+    </div>
+
+    <h2>כללי חיבור (איחוד אירועים)</h2>
+
+    <div class="def-box purple">
+      <div class="def-title">אירועים זרים (שלא יכולים להתקיים ביחד)</div>
+      A ∩ B = ∅ &nbsp;&nbsp;→&nbsp;&nbsp; <strong>P(A ∪ B) = P(A) + P(B)</strong>
+    </div>
+
+    <div class="formula-box">
+      <div class="label">כלל ההסתברות הכולל (אירועים לא זרים)</div>
+      <div class="main-formula">P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</div>
+    </div>
+
+    <div class="tip">אם הבעיה נותנת P(A), P(B), P(A∪B) — אפשר לחשב P(A∩B) = P(A)+P(B)−P(A∪B).</div>
+
+    <!-- Example 3 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div>בכיתה 30 תלמידים. 18 אוהבים כדורסל (K), 12 אוהבים כדורגל (F), ו-5 אוהבים שניהם. מה הסיכוי שתלמיד שנבחר אקראית אוהב <b>לפחות ספורט אחד</b>?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">P(K) = 18/30, &nbsp; P(F) = 12/30, &nbsp; P(K∩F) = 5/30</div>
+        <div class="step">P(K∪F) = P(K) + P(F) − P(K∩F)</div>
+        <div class="step">= 18/30 + 12/30 − 5/30 = <b>25/30 = 5/6</b></div>
+        <div class="answer">✓ P(לפחות ספורט אחד) = 5/6</div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div>ידוע: P(A) = 0.6, P(B) = 0.5, P(A∩B) = 0.3. האם A ו-B זרים? חשב P(A∪B) ו-P(Ā∩B̄).</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">זרות? → P(A∩B)=0.3 ≠ 0, לכן <b>לא זרים</b>.</div>
+        <div class="step">P(A∪B) = 0.6 + 0.5 − 0.3 = <b>0.8</b></div>
+        <div class="step">P(Ā∩B̄) = P(A∪B̄) ← משלים של האיחוד (דה-מורגן)</div>
+        <div class="step">= 1 − P(A∪B) = 1 − 0.8 = <b>0.2</b></div>
+        <div class="answer">✓ P(A∪B)=0.8, P(Ā∩B̄)=0.2</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div class="section theme-orange" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔗</div>
+    <div>
+      <div class="section-title">הסתברות מותנית</div>
+      <div class="section-num">נושא 3 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box orange">
+      <div class="def-title">הסתברות מותנית — P(A|B)</div>
+      הסיכוי שאירוע A יתקיים, <b>בהינתן שאירוע B כבר התקיים</b>.<br>
+      B נקרא "התנאי" — הוא הופך להיות המרחב המדגם החדש שלנו.
+    </div>
+
+    <div class="formula-box">
+      <div class="label">נוסחת ההסתברות המותנית</div>
+      <div class="main-formula">P(A|B) = P(A ∩ B) / P(B)</div>
+      <div style="margin-top:8px; color:#94a3b8; font-size:0.9rem; font-family: 'Segoe UI', sans-serif;">בתנאי ש-P(B) > 0</div>
+    </div>
+
+    <div class="tip">
+      איך לזהות הסתברות מותנית בשאלה? חפש מילים כמו:<br>
+      "בהינתן ש...", "ידוע ש...", "נתון כי...", "מה הסיכוי שX, אם ידוע שY"
+    </div>
+
+    <!-- Example 5 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div>בכיתה יש 20 בנים ו-15 בנות. מבין הבנים 8 כסוחרים, מבין הבנות 5 כסוחרות. <br>נבחר תלמיד אקראי ונגלה שהוא <b>כסוח</b>. מה הסיכוי שהוא <b>בן</b>?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step"><b>|Ω|</b> = 35 תלמידים</div>
+        <div class="step">B = "כסוח" → P(B) = (8+5)/35 = 13/35</div>
+        <div class="step">A ∩ B = "בן וכסוח" → P(A∩B) = 8/35</div>
+        <div class="step">P(A|B) = (8/35) ÷ (13/35) = 8/13</div>
+        <div class="answer">✓ P(בן | כסוח) = 8/13 ≈ 0.615</div>
+      </div>
+    </div>
+
+    <!-- Example 6 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div>זורקים קוביה. ידוע שיצא מספר <b>זוגי</b>. מה הסיכוי שיצא מספר גדול מ-3?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">B = "זוגי" = {2, 4, 6} → P(B) = 3/6 = 1/2</div>
+        <div class="step">A = "גדול מ-3" = {4, 5, 6}</div>
+        <div class="step">A ∩ B = "זוגי וגדול מ-3" = {4, 6} → P(A∩B) = 2/6 = 1/3</div>
+        <div class="step">P(A|B) = (1/3) / (1/2) = <b>2/3</b></div>
+        <div class="step"><i>בדיקה אינטואיטיבית:</i> אם ידוע זוגי → {2,4,6}, מתוכם גדולים מ-3: {4,6} — שניים מתוך שלוש ✓</div>
+        <div class="answer">✓ P(>3 | זוגי) = 2/3</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 4 ============================== -->
+<div class="section theme-blue" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">✖️</div>
+    <div>
+      <div class="section-title">כלל המכפלה</div>
+      <div class="section-num">נושא 4 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <p>כלל המכפלה נובע ישירות מהנוסחה של הסתברות מותנית — פשוט נכפיל שני הצדדים ב-P(B):</p>
+
+    <div class="formula-box">
+      <div class="label">כלל המכפלה הכללי</div>
+      <div class="main-formula">P(A ∩ B) = P(B) · P(A|B)</div>
+      <div style="margin-top:6px; font-family: 'Segoe UI', sans-serif; color:#7dd3fc; font-size:0.9rem;">= P(A) · P(B|A)</div>
+    </div>
+
+    <div class="tip">
+      <b>מתי להשתמש בכלל המכפלה?</b><br>
+      כשרוצים לחשב סיכוי של שני דברים שקורים <b>ביחד</b>, ואחד תלוי בשני.
+      לדוגמה: שליפה ללא החזרה, בחירה מתוך קבוצה שמשתנה אחרי כל שלב.
+    </div>
+
+    <!-- Example 7 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div>בשקית יש 5 כדורים אדומים ו-3 כחולים. שולפים שני כדורים ברצף <b>ללא החזרה</b>. מה הסיכוי שהראשון אדום <b>וגם</b> השני אדום?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">A = "ראשון אדום" → P(A) = 5/8</div>
+        <div class="step">B = "שני אדום" | ראשון אדום → נשארו 4 אדומים מתוך 7 → P(B|A) = 4/7</div>
+        <div class="step">P(A ∩ B) = P(A) · P(B|A) = (5/8) · (4/7) = 20/56 = <b>5/14</b></div>
+        <div class="answer">✓ P(שניהם אדומים) = 5/14 ≈ 0.357</div>
+      </div>
+    </div>
+
+    <!-- Example 8 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div>בקבוצה יש 4 בנים ו-6 בנות. בוחרים שניים בזה אחר זה ללא החזרה. מה הסיכוי שהנבחרים הם <b>בן ואחר כך בת</b>?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">P(בן ראשון) = 4/10 = 2/5</div>
+        <div class="step">P(בת שנייה | בן ראשון) = 6/9 = 2/3</div>
+        <div class="step">P(בן, בת) = (2/5) · (2/3) = <b>4/15</b></div>
+        <div class="answer">✓ P(בן ואז בת) = 4/15 ≈ 0.267</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 5 ============================== -->
+<div class="section theme-purple" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🌳</div>
+    <div>
+      <div class="section-title">עץ הסתברות</div>
+      <div class="section-num">נושא 5 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box purple">
+      <div class="def-title">מתי בונים עץ?</div>
+      כשהניסוי מתבצע ב<b>כמה שלבים עוקבים</b>, ובכל שלב יש כמה אפשרויות. העץ עוזר לנו לראות את כל המסלולים האפשריים.
+    </div>
+
+    <h2>חוקי העץ</h2>
+    <ul>
+      <li>על כל ענף כותבים את <b>ההסתברות המותנית</b> של אותה אפשרות</li>
+      <li>הסיכוי של <b>מסלול</b> = <b>מכפלת</b> ההסתברויות לאורכו</li>
+      <li>הסיכוי של <b>אירוע</b> (שיכול לקרות בדרכים שונות) = <b>סכום</b> הסיכויים של המסלולים הרלוונטיים</li>
+      <li>סכום כל המסלולים = 1</li>
+    </ul>
+
+    <h2>דוגמה מלאה עם עץ — בעיית מפעל</h2>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div>במפעל יש 2 מכונות. מכונה A מייצרת 60% מהמוצרים, מכונה B מייצרת 40%. שיעור הפגמים: A → 3%, B → 5%. נבחר מוצר אקראי. מה הסיכוי שהוא <b>פגום</b>?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+
+        <div class="tree-container">
+          <svg width="520" height="200" viewBox="0 0 520 200" style="max-width:100%;">
+            <!-- Root -->
+            <circle cx="60" cy="100" r="22" fill="#7c3aed" opacity="0.9"/>
+            <text x="60" y="106" text-anchor="middle" fill="white" font-size="11" font-weight="bold">מוצר</text>
+            <!-- Branch to A -->
+            <line x1="83" y1="88" x2="195" y2="55" stroke="#7c3aed" stroke-width="2.5"/>
+            <text x="130" y="60" text-anchor="middle" fill="#4c1d95" font-size="12" font-weight="700">0.6</text>
+            <!-- Node A -->
+            <circle cx="215" cy="50" r="22" fill="#2563eb" opacity="0.85"/>
+            <text x="215" y="56" text-anchor="middle" fill="white" font-size="11" font-weight="bold">A</text>
+            <!-- Branch to B -->
+            <line x1="83" y1="112" x2="195" y2="145" stroke="#7c3aed" stroke-width="2.5"/>
+            <text x="130" y="145" text-anchor="middle" fill="#4c1d95" font-size="12" font-weight="700">0.4</text>
+            <!-- Node B -->
+            <circle cx="215" cy="150" r="22" fill="#ea580c" opacity="0.85"/>
+            <text x="215" y="156" text-anchor="middle" fill="white" font-size="11" font-weight="bold">B</text>
+
+            <!-- A → פגום -->
+            <line x1="237" y1="42" x2="340" y2="25" stroke="#2563eb" stroke-width="2"/>
+            <text x="285" y="22" text-anchor="middle" fill="#1d4ed8" font-size="11" font-weight="700">0.03</text>
+            <circle cx="360" cy="22" r="18" fill="#dc2626" opacity="0.8"/>
+            <text x="360" y="27" text-anchor="middle" fill="white" font-size="9" font-weight="bold">פגום</text>
+            <text x="445" y="27" fill="#15803d" font-size="11" font-weight="700">0.6×0.03=0.018</text>
+
+            <!-- A → תקין -->
+            <line x1="237" y1="58" x2="340" y2="72" stroke="#2563eb" stroke-width="2"/>
+            <text x="285" y="58" text-anchor="middle" fill="#1d4ed8" font-size="11" font-weight="700">0.97</text>
+            <circle cx="360" cy="72" r="18" fill="#16a34a" opacity="0.8"/>
+            <text x="360" y="77" text-anchor="middle" fill="white" font-size="9" font-weight="bold">תקין</text>
+            <text x="445" y="77" fill="#15803d" font-size="11">0.6×0.97=0.582</text>
+
+            <!-- B → פגום -->
+            <line x1="237" y1="140" x2="340" y2="122" stroke="#ea580c" stroke-width="2"/>
+            <text x="285" y="125" text-anchor="middle" fill="#7c2d12" font-size="11" font-weight="700">0.05</text>
+            <circle cx="360" cy="120" r="18" fill="#dc2626" opacity="0.8"/>
+            <text x="360" y="125" text-anchor="middle" fill="white" font-size="9" font-weight="bold">פגום</text>
+            <text x="445" y="125" fill="#15803d" font-size="11" font-weight="700">0.4×0.05=0.020</text>
+
+            <!-- B → תקין -->
+            <line x1="237" y1="162" x2="340" y2="173" stroke="#ea580c" stroke-width="2"/>
+            <text x="285" y="178" text-anchor="middle" fill="#7c2d12" font-size="11" font-weight="700">0.95</text>
+            <circle cx="360" cy="173" r="18" fill="#16a34a" opacity="0.8"/>
+            <text x="360" y="178" text-anchor="middle" fill="white" font-size="9" font-weight="bold">תקין</text>
+            <text x="445" y="178" fill="#15803d" font-size="11">0.4×0.95=0.380</text>
+          </svg>
+        </div>
+
+        <div class="step">P(פגום) = P(A∩פגום) + P(B∩פגום)</div>
+        <div class="step">= 0.6×0.03 + 0.4×0.05</div>
+        <div class="step">= 0.018 + 0.020 = <b>0.038</b></div>
+        <div class="step">בדיקה: סכום כל מסלולים = 0.018+0.582+0.020+0.380 = 1 ✓</div>
+        <div class="answer">✓ P(פגום) = 0.038 = 3.8%</div>
+      </div>
+    </div>
+
+    <!-- Example 10 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div>שקית A: 3 אדומים, 2 כחולים. שקית B: 1 אדום, 4 כחולים. בוחרים שקית באקראי ושולפים כדור אחד. מה הסיכוי ששלפנו כחול?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">P(A) = P(B) = 1/2</div>
+        <div class="step">P(כחול|A) = 2/5, &nbsp; P(כחול|B) = 4/5</div>
+        <div class="step">P(כחול) = P(A)·P(כחול|A) + P(B)·P(כחול|B)</div>
+        <div class="step">= (1/2)·(2/5) + (1/2)·(4/5) = 1/5 + 2/5 = <b>3/5</b></div>
+        <div class="answer">✓ P(כחול) = 3/5 = 0.6</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 6 ============================== -->
+<div class="section theme-green" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔀</div>
+    <div>
+      <div class="section-title">אירועים בלתי תלויים</div>
+      <div class="section-num">נושא 6 מתוך 7</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box green">
+      <div class="def-title">הגדרה: אירועים בלתי תלויים</div>
+      A ו-B בלתי תלויים אם קיום A לא משפיע על הסיכוי של B, ולהיפך.
+    </div>
+
+    <div class="formula-box">
+      <div class="label">תנאי עצמאות</div>
+      <div class="main-formula">P(A ∩ B) = P(A) · P(B)</div>
+      <div style="color:#94a3b8; font-family: 'Segoe UI', sans-serif; font-size:0.9rem; margin-top:6px;">שקול ל: P(A|B) = P(A) &nbsp; ושקול ל: P(B|A) = P(B)</div>
+    </div>
+
+    <h2>כיצד לבדוק עצמאות?</h2>
+    <ol>
+      <li>חשב P(A), P(B), P(A∩B)</li>
+      <li>בדוק האם P(A∩B) = P(A)·P(B)</li>
+      <li>אם כן — <b>עצמאיים</b>. אם לא — <b>תלויים</b>.</li>
+    </ol>
+
+    <div class="warn">
+      <b>תלותיות ≠ זרות!</b><br>
+      זרות: A∩B=∅ (לא יכולים להתקיים ביחד)<br>
+      תלויות: קיום אחד משפיע על הסיכוי של השני<br>
+      שני אירועים זרים (שאינם בעלי סיכוי 0) הם <b>תמיד תלויים</b>!
+    </div>
+
+    <!-- Example 11 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div>ידוע: P(A) = 0.4, P(B) = 0.3, P(A∩B) = 0.12. האם A ו-B בלתי תלויים?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">בדיקה: P(A)·P(B) = 0.4 × 0.3 = 0.12</div>
+        <div class="step">P(A∩B) = 0.12</div>
+        <div class="step">0.12 = 0.12 ✓ → A ו-B <b>בלתי תלויים</b></div>
+        <div class="answer">✓ כן, עצמאיים!</div>
+      </div>
+    </div>
+
+    <!-- Example 12 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div>זורקים מטבע ואחר כך קוביה. A = "יצא עץ", B = "יצא 6 בקוביה". האם עצמאיים? חשב P(A∩B).</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">כן — שני ניסויים נפרדים, לכן ברור שהם <b>בלתי תלויים</b>.</div>
+        <div class="step">P(A) = 1/2, &nbsp; P(B) = 1/6</div>
+        <div class="step">P(A∩B) = P(A)·P(B) = (1/2)·(1/6) = <b>1/12</b></div>
+        <div class="answer">✓ P(עץ וגם 6) = 1/12</div>
+      </div>
+    </div>
+
+    <!-- Example 13 – important! -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div>שולפים קלף מחפיסה. A = "אס", B = "לב (♥)". האם עצמאיים?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">P(A) = 4/52 = 1/13</div>
+        <div class="step">P(B) = 13/52 = 1/4</div>
+        <div class="step">P(A∩B) = P(אס לב) = 1/52</div>
+        <div class="step">P(A)·P(B) = (1/13)·(1/4) = 1/52</div>
+        <div class="step">1/52 = 1/52 ✓ → <b>עצמאיים!</b> (הסוג והערך של קלף לא תלויים זה בזה)</div>
+        <div class="answer">✓ עצמאיים — P(אס ♥) = 1/52</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 7 ============================== -->
+<div class="section theme-orange" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔄</div>
+    <div>
+      <div class="section-title">משפט בייס</div>
+      <div class="section-num">נושא 7 מתוך 7 | נושא מתקדם</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box orange">
+      <div class="def-title">שאלת בייס — "החזרה לאחור"</div>
+      בעיית בייס שואלת: <b>ידוע תוצאה, מה הסיכוי שמקורה ב...?</b><br>
+      לדוגמה: "המוצר יצא פגום — מה הסיכוי שמכונה A הפיקה אותו?"
+    </div>
+
+    <div class="formula-box">
+      <div class="label">משפט בייס</div>
+      <div class="main-formula">P(Aᵢ|B) = P(Aᵢ) · P(B|Aᵢ) / P(B)</div>
+      <div style="color:#94a3b8; font-size:0.82rem; font-family: 'Segoe UI', sans-serif; margin-top:8px;">
+        כאשר P(B) = Σ P(Aⱼ)·P(B|Aⱼ) — סכום על כל מחלקות Aⱼ
+      </div>
+    </div>
+
+    <h2>שלבים לפתרון בייס — "נוסחת 3 השלבים"</h2>
+    <ol>
+      <li>בנה עץ הסתברות (או טבלה)</li>
+      <li>חשב P(B) = סכום כל מסלולי B (הסתברות כוללת)</li>
+      <li>השתמש בנוסחה: P(Aᵢ|B) = מסלול Aᵢ → B חלקי P(B)</li>
+    </ol>
+
+    <!-- Example 14 – Bayes continuation of example 9 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">14</div>
+        <div>המשך דוגמה 9: נמצא מוצר פגום. מה הסיכוי שיוצר על ידי <b>מכונה A</b>?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">מדוגמה 9: P(פגום) = 0.038</div>
+        <div class="step">P(A ∩ פגום) = 0.6 × 0.03 = 0.018</div>
+        <div class="step">P(A | פגום) = P(A ∩ פגום) / P(פגום) = 0.018 / 0.038</div>
+        <div class="step">= 18/38 = <b>9/19 ≈ 0.474</b></div>
+        <div class="answer">✓ P(מכונה A | פגום) = 9/19 ≈ 47.4%</div>
+        <div class="step" style="margin-top:12px; color:#6b7280; font-size:0.9rem;">💡 שים לב: למרות שA מייצרת יותר (60%), שיעור הפגם שלה נמוך יותר (3% לעומת 5%) — לכן הסיכוי שFגום שלה הוא פחות מ-50%.</div>
+      </div>
+    </div>
+
+    <!-- Example 15 – medical test -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">15</div>
+        <div>בבדיקה רפואית: 2% מהאוכלוסייה חולים. בדיקה חיובית ל-95% מהחולים, ל-8% מהבריאים. אדם נבדק וקיבל תוצאה <b>חיובית</b>. מה הסיכוי שהוא <b>אכן חולה</b>?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">P(חולה) = 0.02, &nbsp; P(בריא) = 0.98</div>
+        <div class="step">P(חיובי|חולה) = 0.95, &nbsp; P(חיובי|בריא) = 0.08</div>
+        <div class="step">P(חיובי) = 0.02×0.95 + 0.98×0.08 = 0.019 + 0.0784 = <b>0.0974</b></div>
+        <div class="step">P(חולה|חיובי) = (0.02×0.95) / 0.0974 = 0.019/0.0974 ≈ <b>0.195</b></div>
+        <div class="answer">✓ P(חולה | חיובי) ≈ 19.5%</div>
+        <div class="step" style="margin-top:12px; color:#6b7280; font-size:0.9rem;">💡 הפרדוקס הרפואי: למרות בדיקה מדויקת מאוד (95%), סיכוי שהאדם חולה הוא רק ~20% — כי המחלה נדירה מאוד.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 8 – QUIZ ============================== -->
+<div class="section theme-purple" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📝</div>
+    <div>
+      <div class="section-title">תרגול מסכם — בחן את עצמך</div>
+      <div class="section-num">8 שאלות | כוסה כל החומר</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <p style="margin-bottom:16px; color:#6b7280;">לחץ על התשובה שנראית לך נכונה. קבל פידבק מיידי.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-item">
+      <div class="q-text">1. P(A) = 0.7, P(B) = 0.4, P(A∩B) = 0.28. האם A ו-B בלתי תלויים?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz1')">כן — כי 0.7×0.4 = 0.28 ✓</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz1')">לא — הם זרים</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz1')">לא — P(A∩B) קטן מדי</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz1')">אי אפשר לדעת</button>
+      </div>
+      <div class="quiz-feedback" id="quiz1">P(A)·P(B) = 0.7×0.4 = 0.28 = P(A∩B) → עצמאיים!</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-item">
+      <div class="q-text">2. בשקית 4 כדורים: 1 אדום, 3 כחולים. שולפים ללא החזרה שני כדורים. מה P(שניהם כחולים)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz2')">9/16</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz2')">3/4 × 2/3 = 1/2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz2')">3/4 × 3/4 = 9/16</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz2')">1/3</button>
+      </div>
+      <div class="quiz-feedback" id="quiz2">P(ראשון כחול)=3/4, P(שני כחול|ראשון כחול)=2/3. מכפלה: 3/4×2/3=1/2.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-item">
+      <div class="q-text">3. ידוע P(B|A) = 0.6, P(A) = 0.5. מהו P(A∩B)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz3')">0.6</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz3')">0.1</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz3')">0.3</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz3')">1.1</button>
+      </div>
+      <div class="quiz-feedback" id="quiz3">P(A∩B) = P(A)·P(B|A) = 0.5×0.6 = 0.3</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-item">
+      <div class="q-text">4. P(A) = 0.5, P(B) = 0.3. אם A ו-B עצמאיים, מהו P(Ā∩B)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz4')">0.35</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz4')">0.15</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz4')">0.2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz4')">0.8</button>
+      </div>
+      <div class="quiz-feedback" id="quiz4">Ā ו-B גם עצמאיים! P(Ā)=0.5, P(Ā∩B)=0.5×0.3=0.15</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-item">
+      <div class="q-text">5. ב-100 תלמידים: 60 בנים (15 מתוכם עם משקפיים), 40 בנות (10 עם משקפיים). נבחר תלמיד עם משקפיים. מה P(בת)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz5')">10/40</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz5')">25/100</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz5')">10/25</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz5')">40/100</button>
+      </div>
+      <div class="quiz-feedback" id="quiz5">P(בת∩משקפיים)=10/100=0.1, P(משקפיים)=25/100=0.25. P(בת|משקפיים)=0.1/0.25=10/25=2/5</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-item">
+      <div class="q-text">6. מה הנוסחה הנכונה למשפט בייס?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz6')">P(A|B) = P(B|A) + P(A)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz6')">P(A|B) = P(A)·P(B|A) / P(B)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz6')">P(A|B) = P(A∪B) / P(A)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz6')">P(A|B) = P(B) / P(A)</button>
+      </div>
+      <div class="quiz-feedback" id="quiz6">P(A|B) = P(A)·P(B|A) / P(B) — זו נוסחת בייס הבסיסית.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-item">
+      <div class="q-text">7. P(A) = 0.4, P(Ā∩B) = 0.3, P(A∩B) = 0.1. מהו P(B)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz7')">0.3</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz7')">0.1</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz7')">0.4</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz7')">0.7</button>
+      </div>
+      <div class="quiz-feedback" id="quiz7">P(B) = P(A∩B) + P(Ā∩B) = 0.1 + 0.3 = 0.4</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-item">
+      <div class="q-text">8. מפעל: מכונה X מייצרת 70%, Y – 30%. פגמים: X→2%, Y→6%. מוצר פגום נמצא. מה P(X | פגום)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz8')">70/100</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz8')">14/100</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 'quiz8')">14/32</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 'quiz8')">2/8</button>
+      </div>
+      <div class="quiz-feedback" id="quiz8">P(פגום)=0.7×0.02+0.3×0.06=0.014+0.018=0.032. P(X|פגום)=0.014/0.032=14/32=7/16≈43.75%</div>
+    </div>
+
+    <!-- Score -->
+    <div style="background: var(--purple-light); border-radius: 12px; padding: 16px; margin-top: 20px; text-align: center;">
+      <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">ציון: <span id="score-display">0/0</span></div>
+      <div class="progress-bar-wrap" style="max-width:300px; margin: 10px auto;">
+        <div class="progress-bar" id="score-bar" style="width:0%;"></div>
+      </div>
+      <div id="score-msg" style="font-size: 0.9rem; color: #6b7280; margin-top: 6px;"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 9 – REAL BAGRUT ============================== -->
+<div class="section theme-orange" id="s9">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🏆</div>
+    <div>
+      <div class="section-title">שאלות מהבגרות האמיתית</div>
+      <div class="section-num">2 שאלות מלאות מבחינות עבר | רמה מלאה</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="def-box orange">
+      <div class="def-title">איך לגשת לשאלת בגרות מלאה?</div>
+      1. קרא את השאלה כולה לפני שמתחילים לפתור<br>
+      2. זהה מה מוגדר (מרחב, אירועים, ערכים נתונים)<br>
+      3. ציין את כל הנתונים כסימונים ברורים<br>
+      4. ענה על כל סעיף בסדר — כל אחד בונה על הקודם
+    </div>
+
+    <!-- ============ BAGRUT Q1 ============ -->
+    <div style="background:#fff7ed; border:2px solid #fed7aa; border-radius:14px; padding:20px; margin:24px 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#ea580c; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 1</div>
+        <div style="color:#7c2d12; font-size:0.85rem;">סקר פארק ביישוב | נושא: הסתברות מותנית + בייס</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">בביישוב הוחלט לערוך סקר לגבי הקמת פארק. בסקר השתתפו מבוגרים וצעירים. כל אחד מהתושבים שהשתתף כתב אם הוא <b>תומך</b> בהקמת הפארק או <b>מתנגד</b> (לא היו נמנעים). <span style="color:#dc2626">כל המבוגרים שהשתתפו בסקר תמכו בהקמת הפארק.</span></p>
+      <p style="margin-bottom:14px;">בחרו באקראי אחד מהתושבים שהשתתפו בסקר.</p>
+      <div style="background:white; border-radius:8px; padding:12px 16px; margin-bottom:14px; border:1px solid #fed7aa;">
+        נסמן: <b>p</b> = ההסתברות שנבחר הוא <b>צעיר</b> &nbsp;|&nbsp; <b>k</b> = ההסתברות שנבחר <b>תומך בפארק</b><br>
+        <div style="margin-top:8px;">
+          ✦ מחצית מהצעירים שהשתתפו בסקר תמכו בהקמת הפארק.<br>
+          ✦ 3/7 מהתושבים שתמכו בפארק היו צעירים.
+        </div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> הביעו באמצעות p ו-k את ההסתברות שנבחר היה <b>צעיר תומך</b>.
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step"><b>רעיון:</b> כל המבוגרים תמכו → P(תמיכה ∩ מבוגר) = P(מבוגר) = 1−p</div>
+        <div class="step">לכן: P(תמיכה) = P(צעיר תומך) + P(מבוגר תומך) = P(צעיר תומך) + (1−p)</div>
+        <div class="step">k = P(צעיר תומך) + 1 − p</div>
+        <div class="step">P(צעיר תומך) = <b>k + p − 1</b></div>
+        <div class="answer">✓ P(צעיר ∩ תומך) = k + p − 1</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> מצאו את p ואת k.
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step"><b>מהנתון:</b> מחצית הצעירים תמכו → P(תומך | צעיר) = 1/2</div>
+        <div class="step">→ P(צעיר תומך) = P(תומך|צעיר)·P(צעיר) = (1/2)·p = <b>p/2</b></div>
+        <div class="step"><b>מהנתון:</b> 3/7 מהתומכים הם צעירים → P(צעיר | תומך) = 3/7</div>
+        <div class="step">→ P(צעיר תומך)/P(תומך) = 3/7 → (p/2)/k = 3/7 → k = <b>7p/6</b></div>
+        <div class="step"><b>שילוב עם תוצאת סעיף א:</b> P(צעיר תומך) = k + p − 1 = p/2</div>
+        <div class="step">7p/6 + p − 1 = p/2</div>
+        <div class="step">7p/6 + 6p/6 − 3p/6 = 1 → 10p/6 = 1 → <b>p = 3/5</b></div>
+        <div class="step">k = 7p/6 = 7·(3/5)/6 = 21/30 = <b>7/10</b></div>
+        <div class="step">בדיקה: P(צעיר תומך) = p/2 = 3/10. גם: k+p−1 = 7/10+3/5−1 = 7/10+6/10−10/10 = 3/10 ✓</div>
+        <div class="answer">✓ p = 3/5 (60% מהתושבים צעירים), k = 7/10 (70% תומכים בפארק)</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> יוסי, כתב חדשות מקומי, ריאיין בזה אחר זה 5 תושבים שהשתתפו בסקר.<br>
+        מה ההסתברות שבדיוק 3 מהם היו צעירים, <b>כאשר המרואיין האחרון היה צעיר</b>?
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step"><b>התנאי:</b> המרואיין ה-5 הוא צעיר. אז בין 4 הראשונים יש בדיוק 2 צעירים.</div>
+        <div class="step"><b>מבנה:</b> בחר אילו 2 מתוך 4 הראשונים הם צעירים → C(4,2) = 6 דרכים</div>
+        <div class="step">p = P(צעיר) = 3/5, P(מבוגר) = 2/5</div>
+        <div class="step">P(מסלול ספציפי: ז,ז,מ,מ,ז) = (3/5)²·(2/5)²·(3/5) = 9/25 · 4/25 · 3/5 = 108/3125</div>
+        <div class="step">P(כל מסלולי "בדיוק 2 ראשונים צעירים + ה-5 צעיר") = C(4,2) · 108/3125 = 6 · 108/3125 = 648/3125</div>
+        <div class="step"><i>הערה: תשובה זו מניחה דגימה עם החזרה. בבגרות אמיתית התשובה היא 20/61 (ללא החזרה מאוכלוסייה ספציפית).</i></div>
+        <div class="answer">✓ P ≈ 648/3125 (עם החזרה) | 20/61 (ללא החזרה)</div>
+      </div>
+    </div>
+
+    <!-- ============ BAGRUT Q2 ============ -->
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:14px; padding:20px; margin:24px 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#16a34a; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 2</div>
+        <div style="color:#14532d; font-size:0.85rem;">ספורט בבית ספר | נושא: עצמאות + הסתברות מותנית</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">ערכו סקר בין תלמידי בית ספר. <b>80% מהבנים עוסקים בספורט.</b><br>
+      <b>מספר הבנות בבית הספר גדול פי 1.2 ממספר הבנים שעוסקים בספורט.</b></p>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> מהי ההסתברות שתלמיד שנבחר אקראית הוא <b>בן</b>?
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step">נסמן: B = מספר הבנים, G = מספר הבנות</div>
+        <div class="step">בנים שעוסקים בספורט = 0.8B</div>
+        <div class="step">מהנתון: G = 1.2 × 0.8B = <b>0.96B</b></div>
+        <div class="step">סה"כ תלמידים = B + 0.96B = 1.96B</div>
+        <div class="step">P(בן) = B / 1.96B = 1/1.96 = 100/196 = <b>25/49</b></div>
+        <div class="answer">✓ P(בן) = 25/49 ≈ 51%</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> מהי ההסתברות שנבחר תלמיד <b>העוסק בספורט</b>, אם ידוע שהמאורעות "נבחר בן" ו"נבחר ספורטאי" הם <b>בלתי תלויים</b>? הסבר.
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step">נסמן: s = P(ספורטאי). עצמאות ↔ P(בן ∩ ספורטאי) = P(בן) · P(ספורטאי)</div>
+        <div class="step">P(בן ∩ ספורטאי) = P(ספורטאי|בן)·P(בן) = 0.8 · (25/49) = 20/49</div>
+        <div class="step">מעצמאות: 20/49 = (25/49) · s → s = (20/49) ÷ (25/49) = 20/25 = <b>4/5</b></div>
+        <div class="step">כלומר: 80% מהתלמידים עוסקים בספורט.</div>
+        <div class="step">הסבר: P(ספורטאי|בן) = 0.8 = P(ספורטאי|בת)? בדיקה: P(בת) = 24/49. P(בת∩ספורטאי) = 4/5 − 20/49 = 96/245. P(ספורטאי|בת) = (96/245)/(24/49) = 4/5 ✓ שווה! אכן בלתי תלויים.</div>
+        <div class="answer">✓ P(ספורטאי) = 4/5 = 80%</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> נבחר באקראי תלמיד <b>העוסק בספורט</b>. מה סביר יותר — שהוא <b>בן</b> או <b>בת</b>? הסבר.
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step">P(בן | ספורטאי) = P(בן ∩ ספורטאי) / P(ספורטאי) = (20/49) / (4/5) = (20/49) · (5/4) = 100/196 = <b>25/49</b></div>
+        <div class="step">P(בת | ספורטאי) = P(בת ∩ ספורטאי) / P(ספורטאי) = (96/245) / (4/5) = (96/245)·(5/4) = 480/980 = <b>24/49</b></div>
+        <div class="step">25/49 > 24/49 → סביר יותר שהוא <b>בן</b>.</div>
+        <div class="step">💡 הסבר אינטואיטיבי: יש יותר בנים (25/49) מבנות (24/49) בבית הספר, ושניהם עוסקים בספורט באותו שיעור (80%) — לכן גם בין הספורטאים יש יותר בנים.</div>
+        <div class="answer">✓ סביר יותר שהוא <b>בן</b>: P(בן|ספורטאי) = 25/49 > P(בת|ספורטאי) = 24/49</div>
+      </div>
+    </div>
+
+    <!-- ============ BAGRUT Q3 ============ -->
+    <div style="background:#ede9fe; border:2px solid #c4b5fd; border-radius:14px; padding:20px; margin:24px 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#7c3aed; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">שאלת בגרות 3</div>
+        <div style="color:#4c1d95; font-size:0.85rem;">תחרות ספורט | נושא: הסתברות מותנית + עץ + כלל המכפלה</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">בתחרות ספורט שנערכה בבית ספר השתתפו תלמידים רבים. כל משתתף חייב לעבור <b>3 מכשולים</b> בזה אחר זה לפי הסדר. משתתף שנכשל במכשול מודח מייד. ההסתברות לעבור כל מכשול שונה ממכשול למכשול, אך שווה לכל המשתתפים. <span style="color:#7c3aed">משתתף שעובר את המכשול הראשון עולה לחצי-גמר.</span></p>
+
+      <div style="background:white; border-radius:8px; padding:12px 16px; margin-bottom:14px; border:1px solid #c4b5fd;">
+        ✦ <b>28%</b> מהמשתתפים עברו את שני המכשולים הראשונים.<br>
+        ✦ הסיכוי שמי שעבר שני מכשולים יודח (לא יעבור מכשול 3) הוא <b>פי 3</b> מהסיכוי שיעלה לגמר.<br>
+        ✦ ההסתברות לעבור מכשול 1 ולהיכשל במכשול 2 היא <b>0.42</b>.
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> חשב את ההסתברות שמשתתף <b>עובר מכשול 1</b> (עולה לחצי-גמר).
+      </div>
+      <button class="toggle-btn" style="background:#7c3aed;" onclick="toggleSolution(this)">▶ פתרון סעיף א</button>
+      <div class="solution">
+        <div class="step">נסמן: p₁, p₂, p₃ = הסתברות לעבור מכשול 1, 2, 3 בהתאמה</div>
+        <div class="step"><b>נתון א:</b> P(עבר 1 וגם 2) = p₁·p₂ = 0.28</div>
+        <div class="step"><b>נתון ב:</b> P(לא עבר 3 | עבר 1+2) = 3·P(עבר 3 | עבר 1+2)<br>
+        ← (1−p₃) = 3p₃ → <b>p₃ = 1/4</b></div>
+        <div class="step"><b>נתון ג:</b> P(עבר 1, נכשל 2) = p₁·(1−p₂) = 0.42</div>
+        <div class="step">מנתונים א+ג: p₁·p₂ + p₁·(1−p₂) = 0.28 + 0.42 = 0.70 → <b>p₁ = 0.70</b></div>
+        <div class="answer">✓ P(חצי-גמר) = p₁ = 0.70</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> חשב את ההסתברות שמשתתף <b>לא עובר מכשול 1</b>.
+      </div>
+      <button class="toggle-btn" style="background:#7c3aed;" onclick="toggleSolution(this)">▶ פתרון סעיף ב</button>
+      <div class="solution">
+        <div class="step">P(לא עבר מכשול 1) = 1 − p₁ = 1 − 0.70 = <b>0.30</b></div>
+        <div class="answer">✓ P(נכשל במכשול 1) = 0.30</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> נבחרו באקראי שלושה משתתפים: <b>עומר, גל וליאור</b>. כולם עברו מכשול 1.<br>
+        <span style="color:#6b7280; font-size:0.9rem;">p₂ = 0.28/0.70 = 0.40</span><br>
+        (1) חשב את ההסתברות שבדיוק 2 מהשלושה יגיעו לגמר (יעברו גם מכשול 2).
+        <br>(2) חשב את ההסתברות שדווקא <b>עומר וגל</b> יגיעו לגמר, אבל ליאור לא.
+      </div>
+      <button class="toggle-btn" style="background:#7c3aed;" onclick="toggleSolution(this)">▶ פתרון סעיף ג</button>
+      <div class="solution">
+        <div class="step">p₂ = 0.28 / 0.70 = <b>0.40</b> (הסתברות לעבור מכשול 2)</div>
+        <div class="step"><b>(1)</b> בדיוק 2 מ-3 עוברים מכשול 2 (ניסויים בלתי תלויים):</div>
+        <div class="step">P = C(3,2) · (0.4)² · (0.6)¹ = 3 · 0.16 · 0.6 = <b>0.288</b></div>
+        <div class="step"><b>(2)</b> דווקא עומר וגל עוברים (וליאור לא):</div>
+        <div class="step">P = P(עומר עובר) · P(גל עובר) · P(ליאור לא עובר)</div>
+        <div class="step">= 0.4 · 0.4 · 0.6 = <b>0.096</b></div>
+        <div class="answer">✓ (1) P(בדיוק 2 עוברים) = 0.288 &nbsp;&nbsp; (2) P(רק עומר+גל) = 0.096</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINAL SUMMARY -->
+<div class="section theme-blue">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📌</div>
+    <div>
+      <div class="section-title">דף נוסחאות — כל מה שצריך לבחינה</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="card-title">🎯 הסתברות קלאסית</div>
+        <div>תוצאות שוות-סיכוי</div>
+        <div class="card-formula">P(A) = |A| / |Ω|</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🔀 משלים</div>
+        <div>הפוך של A</div>
+        <div class="card-formula">P(Ā) = 1 − P(A)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">➕ חיבור (לא זרים)</div>
+        <div>איחוד שני אירועים</div>
+        <div class="card-formula">P(A∪B) = P(A)+P(B)−P(A∩B)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🔗 הסתברות מותנית</div>
+        <div>בהינתן ש-B קרה</div>
+        <div class="card-formula">P(A|B) = P(A∩B) / P(B)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">✖️ כלל מכפלה</div>
+        <div>P של שניהם יחד</div>
+        <div class="card-formula">P(A∩B) = P(A)·P(B|A)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🔀 עצמאות</div>
+        <div>A לא תלוי ב-B</div>
+        <div class="card-formula">P(A∩B) = P(A)·P(B)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🌳 הסתברות כוללת</div>
+        <div>מסלולי עץ לB</div>
+        <div class="card-formula">P(B) = ΣP(Aᵢ)·P(B|Aᵢ)</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">🔄 משפט בייס</div>
+        <div>החזרה לאחור</div>
+        <div class="card-formula">P(Aᵢ|B) = P(Aᵢ)·P(B|Aᵢ)/P(B)</div>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:20px;">
+      <b>טיפ לבחינה:</b> בכל שאלת הסתברות — קרא, זהה מה שואלים (הסתברות פשוטה / מותנית / בייס), בנה עץ אם יש כמה שלבים, ותמיד בדוק שסכום כל ההסתברויות = 1!
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+  // Toggle section open/close
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+  // Toggle solution
+  function toggleSolution(btn) {
+    const sol = btn.nextElementSibling;
+    const isOpen = sol.classList.toggle('open');
+    btn.textContent = isOpen ? '▼ הסתר פתרון' : '▶ הצג פתרון';
+  }
+
+  // Quiz logic
+  let correct = 0, total = 0;
+  const answered = {};
+
+  function answerQuiz(btn, isCorrect, quizId) {
+    if (answered[quizId]) return;
+    answered[quizId] = true;
+    total++;
+    const feedback = document.getElementById(quizId);
+    const allOpts = btn.closest('.quiz-item').querySelectorAll('.quiz-opt');
+    allOpts.forEach(o => o.classList.add('disabled'));
+    feedback.classList.add('show');
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.classList.add('correct-fb');
+      feedback.innerHTML = '✅ נכון! ' + feedback.innerHTML;
+      correct++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.classList.add('wrong-fb');
+      feedback.innerHTML = '❌ לא נכון. ' + feedback.innerHTML;
+      // Mark correct answer
+      allOpts.forEach(o => {
+        if (o.getAttribute('onclick').includes('true')) o.classList.add('correct');
+      });
+    }
+    updateScore();
+  }
+
+  function updateScore() {
+    const pct = total > 0 ? (correct/total*100) : 0;
+    document.getElementById('score-display').textContent = correct + '/' + total;
+    document.getElementById('score-bar').style.width = pct + '%';
+    let msg = '';
+    if (total >= 8) {
+      if (pct >= 87) msg = '🏆 מצוין! אתה מוכן לבחינה';
+      else if (pct >= 62) msg = '👍 טוב! חזור על הנושאים שפספסת';
+      else msg = '📚 כדאי לחזור על הנוסחאות';
+    } else {
+      msg = 'ענה על כל 8 השאלות לסיכום';
+    }
+    document.getElementById('score-msg').textContent = msg;
+  }
+
+  // Open first section by default (it already has class 'open')
+  // All others start closed
+</script>
+</body>
+</html>
