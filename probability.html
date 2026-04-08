@@ -49,13 +49,15 @@
   .toc {
     background: white;
     border-bottom: 2px solid var(--border);
-    padding: 16px 20px;
+    padding: 10px 16px;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .toc-inner { max-width: 900px; margin: auto; display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: max-content; }
   .toc span { font-weight: 700; color: var(--blue); margin-left: 8px; }
   .toc a {
     text-decoration: none;
@@ -246,8 +248,15 @@
   .highlight { background: #fef9c3; padding: 1px 4px; border-radius: 4px; }
   @media (max-width: 600px) {
     .quiz-options { grid-template-columns: 1fr; }
-    .main-header h1 { font-size: 1.6rem; }
+    .main-header h1 { font-size: 1.5rem; }
+    .main-header .subtitle { font-size: 0.95rem; }
     .badge-row { gap: 6px; }
+    .section-header { padding: 14px 16px; gap: 10px; }
+    .section-title { font-size: 1rem; }
+    .section-body { padding: 16px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .example-q { padding: 10px 12px; font-size: 0.92rem; }
+    .container { padding: 20px 10px 60px; }
     .section-body { padding: 16px; }
   }
 </style>
