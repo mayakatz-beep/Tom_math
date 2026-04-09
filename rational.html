@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פונקציה רציונלית ופולינום – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --purple: #7c3aed;
+    --purple-dark: #4c1d95;
+    --purple-med: #5b21b6;
+    --purple-light: #f5f3ff;
+    --purple-card: #ede9fe;
+    --purple-border: #ddd6fe;
+    --purple-text: #4c1d95;
+    --gray: #374151;
+    --gray-light: #f3f4f6;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f3ff; color: var(--gray); line-height: 1.7; font-size: 16px; }
+
+  /* ========== HEADER ========== */
+  .main-header { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #a78bfa 100%); color: white; padding: 40px 20px 30px; text-align: center; }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.88; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 6px 16px; color: white; text-decoration: none; font-size: 0.85rem; margin-bottom: 16px; }
+  .back-link:hover { background: rgba(255,255,255,0.25); }
+
+  /* ========== TOC ========== */
+  .toc { display: flex; align-items: center; gap: 10px; background: white; border-bottom: 2px solid #e9d5ff; padding: 10px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(124,58,237,0.08); }
+  .toc-home { flex-shrink: 0; background: #4c1d95; color: white !important; text-decoration: none; border-radius: 20px; padding: 4px 12px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+  .toc-home:hover { background: #7c3aed; }
+  .toc-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; flex: 1; }
+  .toc-inner { display: flex; gap: 8px; flex-wrap: nowrap; width: max-content; align-items: center; padding: 2px 0; }
+  .toc-inner span { color: #6b7280; font-size: 0.82rem; flex-shrink: 0; }
+  .toc-inner a { color: #7c3aed; text-decoration: none; font-size: 0.82rem; padding: 3px 10px; border-radius: 20px; background: #f5f3ff; white-space: nowrap; flex-shrink: 0; }
+  .toc-inner a:hover { background: #ede9fe; }
+  @media(max-width:600px) { .toc { padding: 8px 10px; gap: 6px; } }
+
+  /* ========== CONTAINER & SECTIONS ========== */
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  .section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(124,58,237,0.08); border: 1px solid #ede9fe; }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; border-bottom: 2px solid var(--purple-border); background: var(--purple-card); }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; background: var(--purple); color: white; }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; color: #4c1d95; }
+  .section-num { font-size: 0.8rem; opacity: 0.6; margin-top: 2px; color: #6b7280; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; color: #7c3aed; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+
+  /* ========== THEORY BOXES ========== */
+  .theory-box { background: #f5f3ff; border-right: 4px solid #7c3aed; padding: 14px 18px; border-radius: 8px; margin: 14px 0; }
+  .theory-box h4 { color: #4c1d95; font-size: 0.95rem; margin-bottom: 8px; }
+  .theory-box ul { margin-right: 18px; font-size: 0.93rem; }
+  .theory-box li { padding: 3px 0; }
+
+  .tip { background: #f0fdf4; border-right: 4px solid #059669; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem; }
+  .warn { background: #fffbeb; border-right: 4px solid #f59e0b; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem; }
+  .important { background: #fef2f2; border-right: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem; }
+
+  /* ========== FORMULA GRID ========== */
+  .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+  .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .fcard .fformula { color: #c4b5fd; font-weight: 700; font-family: 'Courier New', monospace; font-size: 0.97rem; }
+  .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
+
+  /* ========== EXAMPLES ========== */
+  .example { border: 1.5px solid #ddd6fe; border-radius: 12px; margin: 16px 0; overflow: hidden; }
+  .example-q { background: #f5f3ff; padding: 14px 18px; font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+  .example-num { background: #7c3aed; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .example-text { flex: 1; }
+  .toggle-btn { background: #7c3aed; color: white; border: none; border-radius: 8px; padding: 7px 18px; cursor: pointer; font-size: 0.88rem; font-weight: 600; margin: 10px 18px 12px; transition: background .2s; }
+  .toggle-btn:hover { background: #6d28d9; }
+  .solution { display: none; padding: 16px 18px; background: #faf5ff; border-top: 1.5px solid #ddd6fe; }
+  .solution.open { display: block; }
+  .step { padding: 5px 0; border-bottom: 1px dashed #ddd6fe; font-size: 0.93rem; }
+  .step:last-child { border-bottom: none; }
+  .answer { margin-top: 10px; background: #ede9fe; padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #4c1d95; }
+  .math { font-family: 'Courier New', monospace; font-weight: 600; color: #4c1d95; font-size: 0.95rem; }
+
+  /* ========== SIGN TABLES ========== */
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; }
+  .sign-table th { background: #4c1d95; color: #e9d5ff; padding: 8px 12px; text-align: center; }
+  .sign-table td { border: 1px solid #ddd6fe; padding: 8px 10px; text-align: center; background: white; }
+  .sign-table tr:nth-child(even) td { background: #faf5ff; }
+  .pos { color: #059669; font-weight: 700; font-size: 1.1rem; }
+  .neg { color: #dc2626; font-weight: 700; font-size: 1.1rem; }
+  .zero { color: #7c3aed; font-weight: 700; }
+  .undef { color: #6b7280; font-weight: 700; font-size: 0.85rem; }
+  .up-arrow { color: #059669; font-size: 1.2rem; }
+  .down-arrow { color: #dc2626; font-size: 1.2rem; }
+
+  /* ========== QUIZ ========== */
+  .quiz-item { border: 1.5px solid #ddd6fe; border-radius: 12px; padding: 18px; margin: 14px 0; background: white; }
+  .q-text { font-weight: 600; margin-bottom: 12px; color: #1e293b; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt { border: 1.5px solid #ddd6fe; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; display: flex; align-items: center; gap: 8px; }
+  .quiz-opt:hover:not(.correct):not(.wrong) { border-color: #7c3aed; background: #f5f3ff; }
+  .quiz-opt.correct { background: #d1fae5; border-color: #059669; color: #065f46; font-weight: 700; }
+  .quiz-opt.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+  .quiz-opt .opt-label { font-weight: 700; color: #7c3aed; min-width: 20px; }
+  .quiz-opt.correct .opt-label { color: #065f46; }
+  .quiz-opt.wrong .opt-label { color: #991b1b; }
+  .quiz-feedback { display: none; margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+  .quiz-feedback.wrong-fb { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  .score-display { background: #ede9fe; border: 2px solid #7c3aed; border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 20px; }
+  .score-num { font-size: 2rem; font-weight: 800; color: #4c1d95; }
+  .score-label { color: #6b7280; font-size: 0.9rem; }
+  .progress-bar-wrap { background: #e5e7eb; border-radius: 99px; height: 10px; margin-top: 10px; }
+  .progress-bar { background: linear-gradient(90deg, #7c3aed, #a78bfa); height: 10px; border-radius: 99px; transition: width .4s; width: 0%; }
+
+  /* ========== BAGRUT ========== */
+  .bagrut { border: 2px solid #4c1d95; border-radius: 16px; margin: 20px 0; overflow: hidden; }
+  .bagrut-header { background: #4c1d95; color: white; padding: 14px 20px; }
+  .bagrut-header h3 { font-size: 1.05rem; font-weight: 700; }
+  .bagrut-header .bagrut-meta { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; }
+  .bagrut-body { padding: 20px; }
+  .bagrut-part { margin: 10px 0; }
+  .bagrut-part b { color: #4c1d95; }
+  .bagrut-solution { display: none; margin-top: 14px; padding: 16px; background: #faf5ff; border-radius: 10px; border: 1px solid #ddd6fe; }
+  .bagrut-solution.open { display: block; }
+  .bagrut-toggle { background: #4c1d95; color: white; border: none; border-radius: 8px; padding: 8px 20px; cursor: pointer; font-size: 0.88rem; font-weight: 600; margin-top: 14px; transition: background .2s; }
+  .bagrut-toggle:hover { background: #7c3aed; }
+
+  /* ========== FORMULA CARD ========== */
+  .ref-card { background: white; border: 2px solid #7c3aed; border-radius: 16px; padding: 20px 24px; margin-top: 30px; }
+  .ref-card h3 { color: #4c1d95; margin-bottom: 14px; font-size: 1.1rem; border-bottom: 2px solid #ede9fe; padding-bottom: 8px; }
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .ref-item { background: #f5f3ff; border-radius: 8px; padding: 10px 14px; }
+  .ref-item .ri-label { font-size: 0.75rem; color: #7c3aed; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .ref-item .ri-formula { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #1e293b; font-weight: 600; }
+
+  /* ========== SUMMARY STEPS ========== */
+  .steps-list { counter-reset: step-counter; list-style: none; margin: 12px 0; }
+  .steps-list li { counter-increment: step-counter; display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+  .steps-list li::before { content: counter(step-counter); background: #7c3aed; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+  @media (max-width: 600px) {
+    .main-header h1 { font-size: 1.5rem; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .section-header { padding: 14px 16px; gap: 10px; }
+    .section-title { font-size: 1rem; }
+    .section-body { padding: 14px; }
+    .container { padding: 16px 10px 60px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<div class="main-header">
+  <a href="index.html" class="back-link">← דף הבית</a>
+  <h1>📊 פונקציה רציונלית ופולינום</h1>
+  <p class="subtitle">ניתוח פונקציות רציונליות מהבסיס ועד הבגרות</p>
+  <div class="badge-row">
+    <span class="badge">קיץ תשפ"ו</span>
+    <span class="badge">שאלון 35571</span>
+    <span class="badge">פרק א'</span>
+    <span class="badge">15 דוגמאות + שאלות בגרות</span>
+  </div>
+</div>
+
+<!-- ========== TOC ========== -->
+<nav class="toc">
+  <a href="index.html" class="toc-home">🏠 דף הבית</a>
+  <div class="toc-scroll">
+    <div class="toc-inner">
+      <span>נושאים:</span>
+      <a href="#s1">1. תחום ואסימפטוטות</a>
+      <a href="#s2">2. זוגיות/אי-זוגיות</a>
+      <a href="#s3">3. עלייה וירידה</a>
+      <a href="#s4">4. קמירות ופיתול</a>
+      <a href="#s5">5. ניתוח מלא</a>
+      <a href="#s6">6. פולינומים xⁿ(x+1)²</a>
+      <a href="#s7">7. ערך מוחלט ואינטגרלים</a>
+      <a href="#s8">8. תרגול</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================== SECTION 1 ============================== -->
+<div class="section" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔍</div>
+    <div>
+      <div class="section-title">תחום הגדרה ואסימפטוטות</div>
+      <div class="section-num">נושא 1 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body open">
+
+    <div class="theory-box">
+      <h4>פונקציה רציונלית</h4>
+      <ul>
+        <li><b>הגדרה:</b> f(x) = p(x)/q(x) כאשר p(x) ו-q(x) פולינומים, q(x) ≠ 0</li>
+        <li><b>תחום הגדרה:</b> כל x שגורם למכנה להתאפס — מחוץ לתחום</li>
+      </ul>
+    </div>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">אסימפטוטה אנכית</div>
+        <div class="fformula">x = a</div>
+        <div class="fsub">כאשר q(a)=0 אך p(a)≠0</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">אסימפטוטה אופקית — מונה &lt; מכנה</div>
+        <div class="fformula">y = 0</div>
+        <div class="fsub">דרגת המונה קטנה מדרגת המכנה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">אסימפטוטה אופקית — דרגות שוות</div>
+        <div class="fformula">y = aₙ / bₙ</div>
+        <div class="fsub">יחס המקדמים המובילים</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">אין אסימפטוטה אופקית</div>
+        <div class="fformula">deg(p) &gt; deg(q)</div>
+        <div class="fsub">דרגת המונה גדולה מדרגת המכנה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">אסימפטוטה אלכסונית</div>
+        <div class="fformula">deg(p) = deg(q) + 1</div>
+        <div class="fsub">חלוקת פולינומים: f(x) = ax + b + r(x)</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <b>שיטה לאסימפטוטה אלכסונית:</b> מבצעים חלוקת פולינומים. השארית נעלמת כשx→±∞, ונקבל y = ax + b.
+    </div>
+
+    <!-- Example 1 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div class="example-text">
+          מצאו את תחום ההגדרה, האסימפטוטות ונקודות החיתוך עם הצירים של:
+          <span class="math">f(x) = 1/(x²−4)</span>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>תחום הגדרה:</b> x²−4 = 0 → x = ±2. לכן תחום ההגדרה: x ≠ ±2</div>
+        <div class="step"><b>אסימפטוטות אנכיות:</b> x = 2 ו-x = −2 (המכנה מתאפס, המונה = 1 ≠ 0)</div>
+        <div class="step"><b>אסימפטוטה אופקית:</b> דרגת מונה (0) &lt; דרגת מכנה (2) → y = 0</div>
+        <div class="step"><b>נקודת חיתוך עם ציר y:</b> f(0) = 1/(0−4) = −¼ → נקודה (0, −¼)</div>
+        <div class="step"><b>נקודות חיתוך עם ציר x:</b> המונה = 1 ≠ 0 לכן אין נקודות חיתוך</div>
+        <div class="answer">סיכום: תחום x≠±2 | אסימפטוטות אנכיות x=±2 | אסימפטוטה אופקית y=0 | חיתוך עם y: (0, −¼)</div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div class="example-text">
+          מצאו תחום, אסימפטוטות ונקודות חיתוך עם הצירים של:
+          <span class="math">f(x) = (x²−4)/x</span>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>תחום הגדרה:</b> x = 0 גורם למכנה להתאפס. תחום: x ≠ 0</div>
+        <div class="step"><b>אסימפטוטה אנכית:</b> x = 0 (מכנה מתאפס, מונה = −4 ≠ 0 בנקודה)</div>
+        <div class="step"><b>אסימפטוטה אופקית:</b> דרגת מונה (2) &gt; דרגת מכנה (1) → אין אסימפטוטה אופקית</div>
+        <div class="step"><b>אסימפטוטה אלכסונית:</b> מבצעים חלוקה: (x²−4)/x = x − 4/x. כאשר x→±∞, 4/x→0, לכן <b>y = x</b></div>
+        <div class="step"><b>נקודות חיתוך עם ציר x:</b> x²−4 = 0 → x = ±2. נקודות: (2,0) ו-(−2,0)</div>
+        <div class="step"><b>נקודת חיתוך עם ציר y:</b> לא קיימת כי x=0 מחוץ לתחום</div>
+        <div class="answer">סיכום: תחום x≠0 | אסימפטוטה אנכית x=0 | אסימפטוטה אלכסונית y=x | חיתוך עם x: (±2, 0)</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div class="section" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">⚖️</div>
+    <div>
+      <div class="section-title">פונקציות זוגיות ואי-זוגיות</div>
+      <div class="section-num">נושא 2 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">פונקציה זוגית</div>
+        <div class="fformula">f(−x) = f(x)</div>
+        <div class="fsub">סימטריה ביחס לציר y</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">פונקציה אי-זוגית</div>
+        <div class="fformula">f(−x) = −f(x)</div>
+        <div class="fsub">סימטריה ביחס לראשית הצירים</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">לא זוגית ולא אי-זוגית</div>
+        <div class="fformula">f(−x) ≠ f(x) וגם f(−x) ≠ −f(x)</div>
+        <div class="fsub">אין סימטריה מיוחדת</div>
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h4>שיטה — שלבי בדיקה:</h4>
+      <ul>
+        <li>מציבים −x בפונקציה ומפשטים</li>
+        <li>משווים לf(x): אם שווה → זוגית</li>
+        <li>משווים ל−f(x): אם שווה → אי-זוגית</li>
+        <li>אחרת → לא זוגית ולא אי-זוגית</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      <b>⚠️ שים לב:</b> לפני בדיקת זוגיות, ודאו שהתחום סימטרי ביחס לאפס (לכל x בתחום, גם −x בתחום).
+    </div>
+
+    <!-- Example 3 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div class="example-text">
+          קבעו אם <span class="math">f(x) = x/(x²−1)</span> זוגית, אי-זוגית, או אחרת.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>תחום:</b> x ≠ ±1. התחום סימטרי (אם x בתחום → −x בתחום). ✓</div>
+        <div class="step"><b>מציבים −x:</b> f(−x) = (−x)/((−x)²−1) = (−x)/(x²−1) = −x/(x²−1)</div>
+        <div class="step"><b>השוואה:</b> f(−x) = −x/(x²−1) = −f(x) ✓</div>
+        <div class="answer">הפונקציה <b>אי-זוגית</b>! הגרף סימטרי ביחס לראשית הצירים.</div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div class="example-text">
+          קבעו אם <span class="math">f(x) = (x²+1)/x²</span> זוגית, אי-זוגית, או אחרת.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>תחום:</b> x ≠ 0. התחום סימטרי. ✓</div>
+        <div class="step"><b>מציבים −x:</b> f(−x) = ((−x)²+1)/(−x)² = (x²+1)/x² = f(x) ✓</div>
+        <div class="answer">הפונקציה <b>זוגית</b>! הגרף סימטרי ביחס לציר y.</div>
+      </div>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div class="example-text">
+          קבעו אם <span class="math">f(x) = (x+1)/(x²−1)</span> זוגית, אי-זוגית, או אחרת. שימו לב לפישוט!
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>פישוט:</b> x²−1 = (x−1)(x+1), לכן f(x) = (x+1)/((x−1)(x+1)) = 1/(x−1) עבור x≠−1</div>
+        <div class="step"><b>תחום:</b> x ≠ 1 ו-x ≠ −1. התחום אינו סימטרי: x=2 בתחום אך −2 בתחום, x=0.5 בתחום אך −0.5 בתחום. בדיקה: f(−x) = (−x+1)/(x²−1) = −(x−1)/((x−1)(x+1)) = −1/(x+1)</div>
+        <div class="step">f(−x) = −1/(x+1) ≠ f(x) = 1/(x−1) (לאחר פישוט)</div>
+        <div class="step">f(−x) = −1/(x+1) ≠ −f(x) = −1/(x−1)</div>
+        <div class="answer">הפונקציה <b>לא זוגית ולא אי-זוגית</b>.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div class="section" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📈</div>
+    <div>
+      <div class="section-title">עלייה, ירידה ונקודות קיצון</div>
+      <div class="section-num">נושא 3 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">תחום עלייה</div>
+        <div class="fformula">f′(x) &gt; 0</div>
+        <div class="fsub">הפונקציה עולה בתחום זה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">תחום ירידה</div>
+        <div class="fformula">f′(x) &lt; 0</div>
+        <div class="fsub">הפונקציה יורדת בתחום זה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נקודת מקסימום</div>
+        <div class="fformula">f′ עובר + → −</div>
+        <div class="fsub">f′=0 וסימן משתנה מ+ ל−</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נקודת מינימום</div>
+        <div class="fformula">f′ עובר − → +</div>
+        <div class="fsub">f′=0 וסימן משתנה מ− ל+</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">כלל המנה</div>
+        <div class="fformula">[p/q]′ = (p′q − pq′)/q²</div>
+        <div class="fsub">לגזירת פונקציה רציונלית</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נגזרת חשובה</div>
+        <div class="fformula">(1/xⁿ)′ = −n/xⁿ⁺¹</div>
+        <div class="fsub">כלל הנגזרת של חזקה שלילית</div>
+      </div>
+    </div>
+
+    <div class="important">
+      <b>⚠️ חשוב בפונקציה רציונלית:</b> בוודאי שבטבלת הסימנים בודקים גם את הנקודות שבהן f′(x) <b>אינה מוגדרת</b> (לרוב נקודות האסימפטוטות האנכיות)!
+    </div>
+
+    <!-- Example 6 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div class="example-text">
+          עבור <span class="math">f(x) = 1/(x²−4)</span>, מצאו תחומי עלייה/ירידה ונקודות קיצון.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>נגזרת:</b> f′(x) = −2x/(x²−4)²</div>
+        <div class="step"><b>הערה:</b> (x²−4)² ≥ 0 תמיד (ומוגדר בתחום), לכן סימן f′ = סימן של (−2x)</div>
+        <div class="step"><b>נקודות קריטיות:</b> f′=0 → −2x=0 → x=0. נקודות לא מוגדרות: x=±2</div>
+
+        <table class="sign-table">
+          <tr>
+            <th>x</th>
+            <th>(−∞, −2)</th>
+            <th>x=−2</th>
+            <th>(−2, 0)</th>
+            <th>x=0</th>
+            <th>(0, 2)</th>
+            <th>x=2</th>
+            <th>(2, +∞)</th>
+          </tr>
+          <tr>
+            <td>f′(x)</td>
+            <td class="pos">+</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="neg">−</td>
+            <td class="undef">א"מ</td>
+            <td class="neg">−</td>
+          </tr>
+          <tr>
+            <td>f(x)</td>
+            <td class="up-arrow">↑</td>
+            <td class="undef">—</td>
+            <td class="up-arrow">↑</td>
+            <td>קיצון</td>
+            <td class="down-arrow">↓</td>
+            <td class="undef">—</td>
+            <td class="down-arrow">↓</td>
+          </tr>
+        </table>
+
+        <div class="step">ב-x=0: f′ עובר מ+ ל− → <b>מקסימום מקומי</b></div>
+        <div class="step">f(0) = 1/(0−4) = −¼</div>
+        <div class="answer">מקסימום מקומי בנקודה (0, −¼). עולה: (−∞,−2)∪(−2,0) | יורדת: (0,2)∪(2,+∞)</div>
+      </div>
+    </div>
+
+    <!-- Example 7 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div class="example-text">
+          עבור <span class="math">f(x) = (x²−a)/x³</span>, a&gt;0, מצאו נקודות קיצון. (פונקציה חשובה לבגרות!)
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>כתיבה מחדש:</b> f(x) = x²/x³ − a/x³ = 1/x − a/x³ = x⁻¹ − ax⁻³</div>
+        <div class="step"><b>נגזרת:</b> f′(x) = −x⁻² + 3ax⁻⁴ = −1/x² + 3a/x⁴ = (−x²+3a)/x⁴</div>
+        <div class="step"><b>נקודות קריטיות:</b> f′=0 → −x²+3a=0 → x²=3a → x=±√(3a)</div>
+        <div class="step">סימן f′ = סימן (−x²+3a), כי x⁴&gt;0 תמיד</div>
+
+        <table class="sign-table">
+          <tr>
+            <th>x</th>
+            <th>(−∞,−√(3a))</th>
+            <th>x=−√(3a)</th>
+            <th>(−√(3a),0)</th>
+            <th>x=0</th>
+            <th>(0,√(3a))</th>
+            <th>x=√(3a)</th>
+            <th>(√(3a),+∞)</th>
+          </tr>
+          <tr>
+            <td>−x²+3a</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="neg">−</td>
+          </tr>
+          <tr>
+            <td>f(x)</td>
+            <td class="down-arrow">↓</td>
+            <td>מינימום</td>
+            <td class="up-arrow">↑</td>
+            <td class="undef">—</td>
+            <td class="up-arrow">↑</td>
+            <td>מקסימום</td>
+            <td class="down-arrow">↓</td>
+          </tr>
+        </table>
+
+        <div class="step">ב-x=−√(3a): f′ עובר מ− ל+ → <b>מינימום מקומי</b></div>
+        <div class="step">ב-x=√(3a): f′ עובר מ+ ל− → <b>מקסימום מקומי</b></div>
+        <div class="step">ערכי הקיצון: f(±√(3a)) = (3a−a)/(±√(3a))³ = 2a/±(3a)^(3/2) = ±2/(3√(3a))</div>
+        <div class="answer">מינימום מקומי ב-x=−√(3a), מקסימום מקומי ב-x=√(3a)</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 4 ============================== -->
+<div class="section" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">〰️</div>
+    <div>
+      <div class="section-title">קמירות ונקודות פיתול</div>
+      <div class="section-num">נושא 4 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">קעירות כלפי מעלה (∪)</div>
+        <div class="fformula">f″(x) &gt; 0</div>
+        <div class="fsub">הנגזרת הראשונה עולה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">קעירות כלפי מטה (∩)</div>
+        <div class="fformula">f″(x) &lt; 0</div>
+        <div class="fsub">הנגזרת הראשונה יורדת</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נקודת פיתול</div>
+        <div class="fformula">f″(x₀)=0 + שינוי סימן</div>
+        <div class="fsub">מעבר מ-∪ ל-∩ או להפך</div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <b>⚠️ חשוב:</b> f″(x₀)=0 לבדו אינו מספיק. חייב להיות שינוי סימן של f″ סביב x₀.
+    </div>
+
+    <!-- Example 8 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div class="example-text">
+          עבור <span class="math">f(x) = (2a−x²)/x</span>, a&gt;0, מצאו תחומי קמירות.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>כתיבה מחדש:</b> f(x) = 2a/x − x</div>
+        <div class="step"><b>נגזרת ראשונה:</b> f′(x) = −2a/x² − 1 = −(2a+x²)/x²</div>
+        <div class="step">מכיוון ש-2a+x²&gt;0 תמיד ו-x²&gt;0 תמיד → f′(x) &lt; 0 תמיד → <b>הפונקציה תמיד יורדת</b></div>
+        <div class="step"><b>נגזרת שנייה:</b> f″(x) = d/dx(−2ax⁻² − 1) = 4ax⁻³ = 4a/x³</div>
+
+        <table class="sign-table">
+          <tr>
+            <th>תחום</th>
+            <th>x &lt; 0</th>
+            <th>x = 0</th>
+            <th>x &gt; 0</th>
+          </tr>
+          <tr>
+            <td>f″(x) = 4a/x³</td>
+            <td class="neg">− (a&gt;0, x³&lt;0)</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+ (a&gt;0, x³&gt;0)</td>
+          </tr>
+          <tr>
+            <td>קמירות</td>
+            <td>∩ כלפי מטה</td>
+            <td class="undef">—</td>
+            <td>∪ כלפי מעלה</td>
+          </tr>
+        </table>
+
+        <div class="answer">x&lt;0: קעירות כלפי מטה (∩) | x&gt;0: קעירות כלפי מעלה (∪). אין נקודת פיתול (x=0 מחוץ לתחום).</div>
+      </div>
+    </div>
+
+    <!-- Example 9 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div class="example-text">
+          עבור <span class="math">f(x) = x/(x²−1)</span>, מצאו תחומי קמירות ונקודות פיתול.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>נגזרת ראשונה (כלל המנה):</b></div>
+        <div class="step">f′(x) = [(x²−1)·1 − x·2x]/(x²−1)² = (x²−1−2x²)/(x²−1)² = <b>−(x²+1)/(x²−1)²</b></div>
+        <div class="step">מכיוון ש-x²+1&gt;0 תמיד ו-(x²−1)²&gt;0 בתחום → f′(x) &lt; 0 תמיד (תמיד יורדת)</div>
+        <div class="step"><b>נגזרת שנייה:</b> נגזור f′(x) = −(x²+1)/(x²−1)² בכלל המנה:</div>
+        <div class="step">מונה הנגזרת: d/dx[−(x²+1)]·(x²−1)² − (−(x²+1))·d/dx[(x²−1)²]</div>
+        <div class="step">= −2x·(x²−1)² + (x²+1)·2(x²−1)·2x</div>
+        <div class="step">= 2x(x²−1)[−(x²−1) + 2(x²+1)] = 2x(x²−1)[x²+3]</div>
+        <div class="step">מכנה: (x²−1)⁴</div>
+        <div class="step">f″(x) = 2x(x²+3)/(x²−1)³ (לאחר צמצום)</div>
+        <div class="step">סימן f″ = סימן [x/(x²−1)³] (כי x²+3&gt;0 תמיד)</div>
+
+        <table class="sign-table">
+          <tr>
+            <th>x</th>
+            <th>(−∞,−1)</th>
+            <th>x=−1</th>
+            <th>(−1,0)</th>
+            <th>x=0</th>
+            <th>(0,1)</th>
+            <th>x=1</th>
+            <th>(1,+∞)</th>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td class="neg">−</td>
+            <td class="undef">א"מ</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>(x²−1)³</td>
+            <td class="pos">+</td>
+            <td class="undef">א"מ</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>f″(x)</td>
+            <td class="neg">−</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="neg">−</td>
+            <td class="undef">א"מ</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>קמירות</td>
+            <td>∩</td>
+            <td class="undef">—</td>
+            <td>∪</td>
+            <td>פיתול?</td>
+            <td>∩</td>
+            <td class="undef">—</td>
+            <td>∪</td>
+          </tr>
+        </table>
+
+        <div class="step">ב-x=0: f″ עובר מ+ ל− → שינוי סימן → <b>נקודת פיתול</b></div>
+        <div class="step">f(0) = 0/(0−1) = 0 → נקודת הפיתול: (0, 0)</div>
+        <div class="answer">נקודת פיתול: (0, 0). קמירות: ∩ ב-(−∞,−1)∪(0,1) | ∪ ב-(−1,0)∪(1,+∞)</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 5 ============================== -->
+<div class="section" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📋</div>
+    <div>
+      <div class="section-title">שיטת ניתוח מלא וסרטוט גרף</div>
+      <div class="section-num">נושא 5 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>רשימת ניתוח מלא — 7 שלבים:</h4>
+      <ol class="steps-list">
+        <li>תחום הגדרה</li>
+        <li>אסימפטוטות (אנכיות, אופקיות, אלכסוניות)</li>
+        <li>נקודות חיתוך עם הצירים</li>
+        <li>זוגיות / אי-זוגיות</li>
+        <li>טבלת סימנים של f′ — עלייה/ירידה + נקודות קיצון</li>
+        <li>קמירות (אם נדרש) — טבלת סימנים של f″</li>
+        <li>סרטוט — שלבים 1-6 ביחד</li>
+      </ol>
+    </div>
+
+    <!-- Example 10 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div class="example-text">
+          ניתוח מלא: <span class="math">f(x) = x/(x²−1)</span>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>1. תחום:</b> x²−1=0 → x=±1. תחום: x≠±1</div>
+        <div class="step"><b>2. אסימפטוטות:</b> אנכיות: x=1, x=−1. אופקית: דרגת מונה (1) = דרגת מכנה (2)−1 &lt; דרגת מכנה → y=0</div>
+        <div class="step"><b>3. נקודות חיתוך:</b> ציר x: x=0 (מונה=0). ציר y: f(0)=0. שתי הצירים: (0,0)</div>
+        <div class="step"><b>4. זוגיות:</b> f(−x)=−x/(x²−1)=−f(x) → <b>אי-זוגית</b>. סימטריה ביחס לראשית.</div>
+        <div class="step"><b>5. f′(x)=−(x²+1)/(x²−1)²</b> — שלילי תמיד → <b>הפונקציה תמיד יורדת, אין נקודות קיצון</b></div>
+        <div class="step"><b>6. f″(x)=2x(x²+3)/(x²−1)³</b> — נקודת פיתול ב-(0,0) (ראו דוגמה 9)</div>
+        <div class="step"><b>7. תיאור גרף:</b> שלוש ענפים: x&lt;−1 (יורדת מ−∞ ל−∞, קמורה ∩), −1&lt;x&lt;1 (יורדת מ+∞ ל−∞, עובר דרך (0,0)), x&gt;1 (יורדת מ+∞ ל0, קמורה ∪)</div>
+        <div class="answer">תמיד יורדת | אי-זוגית | אסימפטוטות: x=±1, y=0 | פיתול ב-(0,0)</div>
+      </div>
+    </div>
+
+    <!-- Example 11 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div class="example-text">
+          ניתוח מלא: <span class="math">f(x) = (x²−4)/x</span>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>1. תחום:</b> x≠0</div>
+        <div class="step"><b>2. אסימפטוטות:</b> אנכית: x=0. אלכסונית: f(x) = x − 4/x → y=x</div>
+        <div class="step"><b>3. נקודות חיתוך:</b> ציר x: x²−4=0 → x=±2. נקודות: (2,0) ו-(−2,0). ציר y: x=0 מחוץ לתחום.</div>
+        <div class="step"><b>4. זוגיות:</b> f(−x)=(x²−4)/(−x)=−(x²−4)/x=−f(x) → <b>אי-זוגית</b></div>
+        <div class="step"><b>5. כתיבה מחדש:</b> f(x) = x − 4/x = x − 4x⁻¹</div>
+        <div class="step">f′(x) = 1 + 4/x² = (x²+4)/x² — מכיוון שx²+4&gt;0 ו-x²&gt;0: f′&gt;0 תמיד → <b>תמיד עולה, אין קיצון</b></div>
+        <div class="step"><b>6. f″(x) = −8/x³</b></div>
+
+        <table class="sign-table">
+          <tr>
+            <th>תחום</th>
+            <th>x &lt; 0</th>
+            <th>x = 0</th>
+            <th>x &gt; 0</th>
+          </tr>
+          <tr>
+            <td>f″ = −8/x³</td>
+            <td class="pos">+ (x³&lt;0 → −8/x³&gt;0)</td>
+            <td class="undef">א"מ</td>
+            <td class="neg">− (x³&gt;0 → −8/x³&lt;0)</td>
+          </tr>
+          <tr>
+            <td>קמירות</td>
+            <td>∪ כלפי מעלה</td>
+            <td class="undef">—</td>
+            <td>∩ כלפי מטה</td>
+          </tr>
+        </table>
+
+        <div class="step"><b>7. תיאור גרף:</b> שני ענפים, שניהם עולים. הענף x&lt;0 קמור מלמטה (∪), קרוב לאסימפטוטה x=0 ולאסימפטוטה y=x. הענף x&gt;0 קמור מלמעלה (∩). חיתוכים עם x-ציר: x=±2.</div>
+        <div class="answer">תמיד עולה | אי-זוגית | אסימפטוטות: x=0, y=x | אין נקודות קיצון</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 6 ============================== -->
+<div class="section" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔢</div>
+    <div>
+      <div class="section-title">פולינומים מסוג xⁿ(x+1)²</div>
+      <div class="section-num">נושא 6 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>תכונות f(x) = xⁿ(x+1)², n מספר שלם חיובי, n&gt;1</h4>
+      <ul>
+        <li><b>תחום:</b> כל המספרים הממשיים</li>
+        <li><b>חיתוכי ציר x:</b> x=0 (ריבוי n) ו-x=−1 (ריבוי 2)</li>
+        <li><b>ב-x=0, ריבוי n:</b> n זוגי → ממשיק לציר (לא חוצה) | n אי-זוגי → חוצה את הציר</li>
+        <li><b>ב-x=−1, ריבוי 2:</b> תמיד ממשיק לציר (לא חוצה), נקודת מינימום/מקסימום</li>
+        <li><b>התנהגות קצוות:</b> כשx→+∞: f→+∞ תמיד | כשx→−∞: תלוי ב-n (n זוגי→+∞, n אי-זוגי→−∞)</li>
+      </ul>
+    </div>
+
+    <!-- Example 12 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div class="example-text">
+          ניתוח מלא של <span class="math">f(x) = x²(x+1)²</span> (n=2, זוגי)
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>חיתוכי ציר x:</b> x=0 (ריבוי 2, ממשיק) ו-x=−1 (ריבוי 2, ממשיק)</div>
+        <div class="step"><b>פישוט:</b> f(x) = x²(x+1)² = [x(x+1)]² ≥ 0 תמיד! כלומר, הגרף כולו מעל ציר x.</div>
+        <div class="step"><b>התנהגות קצוות:</b> כשx→±∞: f→+∞ (חזקה כוללת 4, מקדם חיובי)</div>
+        <div class="step"><b>נגזרת:</b> f′(x) = 2x(x+1)² + x²·2(x+1) = 2x(x+1)[(x+1)+x] = <b>2x(x+1)(2x+1)</b></div>
+        <div class="step"><b>נקודות קריטיות:</b> x=0, x=−1, x=−½</div>
+
+        <table class="sign-table">
+          <tr>
+            <th>x</th>
+            <th>(−∞,−1)</th>
+            <th>x=−1</th>
+            <th>(−1,−½)</th>
+            <th>x=−½</th>
+            <th>(−½,0)</th>
+            <th>x=0</th>
+            <th>(0,+∞)</th>
+          </tr>
+          <tr>
+            <td>2x</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>(x+1)</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>(2x+1)</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>f′</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>f(x)</td>
+            <td class="down-arrow">↓</td>
+            <td>מינימום</td>
+            <td class="up-arrow">↑</td>
+            <td>מקסימום</td>
+            <td class="down-arrow">↓</td>
+            <td>מינימום</td>
+            <td class="up-arrow">↑</td>
+          </tr>
+        </table>
+
+        <div class="step">f(−1)=0 (מינימום מקומי) | f(−½)=(¼)(¼)=1/16 (מקסימום מקומי) | f(0)=0 (מינימום מקומי)</div>
+        <div class="answer">3 נקודות קיצון: מינימום ב-(−1,0), מקסימום ב-(−½,1/16), מינימום ב-(0,0). הגרף תמיד ≥ 0.</div>
+      </div>
+    </div>
+
+    <!-- Example 13 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div class="example-text">
+          ניתוח מלא של <span class="math">f(x) = x³(x+1)²</span> (n=3, אי-זוגי)
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>חיתוכי ציר x:</b> x=0 (ריבוי 3, חוצה את הציר) ו-x=−1 (ריבוי 2, ממשיק)</div>
+        <div class="step"><b>התנהגות קצוות:</b> x→+∞: f→+∞ | x→−∞: f→−∞ (חזקה כוללת 5, אי-זוגית)</div>
+        <div class="step"><b>נגזרת:</b> f′(x) = 3x²(x+1)² + x³·2(x+1) = x²(x+1)[3(x+1)+2x] = <b>x²(x+1)(5x+3)</b></div>
+        <div class="step"><b>נקודות קריטיות:</b> x=0, x=−1, x=−3/5</div>
+
+        <table class="sign-table">
+          <tr>
+            <th>x</th>
+            <th>(−∞,−1)</th>
+            <th>x=−1</th>
+            <th>(−1,−3/5)</th>
+            <th>x=−3/5</th>
+            <th>(−3/5,0)</th>
+            <th>x=0</th>
+            <th>(0,+∞)</th>
+          </tr>
+          <tr>
+            <td>x²</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>(x+1)</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>(5x+3)</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>f′</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="neg">−</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+            <td class="zero">0</td>
+            <td class="pos">+</td>
+          </tr>
+          <tr>
+            <td>f(x)</td>
+            <td class="up-arrow">↑</td>
+            <td>מקסימום</td>
+            <td class="down-arrow">↓</td>
+            <td>מינימום</td>
+            <td class="up-arrow">↑</td>
+            <td>לא קיצון</td>
+            <td class="up-arrow">↑</td>
+          </tr>
+        </table>
+
+        <div class="step">ב-x=0: f′=0 אך סימן f′ לא משתנה (+,0,+) — <b>אין קיצון!</b> (בגלל גורם x² — סימן לא משתנה)</div>
+        <div class="step">f(−1) = (−1)³·0² = 0 (מקסימום מקומי)</div>
+        <div class="step">f(−3/5) = (−3/5)³·(2/5)² = (−27/125)·(4/25) = −108/3125 (מינימום מקומי)</div>
+        <div class="answer">2 נקודות קיצון: מקסימום ב-(−1,0), מינימום ב-(−3/5, −108/3125). ב-x=0: לא קיצון (נקודה עם f′=0 ללא שינוי סימן).</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 7 ============================== -->
+<div class="section" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">∫</div>
+    <div>
+      <div class="section-title">ערך מוחלט, היסט אנכי ואינטגרלים</div>
+      <div class="section-num">נושא 7 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>g(x) = |f(x)|</h4>
+      <ul>
+        <li>חלקים שלf(x)&lt;0 מוחזרים מעל ציר x (שיקוף)</li>
+        <li>נקודות בהן f(x)=0 הופכות למינימום מקומי של |f(x)| = 0</li>
+        <li>נקודות קיצון של f(x) שבהן f≠0 נשמרות</li>
+      </ul>
+    </div>
+
+    <div class="theory-box">
+      <h4>אינטגרלים וסימטריה</h4>
+      <ul>
+        <li>אם f(x) <b>אי-זוגית</b>: ∫₋ₐᵃ f(x)dx = 0</li>
+        <li>שטח בין הגרף לציר x: ∫|f(x)|dx</li>
+        <li>החלפת משתנים: ∫f(x)dx, u=g(x), du=g′(x)dx</li>
+      </ul>
+    </div>
+
+    <!-- Example 14 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">14</div>
+        <div class="example-text">
+          נתונה <span class="math">f(x)=(2a−x²)/x</span>, a&gt;0. ונתונה g(x)=|f(x)|−b, b&gt;0.
+          נתון כי (−3,−2) היא נקודת קיצון של g(x). מצאו את a ואת b.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>ניתוח f(x):</b> f(x) = (2a−x²)/x. אפסי f: x²=2a → x=±√(2a)</div>
+        <div class="step">f′(x) = −(2a+x²)/x² &lt; 0 תמיד → f יורדת תמיד</div>
+        <div class="step">ב-x=−√(2a) (עבור x&lt;0): f עוברת מ+ ל0 ל− כש-x עולה (כי f יורדת)</div>
+        <div class="step"><b>ניתוח |f(x)|:</b> ב-x=−√(2a) מתקבלת נקודת מינימום של |f|: |f(−√(2a))|=0</div>
+        <div class="step"><b>g(x) = |f(x)| − b:</b> ב-x=−√(2a): g=0−b=−b → זוהי נקודת מינימום של g</div>
+        <div class="step"><b>מהתנאי:</b> נקודת הקיצון היא (−3,−2). לכן: x=−√(2a)=−3 → √(2a)=3 → 2a=9 → <b>a=4.5</b></div>
+        <div class="step">וגם: g(−3)=−b=−2 → <b>b=2</b></div>
+        <div class="answer">a = 4.5, b = 2</div>
+      </div>
+    </div>
+
+    <!-- Example 15 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">15</div>
+        <div class="example-text">
+          חשבו: <span class="math">∫₁² x/(x²−2)² dx</span>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><b>החלפת משתנים:</b> u = x²−2, du = 2x dx → x dx = du/2</div>
+        <div class="step"><b>גבולות:</b> x=1 → u=1−2=−1 | x=2 → u=4−2=2</div>
+        <div class="step"><b>האינטגרל:</b> ∫ x/(x²−2)² dx = ∫ (1/u²)·(du/2) = (1/2)∫u⁻² du</div>
+        <div class="step">= (1/2)·(−u⁻¹) + C = −1/(2u) + C = −1/(2(x²−2)) + C</div>
+        <div class="step"><b>הצבת גבולות (בu):</b> [−1/(2u)]₋₁² = −1/(2·2) − (−1/(2·(−1)))</div>
+        <div class="step">= −1/4 − (−(−1/2)) = −1/4 − 1/2 = −1/4 − 2/4 = −3/4</div>
+        <div class="answer">∫₁² x/(x²−2)² dx = −3/4</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 8 (QUIZ) ============================== -->
+<div class="section" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🧠</div>
+    <div>
+      <div class="section-title">תרגול מסכם — שאלות אינטרקטיביות</div>
+      <div class="section-num">נושא 8 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="score-display">
+      <div class="score-num" id="scoreNum">0/8</div>
+      <div class="score-label">ציון נוכחי</div>
+      <div class="progress-bar-wrap" style="margin-top:10px;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="quiz-item" id="q1">
+      <div class="q-text">שאלה 1: מהו תחום ההגדרה של f(x) = 1/(x²−9)?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q1',false,'א')"><span class="opt-label">א.</span> x≠0</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q1',true,'ב')"><span class="opt-label">ב.</span> x≠±3</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q1',false,'ג')"><span class="opt-label">ג.</span> x≠3</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q1',false,'ד')"><span class="opt-label">ד.</span> x≠9</div>
+      </div>
+      <div class="quiz-feedback" id="q1-fb"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-item" id="q2">
+      <div class="q-text">שאלה 2: f(x) = x³/(x²−1). האם הפונקציה זוגית, אי-זוגית, או לא אחד מהם?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q2',false,'א')"><span class="opt-label">א.</span> זוגית</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q2',true,'ב')"><span class="opt-label">ב.</span> אי-זוגית</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q2',false,'ג')"><span class="opt-label">ג.</span> לא זוגית ולא אי-זוגית</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q2',false,'ד')"><span class="opt-label">ד.</span> לא ניתן לקבוע</div>
+      </div>
+      <div class="quiz-feedback" id="q2-fb"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-item" id="q3">
+      <div class="q-text">שאלה 3: f(x) = 1/(x²−4). לפונקציה יש מקסימום מקומי ב:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q3',true,'א')"><span class="opt-label">א.</span> (0, −¼)</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q3',false,'ב')"><span class="opt-label">ב.</span> (0, ¼)</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q3',false,'ג')"><span class="opt-label">ג.</span> (2, 0)</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q3',false,'ד')"><span class="opt-label">ד.</span> אין נקודות קיצון</div>
+      </div>
+      <div class="quiz-feedback" id="q3-fb"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-item" id="q4">
+      <div class="q-text">שאלה 4: f(x) = (x²−a)/x³, a&gt;0. נקודות הקיצון של הפונקציה נמצאות ב:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q4',false,'א')"><span class="opt-label">א.</span> x=0 בלבד</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q4',false,'ב')"><span class="opt-label">ב.</span> x=±√a</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q4',true,'ג')"><span class="opt-label">ג.</span> x=±√(3a)</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q4',false,'ד')"><span class="opt-label">ד.</span> x=±a</div>
+      </div>
+      <div class="quiz-feedback" id="q4-fb"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-item" id="q5">
+      <div class="q-text">שאלה 5: מהי האסימפטוטה האלכסונית של f(x) = (x²+1)/x?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q5',false,'א')"><span class="opt-label">א.</span> y=0</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q5',false,'ב')"><span class="opt-label">ב.</span> y=1</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q5',true,'ג')"><span class="opt-label">ג.</span> y=x</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q5',false,'ד')"><span class="opt-label">ד.</span> y=x+1</div>
+      </div>
+      <div class="quiz-feedback" id="q5-fb"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-item" id="q6">
+      <div class="q-text">שאלה 6: f(x) = x²(x+1)². כמה נקודות קיצון יש לפונקציה?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q6',false,'א')"><span class="opt-label">א.</span> 1</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q6',false,'ב')"><span class="opt-label">ב.</span> 2</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q6',true,'ג')"><span class="opt-label">ג.</span> 3</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q6',false,'ד')"><span class="opt-label">ד.</span> 4</div>
+      </div>
+      <div class="quiz-feedback" id="q6-fb"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-item" id="q7">
+      <div class="q-text">שאלה 7: f(x) = (2a−x²)/x, a&gt;0. הפונקציה:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q7',false,'א')"><span class="opt-label">א.</span> תמיד עולה</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q7',true,'ב')"><span class="opt-label">ב.</span> תמיד יורדת</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q7',false,'ג')"><span class="opt-label">ג.</span> עולה ב-x&gt;0 ויורדת ב-x&lt;0</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q7',false,'ד')"><span class="opt-label">ד.</span> יורדת ב-x&gt;0 ועולה ב-x&lt;0</div>
+      </div>
+      <div class="quiz-feedback" id="q7-fb"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-item" id="q8">
+      <div class="q-text">שאלה 8: מהו ∫₁³ (2/x²) dx?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,'q8',true,'א')"><span class="opt-label">א.</span> 4/3</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q8',false,'ב')"><span class="opt-label">ב.</span> 2/3</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q8',false,'ג')"><span class="opt-label">ג.</span> −4/3</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,'q8',false,'ד')"><span class="opt-label">ד.</span> 2/9</div>
+      </div>
+      <div class="quiz-feedback" id="q8-fb"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== BAGRUT QUESTIONS ============================== -->
+<h2 style="color:#4c1d95; margin:32px 0 16px; font-size:1.4rem; border-bottom:3px solid #7c3aed; padding-bottom:10px;">✏️ שאלות בגרות</h2>
+
+<!-- Bagrut Q1 -->
+<div class="bagrut">
+  <div class="bagrut-header">
+    <h3>שאלת בגרות 1 — f(x) = (x²−a)/x³, פרמטר a≠0</h3>
+    <div class="bagrut-meta">תשפ"ג מועד א' · 20 נקודות</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-part"><b>א.</b> מהו תחום ההגדרה של f(x)?</div>
+    <div class="bagrut-part"><b>ב.</b> רשמו את משוואות האסימפטוטות של f(x) המאונכות לציר x.</div>
+    <div class="bagrut-part"><b>ג.</b> הביעו באמצעות a את שיעורי נקודות החיתוך של גרף f(x) עם ציר x. לאילו ערכי a יש נקודות חיתוך?</div>
+    <div class="bagrut-part"><b>ד.</b> הביעו באמצעות a את שיעורי נקודות הקיצון, קבעו סוגן, והבחינו בין a&gt;0 ל-a&lt;0. לאילו ערכי a יש נקודות קיצון?</div>
+    <div class="bagrut-part"><b>ה.</b> סרטו סקיצה של f(x) עבור a&gt;0.</div>
+    <div class="bagrut-part"><b>ו.</b> נתונה g(x) = (f(x+1))^2020. קבעו את מספר נקודות הקיצון של g(x) עבור a&gt;0. נמקו.</div>
+    <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-solution">
+      <div class="step"><b>א. תחום הגדרה:</b> x³=0 → x=0. תחום: x≠0 (כל המספרים הממשיים מלבד אפס)</div>
+      <div class="step"><b>ב. אסימפטוטה:</b> רק x=0 (אסימפטוטה אנכית). אסימפטוטה אופקית: דרגת מונה (2) &lt; דרגת מכנה (3) → y=0</div>
+      <div class="step"><b>ג. חיתוך עם ציר x:</b> f(x)=0 → x²−a=0 → x=±√a. לקיום נדרש a&gt;0. לa&lt;0 אין פתרון ממשי → אין חיתוך. לa=0: f(x)=1/x, אין חיתוך.</div>
+      <div class="step"><b>ד. נגזרת:</b> f(x)=x⁻¹−ax⁻³ → f′(x)=−x⁻²+3ax⁻⁴=(−x²+3a)/x⁴</div>
+      <div class="step">f′=0 → x²=3a → x=±√(3a) (קיים רק עבור a&gt;0)</div>
+      <div class="step">עבור a&gt;0: מינימום ב-x=−√(3a), מקסימום ב-x=√(3a) (ראו דוגמה 7 לטבלת סימנים)</div>
+      <div class="step">עבור a&lt;0: x²=3a&lt;0 → אין פתרון ממשי → <b>אין נקודות קיצון</b></div>
+      <div class="step"><b>ה. סקיצה עבור a&gt;0:</b> שני ענפים (x&lt;0 ו-x&gt;0). חיתוכי x: ±√a. מינימום ב-x=−√(3a) (x&lt;0), מקסימום ב-x=√(3a) (x&gt;0). x→0: f→±∞. x→±∞: f→0.</div>
+      <div class="step"><b>ו. g(x) = (f(x+1))^2020:</b></div>
+      <div class="step">f(x+1) היא f עם היסט של 1 שמאלה: אסימפטוטה אנכית ב-x=−1, נקודות קיצון ב-x=−1±√(3a).</div>
+      <div class="step">מכיוון ש-2020 זוגי: g(x)=(f(x+1))^2020 ≥ 0. אפסי f(x+1) נותנים g=0 → מינימום מוחלט של g.</div>
+      <div class="step">אפסי f(x+1): x+1=±√a → x=−1±√a (2 נקודות עבור a&gt;0). אלה מינימומים של g.</div>
+      <div class="step">נקודות קיצון של f(x+1): x=−1±√(3a) (2 נקודות). לאחר חזקה זוגית אלו נקודות קיצון גם של g.</div>
+      <div class="answer">ל-g(x) יש <b>4 נקודות קיצון</b>: 2 מינימומים מ-אפסי f(x+1) (ב-x=−1±√a), ומקסימום ומינימום מנקודות קיצון f(x+1) (ב-x=−1±√(3a)).</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bagrut Q2 -->
+<div class="bagrut">
+  <div class="bagrut-header">
+    <h3>שאלת בגרות 2 — f(x) = (2a−x²)/x, a&gt;0</h3>
+    <div class="bagrut-meta">תשפ"ב · 25 נקודות</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-part"><b>א. (1)</b> מצאו את משוואות האסימפטוטות של f(x) המאונכות לצירים.</div>
+    <div class="bagrut-part"><b>א. (2)</b> הראו שf(x) פונקציה אי-זוגית.</div>
+    <div class="bagrut-part"><b>א. (3)</b> מצאו שיעורי נקודות חיתוך עם הצירים.</div>
+    <div class="bagrut-part"><b>א. (4)</b> מצאו תחומי עלייה/ירידה של f.</div>
+    <div class="bagrut-part"><b>א. (5)</b> מצאו תחומי קמירות של f.</div>
+    <div class="bagrut-part"><b>ב.</b> סרטו סקיצה של f(x).</div>
+    <div class="bagrut-part"><b>ג.</b> נתונה g(x) = |f(x)| − b, b&gt;0. נתון כי (−3, −2) היא נקודת קיצון של g(x). מצאו את a ואת b.</div>
+    <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-solution">
+      <div class="step"><b>א.(1) אסימפטוטות:</b> f(x) = 2a/x − x. אנכית: x=0. אלכסונית: y=−x (כי f(x) = −x + 2a/x → 2a/x→0 כשx→±∞)</div>
+      <div class="step"><b>א.(2) אי-זוגיות:</b> f(−x) = (2a−(−x)²)/(−x) = (2a−x²)/(−x) = −(2a−x²)/x = −f(x) ✓</div>
+      <div class="step"><b>א.(3) חיתוכים:</b> ציר x: f(x)=0 → 2a−x²=0 → x=±√(2a). נקודות: (√(2a),0) ו-(−√(2a),0). ציר y: x=0 מחוץ לתחום → אין.</div>
+      <div class="step"><b>א.(4) עלייה/ירידה:</b> f′(x) = −2a/x² − 1 = −(2a+x²)/x². מכיוון ש-2a+x²&gt;0 ו-x²&gt;0: f′&lt;0 תמיד → <b>הפונקציה תמיד יורדת</b>, אין נקודות קיצון.</div>
+      <div class="step"><b>א.(5) קמירות:</b> f″(x) = 4a/x³. ב-x&gt;0: f″&gt;0 (∪). ב-x&lt;0: f″&lt;0 (∩). אין נקודת פיתול (x=0 מחוץ לתחום).</div>
+      <div class="step"><b>ב. סקיצה:</b> שני ענפים (x&lt;0 ו-x&gt;0), שניהם יורדים. הענף x&lt;0 מגיע מלמעלה (-∞) וקמור מלמעלה. הענף x&gt;0 מגיע מלמטה (+∞) וקמור מלמטה. חיתוכי x ב-±√(2a). אסימפטוטה אלכסונית y=−x.</div>
+      <div class="step"><b>ג. חישוב a ו-b:</b> ראו דוגמה 14 לפתרון מלא.</div>
+      <div class="answer">a = 4.5, b = 2</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bagrut Q3 -->
+<div class="bagrut">
+  <div class="bagrut-header">
+    <h3>שאלת בגרות 3 — f(x) = x/(x²−2)², g(x) = x/(x²−2)³</h3>
+    <div class="bagrut-meta">תשפ"א · 25 נקודות</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-part"><b>א.</b> עבור כל אחת מהפונקציות f(x) ו-g(x): (1) מצאו תחום. (2) מצאו אסימפטוטות. (3) הוכיחו שהן אי-זוגיות. (4) הראו שאין נקודות קיצון.</div>
+    <div class="bagrut-part"><b>ב.</b> (1) קבעו איזה גרף מתאר f(x) ואיזה מתאר g(x) מבין שני גרפים נתונים. (2) סרטו סקיצה של הפונקציה האחרת.</div>
+    <div class="bagrut-part"><b>ג.</b> נתונה h(x) כך שh′(x)=f(x). מצאו את תחומי העלייה והירידה של h(x).</div>
+    <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-solution">
+      <div class="step"><b>א.(1) תחומים:</b> f: (x²−2)²=0 → x=±√2. תחום f: x≠±√2. g: (x²−2)³=0 → x=±√2. תחום g: x≠±√2.</div>
+      <div class="step"><b>א.(2) אסימפטוטות:</b> f: אנכיות x=±√2, אופקית y=0 (דרגת מונה 1 &lt; דרגת מכנה 4). g: אנכיות x=±√2, אופקית y=0 (דרגת מונה 1 &lt; דרגת מכנה 6).</div>
+      <div class="step"><b>א.(3) אי-זוגיות:</b> f(−x)=(−x)/((−x)²−2)²=(−x)/(x²−2)²=−f(x) ✓. g(−x)=(−x)/((x²−2)³)=−g(x) ✓</div>
+      <div class="step"><b>א.(4) ללא נקודות קיצון:</b></div>
+      <div class="step">f′(x): בכלל המנה: f′(x) = [(x²−2)² − x·2(x²−2)·2x] / (x²−2)⁴ = [(x²−2)−4x²] / (x²−2)³ = (−3x²−2)/(x²−2)³</div>
+      <div class="step">המונה −3x²−2 = −(3x²+2) &lt; 0 תמיד. לכן f′=0 אין לו פתרון → אין נקודות קיצון לf.</div>
+      <div class="step">g′(x) בדומה: g′(x) = [(x²−2)³ − x·3(x²−2)²·2x] / (x²−2)⁶ = [(x²−2)−6x²] / (x²−2)⁴ = (−5x²−2)/(x²−2)⁴</div>
+      <div class="step">המונה −5x²−2 &lt; 0 תמיד → אין נקודות קיצון לg.</div>
+      <div class="step"><b>ב.</b> שתי הפונקציות אי-זוגיות, ללא קיצון, עם אסימפטוטות ב-x=±√2. ההבדל: f עם (x²−2)² במכנה (חזקה זוגית — שתי הענפים הצידיים בסימן שווה ליד כל אסימפטוטה). g עם (x²−2)³ (חזקה אי-זוגית — סימן משתנה סביב האסימפטוטות). לפי הסימנים ליד האסימפטוטות מזהים כל גרף.</div>
+      <div class="step"><b>ג. תחומי עלייה/ירידה של h(x):</b> h′(x)=f(x). h עולה כשf(x)&gt;0, יורדת כשf(x)&lt;0.</div>
+      <div class="step">סימן f(x) = סימן [x/(x²−2)²]. מכיוון ש-(x²−2)²≥0 תמיד (בתחום &gt;0), סימן f = סימן x.</div>
+      <div class="answer">h עולה כשx&gt;0 (ב-אחד מענפי f הסימן חיובי), יורדת כשx&lt;0. כלומר: h עולה ב-(0,√2)∪(√2,∞), יורדת ב-(−∞,−√2)∪(−√2,0).</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bagrut Q4 -->
+<div class="bagrut">
+  <div class="bagrut-header">
+    <h3>שאלת בגרות 4 — f(x) = xⁿ(x+1)², n&gt;1 שלם</h3>
+    <div class="bagrut-meta">תשפ"ד מועד א' · 20 נקודות</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-part"><b>א.</b> מצאו נקודות חיתוך של f(x) עם הצירים.</div>
+    <div class="bagrut-part"><b>ב.</b> מצאו תחומי חיוביות ושליליות — הבחינו בין n זוגי ל-n אי-זוגי.</div>
+    <div class="bagrut-part"><b>ג.</b> מצאו נקודות קיצון — הבחינו בין n זוגי ל-n אי-זוגי.</div>
+    <div class="bagrut-part"><b>ד.</b> נתונים 3 גרפים. אחד מתאר f(x) לn זוגי, אחד לn אי-זוגי. קבעו ונמקו.</div>
+    <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-solution">
+      <div class="step"><b>א. נקודות חיתוך עם ציר x:</b> xⁿ(x+1)²=0 → x=0 (ריבוי n) ו-x=−1 (ריבוי 2). חיתוך עם ציר y: f(0)=0. נקודות: (0,0) ו-(−1,0).</div>
+      <div class="step"><b>ב. תחומי חיוביות/שליליות:</b></div>
+      <div class="step">הגורם (x+1)² ≥ 0 תמיד, שווה 0 רק ב-x=−1. לכן סימן f = סימן xⁿ.</div>
+      <div class="step"><b>n זוגי:</b> xⁿ≥0 תמיד → f(x)≥0 תמיד (מעל ציר x, ממשיק ב-x=0 ו-x=−1)</div>
+      <div class="step"><b>n אי-זוגי:</b> xⁿ&lt;0 כשx&lt;0, xⁿ&gt;0 כשx&gt;0 → f&lt;0 ב-(−∞,−1)∪(−1,0), f&gt;0 ב-(0,∞)</div>
+      <div class="step"><b>ג. נקודות קיצון:</b> f′(x) = nxⁿ⁻¹(x+1)² + xⁿ·2(x+1) = xⁿ⁻¹(x+1)[n(x+1)+2x] = xⁿ⁻¹(x+1)((n+2)x+n)</div>
+      <div class="step">נקודות קריטיות: x=0, x=−1, x=−n/(n+2)</div>
+      <div class="step"><b>n זוגי:</b> הגורם xⁿ⁻¹=xⁿ⁻¹ (חזקה אי-זוגית) משנה סימן ב-x=0. לכן x=0 נקודת קיצון. גם x=−1 ו-x=−n/(n+2) נקודות קיצון. <b>3 נקודות קיצון.</b></div>
+      <div class="step"><b>n אי-זוגי:</b> הגורם xⁿ⁻¹ (חזקה זוגית) — סימן לא משתנה ב-x=0 → x=0 אינה נקודת קיצון. x=−1 ו-x=−n/(n+2) הן נקודות קיצון. <b>2 נקודות קיצון.</b></div>
+      <div class="step"><b>ד. זיהוי גרפים:</b></div>
+      <div class="step">גרף של n זוגי: f≥0 תמיד, 3 נקודות קיצון, ממשיק לציר x ב-x=0 וב-x=−1.</div>
+      <div class="step">גרף של n אי-זוגי: f משנה סימן ב-x=0 (חוצה), ממשיק ב-x=−1, 2 נקודות קיצון.</div>
+      <div class="answer">n זוגי: גרף שאינו יורד מתחת לציר x, עם 3 נקודות קיצון ו-2 ממשיקות. n אי-זוגי: גרף שחוצה ציר x ב-x=0, ממשיק ב-x=−1, עם 2 נקודות קיצון.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== FORMULA REFERENCE CARD ============================== -->
+<div class="ref-card">
+  <h3>📌 דף נוסחאות — פונקציה רציונלית</h3>
+  <div class="ref-grid">
+    <div class="ref-item">
+      <div class="ri-label">תחום הגדרה</div>
+      <div class="ri-formula">f(x)=p(x)/q(x): כל x שמכנה ≠ 0</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">אסימפטוטה אנכית</div>
+      <div class="ri-formula">x=a אם q(a)=0, p(a)≠0</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">אסימפטוטה אופקית</div>
+      <div class="ri-formula">deg(p)&lt;deg(q): y=0<br>deg(p)=deg(q): y=aₙ/bₙ<br>deg(p)&gt;deg(q): אין</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">אסימפטוטה אלכסונית</div>
+      <div class="ri-formula">deg(p)=deg(q)+1: חלק פולינומים</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">זוגיות</div>
+      <div class="ri-formula">f(−x)=f(x) → זוגית<br>f(−x)=−f(x) → אי-זוגית</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">כלל המנה</div>
+      <div class="ri-formula">[p/q]′ = (p′q − pq′)/q²</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">נגזרות חשובות</div>
+      <div class="ri-formula">(xⁿ)′ = nxⁿ⁻¹<br>(1/xⁿ)′ = −n/xⁿ⁺¹</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">סימן f′ → קיצון</div>
+      <div class="ri-formula">+→−: מקסימום<br>−→+: מינימום<br>אין שינוי: לא קיצון</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">קמירות</div>
+      <div class="ri-formula">f″&gt;0: ∪ (קמורה מטה)<br>f″&lt;0: ∩ (קמורה מעלה)</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">אינטגרל — פונקציה אי-זוגית</div>
+      <div class="ri-formula">∫₋ₐᵃ f(x)dx = 0</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">xⁿ(x+1)² — ריבוי</div>
+      <div class="ri-formula">ריבוי n ב-x=0, ריבוי 2 ב-x=−1</div>
+    </div>
+    <div class="ref-item">
+      <div class="ri-label">ריבוי → התנהגות ב-שורש</div>
+      <div class="ri-formula">ריבוי זוגי: ממשיק (לא חוצה)<br>ריבוי אי-זוגי: חוצה</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div style="text-align:center; padding:30px 16px; color:#7c3aed; font-size:0.88rem; background: white; border-top:2px solid #ede9fe; margin-top:10px;">
+  📊 פונקציה רציונלית ופולינום · מתמטיקה 5 יח"ל · שאלון 35571
+  <br><a href="index.html" style="color:#4c1d95; font-weight:700; text-decoration:none; margin-top:6px; display:inline-block;">← חזרה לדף הבית</a>
+</div>
+
+<script>
+  // ========== SECTION TOGGLE ==========
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+  // ========== SOLUTION TOGGLE ==========
+  function toggleSol(btn) {
+    const sol = btn.nextElementSibling;
+    sol.classList.toggle('open');
+    btn.textContent = sol.classList.contains('open') ? 'הסתר פתרון ▴' : 'הצג פתרון ▾';
+  }
+
+  // ========== BAGRUT TOGGLE ==========
+  function toggleBagrut(btn) {
+    const sol = btn.nextElementSibling;
+    sol.classList.toggle('open');
+    btn.textContent = sol.classList.contains('open') ? 'הסתר פתרון ▴' : 'הצג פתרון מלא ▾';
+  }
+
+  // ========== QUIZ ==========
+  let score = 0;
+  let answered = {};
+  const totalQ = 8;
+
+  const feedbackMessages = {
+    q1: { correct: 'נכון! x²−9=(x−3)(x+3)=0 נותן x=±3. שניהם מחוץ לתחום.', wrong: 'לא נכון. x²−9=(x−3)(x+3). המכנה מתאפס ב-x=3 וב-x=−3.' },
+    q2: { correct: 'נכון! f(−x)=(−x)³/((−x)²−1)=−x³/(x²−1)=−f(x). פונקציה אי-זוגית.', wrong: 'לא נכון. הציבו −x: (−x)³/(x²−1)=−x³/(x²−1)=−f(x). זוהי אי-זוגיות!' },
+    q3: { correct: 'נכון! f′(x)=−2x/(x²−4)². ב-x=0: f′=0, עובר מ+ ל−. f(0)=1/(−4)=−¼.', wrong: 'לא נכון. f′(x)=−2x/(x²−4)². ב-x=0 יש מקסימום מקומי, f(0)=−¼.' },
+    q4: { correct: 'נכון! f′(x)=(−x²+3a)/x⁴=0 → x²=3a → x=±√(3a).', wrong: 'לא נכון. כתבו f=x⁻¹−ax⁻³, גזרו: f′=−x⁻²+3ax⁻⁴=(−x²+3a)/x⁴. מכאן x=±√(3a).' },
+    q5: { correct: 'נכון! (x²+1)/x = x + 1/x. כשx→±∞, 1/x→0, לכן y=x היא האסימפטוטה האלכסונית.', wrong: 'לא נכון. חלקו: (x²+1)/x = x + 1/x. כשx→±∞ הגרף מתקרב ל-y=x.' },
+    q6: { correct: 'נכון! f′=2x(x+1)(2x+1). 3 נקודות קריטיות: x=0, x=−1, x=−½. כולן נקודות קיצון (הסימן משתנה).', wrong: 'לא נכון. f′=2x(x+1)(2x+1)=0 נותן x=0, x=−1, x=−½. בדקו שסימן f′ משתנה בכל אחת — כן, 3 קיצונות.' },
+    q7: { correct: 'נכון! f′(x)=−(2a+x²)/x². מכיוון ש-2a+x²>0 ו-x²>0, f′<0 תמיד.', wrong: 'לא נכון. f(x)=2a/x−x → f′=−2a/x²−1=−(2a+x²)/x²<0 תמיד. הפונקציה יורדת תמיד.' },
+    q8: { correct: 'נכון! ∫2x⁻²dx=[−2/x]₁³=−2/3−(−2)=−2/3+2=4/3.', wrong: 'לא נכון. ∫2/x²dx=∫2x⁻²dx=−2x⁻¹+C=−2/x+C. [−2/x]₁³=−2/3+2=4/3.' }
+  };
+
+  function answerQuiz(optEl, qId, isCorrect, label) {
+    if (answered[qId]) return;
+    answered[qId] = true;
+
+    const allOpts = optEl.closest('.quiz-item').querySelectorAll('.quiz-opt');
+    allOpts.forEach(o => o.style.cursor = 'default');
+
+    const fb = document.getElementById(qId + '-fb');
+
+    if (isCorrect) {
+      optEl.classList.add('correct');
+      score++;
+      fb.textContent = '✓ ' + feedbackMessages[qId].correct;
+      fb.className = 'quiz-feedback show correct-fb';
+    } else {
+      optEl.classList.add('wrong');
+      // highlight correct
+      allOpts.forEach(o => {
+        if (o.onclick && o.onclick.toString().includes('true')) {
+          o.classList.add('correct');
+        }
+      });
+      fb.textContent = '✗ ' + feedbackMessages[qId].wrong;
+      fb.className = 'quiz-feedback show wrong-fb';
+    }
+
+    updateScore();
+  }
+
+  function updateScore() {
+    const total = Object.keys(answered).length;
+    document.getElementById('scoreNum').textContent = score + '/' + totalQ;
+    document.getElementById('progressBar').style.width = (score / totalQ * 100) + '%';
+  }
+</script>
+
+</body>
+</html>
