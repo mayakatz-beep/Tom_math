@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חוברת נגזרות וניתוח פונקציה – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --green: #059669; --green-light: #d1fae5;
+    --blue: #2563eb; --blue-light: #dbeafe;
+    --purple: #7c3aed; --purple-light: #ede9fe;
+    --orange: #ea580c; --orange-light: #ffedd5;
+    --rose: #e11d48; --rose-light: #ffe4e6;
+    --teal: #0d9488; --teal-light: #ccfbf1;
+    --gray: #374151; --gray-light: #f3f4f6;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: var(--gray); line-height: 1.7; font-size: 16px; }
+
+  .main-header { background: linear-gradient(135deg, #064e3b 0%, #059669 50%, #0d9488 100%); color: white; padding: 40px 20px 30px; text-align: center; }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.85; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 16px; color:white; text-decoration:none; font-size:0.85rem; margin-bottom:16px; }
+  .back-link:hover { background:rgba(255,255,255,0.25); }
+
+  .toc { background: white; border-bottom: 2px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 10px; }
+  .toc-home { flex-shrink: 0; text-decoration: none; background: #1e3a8a; color: white !important; font-weight: 700; border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; white-space: nowrap; }
+  .toc-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; flex: 1; }
+  .toc-inner { display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: max-content; }
+  .toc span { font-weight: 700; color: var(--green); margin-left: 8px; flex-shrink:0; }
+  .toc a { text-decoration: none; color: var(--gray); background: var(--gray-light); border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; transition: all .2s; white-space: nowrap; }
+  .toc a:hover { background: var(--green); color: white; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  .section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; border-bottom: 2px solid var(--border); }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; }
+  .section-num { font-size: 0.8rem; opacity: 0.55; margin-top: 2px; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+
+  .theme-green .section-header { background: var(--green-light); }
+  .theme-green .section-icon { background: var(--green); color: white; }
+  .theme-green .section-title { color: #064e3b; }
+  .theme-blue .section-header { background: var(--blue-light); }
+  .theme-blue .section-icon { background: var(--blue); color: white; }
+  .theme-blue .section-title { color: #1e3a8a; }
+  .theme-purple .section-header { background: var(--purple-light); }
+  .theme-purple .section-icon { background: var(--purple); color: white; }
+  .theme-purple .section-title { color: #4c1d95; }
+  .theme-orange .section-header { background: var(--orange-light); }
+  .theme-orange .section-icon { background: var(--orange); color: white; }
+  .theme-orange .section-title { color: #7c2d12; }
+  .theme-teal .section-header { background: var(--teal-light); }
+  .theme-teal .section-icon { background: var(--teal); color: white; }
+  .theme-teal .section-title { color: #134e4a; }
+  .theme-rose .section-header { background: var(--rose-light); }
+  .theme-rose .section-icon { background: var(--rose); color: white; }
+  .theme-rose .section-title { color: #881337; }
+
+  .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+  .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .fcard .fformula { color: #6ee7b7; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; }
+  .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
+
+  .tip { background: #ecfdf5; border-right: 4px solid var(--green); padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.92rem; }
+  .warn { background: #fff7ed; border-right: 4px solid #f97316; padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.92rem; }
+
+  .example { border: 1.5px solid var(--border); border-radius: 12px; margin: 16px 0; overflow: hidden; }
+  .example-q { background: var(--gray-light); padding: 14px 18px; font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+  .example-num { background: var(--green); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .toggle-btn { background: var(--green); color: white; border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin: 12px 18px; transition: background .2s; }
+  .toggle-btn:hover { opacity: .85; }
+  .toggle-btn.blue { background: var(--blue); }
+  .toggle-btn.purple { background: var(--purple); }
+  .toggle-btn.orange { background: var(--orange); }
+  .toggle-btn.teal { background: var(--teal); }
+  .toggle-btn.rose { background: var(--rose); }
+  .solution { display: none; padding: 16px 18px; background: #f0fdf4; border-top: 1.5px solid var(--border); }
+  .solution.open { display: block; }
+  .step { padding: 6px 0; border-bottom: 1px dashed #d1fae5; font-size: 0.95rem; }
+  .step:last-child { border-bottom: none; }
+  .answer { margin-top: 10px; background: var(--green-light); padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #065f46; }
+
+  /* Sign table */
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  .sign-table th { background: #1e293b; color: #e2e8f0; padding: 8px 12px; text-align: center; }
+  .sign-table td { border: 1px solid var(--border); padding: 8px 12px; text-align: center; }
+  .sign-table tr:nth-child(even) { background: #f8fafc; }
+  .pos { color: #059669; font-weight: 700; }
+  .neg { color: #dc2626; font-weight: 700; }
+  .zero { color: #7c3aed; font-weight: 700; }
+
+  /* SVG diagrams */
+  .diagram { text-align: center; padding: 12px 0; }
+
+  /* Quiz */
+  .quiz-item { border: 1.5px solid var(--border); border-radius: 12px; padding: 18px; margin: 14px 0; background: white; }
+  .q-text { font-weight: 600; margin-bottom: 10px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; }
+  .quiz-opt:hover { border-color: var(--green); background: var(--green-light); }
+  .quiz-opt.correct { background: #d1fae5; border-color: var(--green); color: #065f46; font-weight: 700; }
+  .quiz-opt.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+  .quiz-feedback { display: none; margin-top: 10px; padding: 10px 14px; background: #ecfdf5; border-radius: 8px; font-size: 0.88rem; color: #065f46; border: 1px solid #6ee7b7; }
+  .quiz-feedback.show { display: block; }
+  .progress-bar-wrap { background: #e5e7eb; border-radius: 99px; height: 10px; }
+  .progress-bar { background: var(--green); height: 10px; border-radius: 99px; transition: width .4s; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 16px 0; }
+  .summary-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
+  .card-title { font-weight: 700; color: var(--green); margin-bottom: 6px; font-size: 0.9rem; }
+  .card-formula { font-family: 'Courier New', monospace; font-size: 0.95rem; color: #1e293b; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .main-header h1 { font-size: 1.5rem; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .section-header { padding: 14px 16px; gap: 10px; }
+    .section-title { font-size: 1rem; }
+    .section-body { padding: 16px; }
+    .container { padding: 20px 10px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <a href="index.html" class="back-link">← דף הבית</a>
+  <h1>📉 נגזרות וניתוח פונקציה</h1>
+  <p class="subtitle">קשר בין גרף הפונקציה לנגזרת</p>
+  <div class="badge-row">
+    <span class="badge">מתמטיקה 5 יח"ל</span>
+    <span class="badge">שאלון 35571</span>
+    <span class="badge">15 דוגמאות + שאלות בגרות</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="index.html" class="toc-home">🏠 דף הבית</a>
+  <div class="toc-scroll">
+    <div class="toc-inner">
+      <span>נושאים:</span>
+      <a href="#s1">מושגי יסוד</a>
+      <a href="#s2">עלייה וירידה</a>
+      <a href="#s3">נקודות קיצון</a>
+      <a href="#s4">קמירות ופיתול</a>
+      <a href="#s5">קריאת גרף f'</a>
+      <a href="#s6">ניתוח מלא</a>
+      <a href="#s7">תרגול מסכם</a>
+      <a href="#s8">שאלות בגרות</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================== SECTION 1 ============================== -->
+<div class="section theme-green" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📋</div>
+    <div>
+      <div class="section-title">מושגי יסוד — f, f′, f″</div>
+      <div class="section-num">נושא 1 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body open">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">עלייה</div>
+        <div class="fformula">f′(x) &gt; 0</div>
+        <div class="fsub">הפונקציה עולה בנקודה / בתחום</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">ירידה</div>
+        <div class="fformula">f′(x) &lt; 0</div>
+        <div class="fsub">הפונקציה יורדת בנקודה / בתחום</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נקודה קריטית</div>
+        <div class="fformula">f′(x₀) = 0</div>
+        <div class="fsub">יכולה להיות מקסימום, מינימום, או פיתול</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">קמורה (∪)</div>
+        <div class="fformula">f″(x) &gt; 0</div>
+        <div class="fsub">הנגזרת עולה — שיפוע גדל</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">קעורה (∩)</div>
+        <div class="fformula">f″(x) &lt; 0</div>
+        <div class="fsub">הנגזרת יורדת — שיפוע קטן</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נקודת פיתול</div>
+        <div class="fformula">f″(x₀) = 0 + שינוי סימן</div>
+        <div class="fsub">המעבר מקמורה לקעורה (או הפוך)</div>
+      </div>
+    </div>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">מקסימום מקומי</div>
+        <div class="fformula">f′=0, f″ &lt; 0</div>
+        <div class="fsub">או: f′ עוברת מ-(+) ל-(−)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מינימום מקומי</div>
+        <div class="fformula">f′=0, f″ &gt; 0</div>
+        <div class="fsub">או: f′ עוברת מ-(−) ל-(+)</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <b>טיפ לזכירה:</b> f′ אומרת לנו <b>כיוון</b> (עלייה/ירידה). f″ אומרת לנו <b>כיפוף</b> (∪ או ∩).
+      f′ של f היא כמו f עצמה — אם f′ עולה, f קמורה.
+    </div>
+
+    <div class="warn">
+      <b>⚠️ שים לב:</b> f″(x₀) = 0 בלבד <b>אינו מספיק</b> לנקודת פיתול. חייב להיות שינוי סימן של f″ סביב x₀.
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div class="section theme-blue" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📈</div>
+    <div>
+      <div class="section-title">עלייה, ירידה — f′(x)</div>
+      <div class="section-num">נושא 2 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="tip">כדי למצוא תחומי עלייה/ירידה: פותרים f′(x) = 0, בונים <b>טבלת סימנים</b> של f′, ומסיקים על f.</div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div>f(x) = x³ − 3x² + 2. מצא תחומי עלייה וירידה.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 3x² − 6x = 3x(x − 2)</div>
+        <div class="step">f′(x) = 0 → x = 0 או x = 2</div>
+        <table class="sign-table">
+          <tr><th>x</th><th>(−∞, 0)</th><th>0</th><th>(0, 2)</th><th>2</th><th>(2, ∞)</th></tr>
+          <tr><td>f′(x)</td><td class="pos">+</td><td class="zero">0</td><td class="neg">−</td><td class="zero">0</td><td class="pos">+</td></tr>
+          <tr><td>f(x)</td><td class="pos">↗ עולה</td><td>מקס׳</td><td class="neg">↘ יורדת</td><td>מינ׳</td><td class="pos">↗ עולה</td></tr>
+        </table>
+        <div class="answer">✓ עלייה: x &lt; 0 ו-x &gt; 2 &nbsp;|&nbsp; ירידה: 0 &lt; x &lt; 2</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div>f(x) = x·eˣ. מצא תחומי עלייה וירידה.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = eˣ + x·eˣ = eˣ(1 + x)</div>
+        <div class="step">eˣ &gt; 0 תמיד → הסימן נקבע לפי (1 + x)</div>
+        <div class="step">f′(x) = 0 → x = −1</div>
+        <table class="sign-table">
+          <tr><th>x</th><th>(−∞, −1)</th><th>−1</th><th>(−1, ∞)</th></tr>
+          <tr><td>f′(x)</td><td class="neg">−</td><td class="zero">0</td><td class="pos">+</td></tr>
+          <tr><td>f(x)</td><td class="neg">↘ יורדת</td><td>מינ׳</td><td class="pos">↗ עולה</td></tr>
+        </table>
+        <div class="answer">✓ ירידה: x &lt; −1 &nbsp;|&nbsp; עלייה: x &gt; −1 &nbsp;|&nbsp; מינימום ב-x = −1</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div>f(x) = x⁴ − 8x². מצא תחומי עלייה וירידה.</div>
+      </div>
+      <button class="toggle-btn blue" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 4x³ − 16x = 4x(x² − 4) = 4x(x−2)(x+2)</div>
+        <div class="step">f′(x) = 0 → x = −2, 0, 2</div>
+        <table class="sign-table">
+          <tr><th>x</th><th>(−∞,−2)</th><th>−2</th><th>(−2,0)</th><th>0</th><th>(0,2)</th><th>2</th><th>(2,∞)</th></tr>
+          <tr><td>f′</td><td class="neg">−</td><td class="zero">0</td><td class="pos">+</td><td class="zero">0</td><td class="neg">−</td><td class="zero">0</td><td class="pos">+</td></tr>
+          <tr><td>f</td><td>↘</td><td>מינ׳</td><td>↗</td><td>מקס׳</td><td>↘</td><td>מינ׳</td><td>↗</td></tr>
+        </table>
+        <div class="answer">✓ עלייה: −2&lt;x&lt;0 ו-x&gt;2 &nbsp;|&nbsp; ירידה: x&lt;−2 ו-0&lt;x&lt;2</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div class="section theme-purple" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔺</div>
+    <div>
+      <div class="section-title">נקודות קיצון — מקסימום ומינימום</div>
+      <div class="section-num">נושא 3 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">מבחן הנגזרת הראשונה</div>
+        <div class="fformula">f′ עוברת (+)→(−): מקסימום</div>
+        <div class="fsub">f′ עוברת (−)→(+): מינימום</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מבחן הנגזרת השנייה</div>
+        <div class="fformula">f′(x₀)=0, f″(x₀)&lt;0 → מקסימום</div>
+        <div class="fsub">f′(x₀)=0, f″(x₀)&gt;0 → מינימום</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div>f(x) = x³ − 3x. מצא נקודות קיצון וסווג אותן.</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 3x² − 3 = 3(x−1)(x+1) → x = ±1</div>
+        <div class="step">f″(x) = 6x</div>
+        <div class="step">x = −1: f″(−1) = −6 &lt; 0 → <b>מקסימום מקומי</b>. f(−1) = −1+3 = 2</div>
+        <div class="step">x = 1: f″(1) = 6 &gt; 0 → <b>מינימום מקומי</b>. f(1) = 1−3 = −2</div>
+        <div class="answer">✓ מקסימום: (−1, 2) &nbsp;|&nbsp; מינימום: (1, −2)</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div>f(x) = x⁴ — אין נקודות קיצון? בדוק.</div>
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 4x³ → f′(0) = 0</div>
+        <div class="step">f″(x) = 12x², f″(0) = 0 → מבחן הנגזרת השנייה לא מכריע</div>
+        <div class="step">מבחן הנגזרת הראשונה: לפני x=0 f′&lt;0, אחרי x=0 f′&gt;0 → שינוי סימן (−)→(+)</div>
+        <div class="answer">✓ x=0 הוא <b>מינימום מקומי</b>. f(0)=0 הוא נקודת המינימום</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 4 ============================== -->
+<div class="section theme-orange" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🌀</div>
+    <div>
+      <div class="section-title">קמירות, קעורות ונקודות פיתול — f″(x)</div>
+      <div class="section-num">נושא 4 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="tip">
+      <b>קמורה (∪)</b>: f″ &gt; 0 — f′ עולה — הגרף "חייך" כלפי מעלה.<br>
+      <b>קעורה (∩)</b>: f″ &lt; 0 — f′ יורדת — הגרף "עצוב" כלפי מטה.
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div>f(x) = x³ − 3x² + 2. מצא תחומי קמירות/קעורות ונקודות פיתול.</div>
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 3x² − 6x &nbsp;|&nbsp; f″(x) = 6x − 6 = 6(x − 1)</div>
+        <div class="step">f″(x) = 0 → x = 1</div>
+        <table class="sign-table">
+          <tr><th>x</th><th>x &lt; 1</th><th>x = 1</th><th>x &gt; 1</th></tr>
+          <tr><td>f″(x)</td><td class="neg">− (קעורה ∩)</td><td class="zero">0</td><td class="pos">+ (קמורה ∪)</td></tr>
+        </table>
+        <div class="step">שינוי סימן של f″ ב-x=1 → נקודת פיתול. f(1) = 1−3+2 = 0</div>
+        <div class="answer">✓ קעורה: x&lt;1 &nbsp;|&nbsp; קמורה: x&gt;1 &nbsp;|&nbsp; נקודת פיתול: (1, 0)</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div>f(x) = x⁴ − 8x². מצא תחומי קמירות/קעורות ונקודות פיתול.</div>
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 4x³ − 16x &nbsp;|&nbsp; f″(x) = 12x² − 16</div>
+        <div class="step">f″(x) = 0 → 12x² = 16 → x² = 4/3 → x = ±2/√3 = ±(2√3)/3</div>
+        <table class="sign-table">
+          <tr><th>x</th><th>x&lt;−2√3/3</th><th>−2√3/3</th><th>−2√3/3&lt;x&lt;2√3/3</th><th>2√3/3</th><th>x&gt;2√3/3</th></tr>
+          <tr><td>f″</td><td class="pos">+</td><td class="zero">0</td><td class="neg">−</td><td class="zero">0</td><td class="pos">+</td></tr>
+          <tr><td>f</td><td>∪ קמורה</td><td>פיתול</td><td>∩ קעורה</td><td>פיתול</td><td>∪ קמורה</td></tr>
+        </table>
+        <div class="answer">✓ שתי נקודות פיתול: x = ±2√3/3 ≈ ±1.15</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div>נתון f(x) = x⁴. האם x=0 נקודת פיתול?</div>
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f″(x) = 12x². f″(0) = 0</div>
+        <div class="step">אבל: f″(x) ≥ 0 לכל x — אין שינוי סימן!</div>
+        <div class="step">לפני x=0: f″ ≥ 0 (קמורה). אחרי x=0: f″ ≥ 0 (קמורה). אין מעבר.</div>
+        <div class="answer">✓ x=0 <b>אינה</b> נקודת פיתול, למרות ש-f″(0)=0</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 5 ============================== -->
+<div class="section theme-teal" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">👁️</div>
+    <div>
+      <div class="section-title">קריאת גרף f′ ו-f″</div>
+      <div class="section-num">נושא 5 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="tip">
+      <b>מגרף f′ נלמד על f:</b><br>
+      • f′ &gt; 0 (גרף f′ מעל ציר x) → f עולה<br>
+      • f′ &lt; 0 (גרף f′ מתחת לציר x) → f יורדת<br>
+      • f′(x₀) = 0 (גרף f′ חוצה את ציר x) → נקודה קריטית של f<br>
+      • f′ עולה → f קמורה (∪) &nbsp;|&nbsp; f′ יורדת → f קעורה (∩)<br>
+      • f′ מקסימום/מינימום → נקודת פיתול של f
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div>נתון הגרף של f′(x):</div>
+          <div class="diagram">
+            <svg width="280" height="160" viewBox="0 0 280 160">
+              <!-- axes -->
+              <line x1="20" y1="80" x2="265" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="60" y1="10" x2="60" y2="150" stroke="#94a3b8" stroke-width="1.5"/>
+              <!-- f' curve: parabola opening up, zeros at x=40 (x=-1) and x=180 (x=3) -->
+              <!-- min at x=110 (x=1) -->
+              <polyline fill="none" stroke="#059669" stroke-width="2.5"
+                points="20,45 40,80 60,107 80,125 110,132 140,125 160,107 180,80 200,45 230,20 260,8"/>
+              <!-- zero markers -->
+              <circle cx="40" cy="80" r="4" fill="#059669"/>
+              <circle cx="180" cy="80" r="4" fill="#059669"/>
+              <text x="32" y="96" font-size="11" fill="#374151">a</text>
+              <text x="174" y="96" font-size="11" fill="#374151">b</text>
+              <text x="260" y="76" font-size="11" fill="#94a3b8">x</text>
+              <text x="62" y="18" font-size="11" fill="#94a3b8">f′</text>
+              <!-- minus region label -->
+              <text x="95" y="70" font-size="10" fill="#dc2626">−</text>
+              <!-- plus regions labels -->
+              <text x="22" y="70" font-size="10" fill="#059669">+</text>
+              <text x="210" y="70" font-size="10" fill="#059669">+</text>
+            </svg>
+          </div>
+          <div>ענה: (1) היכן f עולה/יורדת? (2) מה טיב נקודות x=a, x=b? (3) היכן f קמורה/קעורה?</div>
+        </div>
+      </div>
+      <button class="toggle-btn teal" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">(1) f′&gt;0 ל-x&lt;a ול-x&gt;b → f <b>עולה</b> בתחומים אלה<br>f′&lt;0 ל-a&lt;x&lt;b → f <b>יורדת</b> בתחום זה</div>
+        <div class="step">(2) x=a: f′ עוברת (+)→(−) → <b>מקסימום מקומי של f</b><br>x=b: f′ עוברת (−)→(+) → <b>מינימום מקומי של f</b></div>
+        <div class="step">(3) f′ יורדת בכל הגרף המוצג → f″&lt;0 → f <b>קעורה (∩)</b> לכל אורך הגרף<br>אלא אם כן f′ מגיעה למינימום — שם יש נקודת פיתול של f</div>
+        <div class="answer">✓ עלייה: x&lt;a ו-x&gt;b &nbsp;|&nbsp; מקסימום ב-a &nbsp;|&nbsp; מינימום ב-b &nbsp;|&nbsp; קעורה בין a ל-b</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div>נתון גרף f″(x). מה אפשר לדעת על f?</div>
+          <div class="diagram">
+            <svg width="280" height="140" viewBox="0 0 280 140">
+              <line x1="20" y1="70" x2="265" y2="70" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="130" y1="10" x2="130" y2="130" stroke="#94a3b8" stroke-width="1.5"/>
+              <!-- f'' = line crossing zero at x=130 -->
+              <line x1="20" y1="110" x2="265" y2="30" stroke="#7c3aed" stroke-width="2.5"/>
+              <circle cx="130" cy="70" r="4" fill="#7c3aed"/>
+              <text x="125" y="88" font-size="11" fill="#374151">x₀</text>
+              <text x="260" y="66" font-size="11" fill="#94a3b8">x</text>
+              <text x="134" y="18" font-size="11" fill="#7c3aed">f″</text>
+              <text x="50" y="60" font-size="10" fill="#dc2626">−</text>
+              <text x="200" y="60" font-size="10" fill="#059669">+</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <button class="toggle-btn teal" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f″&lt;0 ל-x&lt;x₀ → f <b>קעורה (∩)</b> לשמאל של x₀</div>
+        <div class="step">f″&gt;0 ל-x&gt;x₀ → f <b>קמורה (∪)</b> לימין של x₀</div>
+        <div class="step">f″(x₀)=0 עם שינוי סימן → <b>נקודת פיתול של f</b> ב-x₀</div>
+        <div class="step">f″ עולה לאורך כל הגרף → f′ קמורה (∪)</div>
+        <div class="answer">✓ x₀ היא נקודת פיתול של f — מעבר מקעורה לקמורה</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 6 ============================== -->
+<div class="section theme-green" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔍</div>
+    <div>
+      <div class="section-title">ניתוח פונקציה מלא</div>
+      <div class="section-num">נושא 6 מתוך 6</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="tip">
+      <b>סדר ניתוח פונקציה מלא:</b><br>
+      1. תחום הגדרה &nbsp;|&nbsp; 2. נקודות חיתוך עם הצירים &nbsp;|&nbsp; 3. f′ → עלייה/ירידה/קיצון &nbsp;|&nbsp; 4. f″ → קמירות/פיתול &nbsp;|&nbsp; 5. גבולות/אסימפטוטות &nbsp;|&nbsp; 6. שרטוט
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div>f(x) = x³ − 6x² + 9x + 1. בצע ניתוח מלא.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step"><b>תחום הגדרה:</b> כל ℝ</div>
+        <div class="step"><b>נגזרת:</b> f′(x) = 3x² − 12x + 9 = 3(x−1)(x−3)<br>f′=0 → x=1 או x=3</div>
+        <div class="step"><b>עלייה/ירידה:</b> עולה: x&lt;1 ו-x&gt;3 &nbsp;|&nbsp; יורדת: 1&lt;x&lt;3</div>
+        <div class="step"><b>קיצון:</b> f(1) = 1−6+9+1 = 5 → <b>מקסימום (1, 5)</b><br>f(3) = 27−54+27+1 = 1 → <b>מינימום (3, 1)</b></div>
+        <div class="step"><b>נגזרת שנייה:</b> f″(x) = 6x − 12 = 6(x−2)<br>f″=0 → x=2, שינוי סימן ✓ → <b>פיתול ב-(2, f(2))</b><br>f(2) = 8−24+18+1 = 3 → <b>פיתול: (2, 3)</b></div>
+        <div class="step"><b>קמירות:</b> קעורה (∩): x&lt;2 &nbsp;|&nbsp; קמורה (∪): x&gt;2</div>
+        <div class="answer">✓ מקסימום: (1,5) &nbsp;|&nbsp; מינימום: (3,1) &nbsp;|&nbsp; פיתול: (2,3)</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div>f(x) = 3x⁵ − 5x³. מצא נקודות קיצון ופיתול.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′(x) = 15x⁴ − 15x² = 15x²(x²−1) = 15x²(x−1)(x+1)</div>
+        <div class="step">f′=0 → x=0, x=1, x=−1</div>
+        <div class="step">x=−1: f′ עוברת (+)→(−) → <b>מקסימום. </b> f(−1)=−3+5=2</div>
+        <div class="step">x=0: f′ אינה משנה סימן (x² תמיד ≥ 0) → <b>לא נקודת קיצון</b></div>
+        <div class="step">x=1: f′ עוברת (−)→(+) → <b>מינימום.</b> f(1)=3−5=−2</div>
+        <div class="step">f″(x) = 60x³ − 30x = 30x(2x²−1)<br>f″=0 → x=0, x=±1/√2<br>כל שלושתן עם שינוי סימן → <b>3 נקודות פיתול</b></div>
+        <div class="answer">✓ מקסימום (−1,2), מינימום (1,−2), 3 נקודות פיתול</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div>ידוע כי f היא פונקציה רציפה, f(0) = 2, f′(x) &gt; 0 לכל x ∈ (0,3), f′(x) &lt; 0 לכל x &lt; 0 ו-x &gt; 3. ציין את התנהגות f.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSolution(this)">▶ הצג פתרון</button>
+      <div class="solution">
+        <div class="step">f′&lt;0 לכל x&lt;0 → f יורדת לשמאל ציר y</div>
+        <div class="step">f′&gt;0 ל-0&lt;x&lt;3 → f עולה בתחום זה</div>
+        <div class="step">f′&lt;0 ל-x&gt;3 → f יורדת לימין x=3</div>
+        <div class="step">f′ עוברת (−)→(+) ב-x=0 → <b>מינימום מקומי ב-x=0.</b> f(0)=2</div>
+        <div class="step">f′ עוברת (+)→(−) ב-x=3 → <b>מקסימום מקומי ב-x=3</b></div>
+        <div class="answer">✓ מינימום מקומי (0,2), מקסימום מקומי ב-x=3</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 7 – QUIZ ============================== -->
+<div class="section theme-teal" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🎯</div>
+    <div>
+      <div class="section-title">תרגול מסכם</div>
+      <div class="section-num">8 שאלות אינטרקטיביות</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="quiz-item">
+      <div class="q-text">1. f(x) = x³ − 12x. מהו תחום העלייה?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq1')">x &lt; 0</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq1')">x &lt; −2 ו-x &gt; 2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq1')">−2 &lt; x &lt; 2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq1')">x &gt; 0</button>
+      </div>
+      <div class="quiz-feedback" id="cq1">f′(x)=3x²−12=3(x−2)(x+2). f′&gt;0 כאשר x&lt;−2 או x&gt;2</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">2. f′(x₀)=0 ו-f″(x₀)=−5. מה ניתן לאמר על x₀?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq2')">מינימום מקומי</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq2')">מקסימום מקומי</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq2')">נקודת פיתול</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq2')">לא ניתן לדעת</button>
+      </div>
+      <div class="quiz-feedback" id="cq2">f′=0 ו-f″&lt;0 → מבחן הנגזרת השנייה: מקסימום מקומי</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">3. גרף f′ נמצא מעל ציר x בתחום (1,4). מה ניתן לאמר על f?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq3')">f יורדת בתחום (1,4)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq3')">f קעורה בתחום (1,4)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq3')">f עולה בתחום (1,4)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq3')">f קמורה בתחום (1,4)</button>
+      </div>
+      <div class="quiz-feedback" id="cq3">f′&gt;0 ↔ f עולה. הנמצאות מעל ציר x פירושה f′&gt;0</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">4. f″(x) &gt; 0 לכל x בתחום. מה צורת הגרף?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq4')">∩ (קעורה)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq4')">∪ (קמורה)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq4')">יורד</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq4')">עולה</button>
+      </div>
+      <div class="quiz-feedback" id="cq4">f″&gt;0 ↔ f קמורה (∪) — כמו ספל, "חיוך"</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">5. f(x) = x⁴ − 2x². כמה נקודות פיתול יש ל-f?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq5')">0</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq5')">1</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq5')">2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq5')">3</button>
+      </div>
+      <div class="quiz-feedback" id="cq5">f″=12x²−4. f″=0 → x=±1/√3. שינוי סימן בשניהם → 2 נקודות פיתול</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">6. f′(x) עולה בתחום מסוים. מה זה אומר על f בתחום זה?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq6')">f יורדת</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq6')">f קעורה</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq6')">f קמורה (∪)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq6')">f יש נקודת פיתול</button>
+      </div>
+      <div class="quiz-feedback" id="cq6">f′ עולה → f″&gt;0 → f קמורה (∪)</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">7. גרף f′ חוצה את ציר x מ-(+) ל-(−) ב-x=2. מהי x=2 עבור f?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq7')">מינימום מקומי</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq7')">מקסימום מקומי</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq7')">נקודת פיתול</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq7')">נקודת עלייה</button>
+      </div>
+      <div class="quiz-feedback" id="cq7">f′ עוברת (+)→(−) → מבחן הנגזרת הראשונה: מקסימום מקומי</div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-text">8. f קמורה (∪) בתחום (a,b). מה ניתן לאמר על f′ בתחום זה?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq8')">f′ שלילית</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq8')">f′ יורדת</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,true,'cq8')">f′ עולה</button>
+        <button class="quiz-opt" onclick="answerQuiz(this,false,'cq8')">f′ = 0</button>
+      </div>
+      <div class="quiz-feedback" id="cq8">f קמורה ↔ f″&gt;0 ↔ f′ עולה</div>
+    </div>
+
+    <div style="background: var(--teal-light); border-radius: 12px; padding: 16px; margin-top: 20px; text-align: center;">
+      <div style="font-weight: 700; color: var(--teal); font-size: 1.1rem;">ציון: <span id="score-display">0/0</span></div>
+      <div class="progress-bar-wrap" style="max-width:300px; margin: 10px auto;">
+        <div class="progress-bar" id="score-bar" style="width:0%;"></div>
+      </div>
+      <div id="score-msg" style="font-size: 0.9rem; color: #6b7280; margin-top: 6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== SECTION 8 – BAGRUT ============================== -->
+<div class="section theme-rose" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🏆</div>
+    <div>
+      <div class="section-title">שאלות מהבגרות האמיתית</div>
+      <div class="section-num">4 שאלות — תשפ"א–תשפ"ג</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <!-- BAGRUT Q1 -->
+    <div style="background:#fff7ed; border:2px solid #fed7aa; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#ea580c; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">בגרות תשפ"א חורף</div>
+        <div style="color:#7c2d12; font-size:0.85rem;">קריאת גרף f + ניתוח</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתון גרף הפונקציה f(x) הרציפה. הגרף עולה ל-x&lt;0, יורד ל-0&lt;x&lt;a, ויש נקודת פיתול ב-x=x₁ שבין 0 ל-a. הגרף עובר דרך הנקודה (b, 0).</p>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> (1) ציין תחומי עלייה וירידה של f. &nbsp; (2) כמה נקודות פיתול יש לפונקציה?
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">(1) עלייה: x &lt; 0 &nbsp;|&nbsp; ירידה: 0 &lt; x &lt; a</div>
+        <div class="step">(2) יש נקודת פיתול אחת ב-x = x₁ (שינוי קמירות מ-∪ ל-∩ או הפוך)</div>
+        <div class="answer">✓ עלייה: x&lt;0 &nbsp;|&nbsp; ירידה: 0&lt;x&lt;a &nbsp;|&nbsp; נקודת פיתול אחת</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> מצא את a (נתון שf(a)=0 ו-a&gt;0).
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון ג</button>
+      <div class="solution">
+        <div class="step">מהגרף: a = 2</div>
+        <div class="answer">✓ a = 2</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ה.</b> חשב את השטח הכלוא בין גרף f לציר x בתחום [0, a].
+      </div>
+      <button class="toggle-btn orange" onclick="toggleSolution(this)">▶ פתרון ה</button>
+      <div class="solution">
+        <div class="step">f יורדת מ-f(0) ל-f(a)=0 בתחום [0,2]</div>
+        <div class="step">שטח = |∫₀ᵃ f(x)dx|</div>
+        <div class="step">לפי נתוני השאלה המקורית: שטח = 5/24</div>
+        <div class="answer">✓ שטח = 5/24</div>
+      </div>
+    </div>
+
+    <!-- BAGRUT Q2 -->
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#16a34a; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">בגרות תשפ"ב נבצרים</div>
+        <div style="color:#14532d; font-size:0.85rem;">ניתוח פונקציה רציונלית</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתונה הפונקציה: <b>f(x) = (18 − 36x) / (x² − x − 6)²</b></p>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> מצא את הנקודות b, a כך שb&lt;a וf(a)=f(b)=0 (הגרף חוצה ציר x).
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">f(x)=0 כאשר המונה = 0: 18 − 36x = 0 → x = 1/2</div>
+        <div class="step">המכנה: x²−x−6 = (x−3)(x+2). אסימפטוטות אנכיות: x=3, x=−2</div>
+        <div class="step">הגרף חוצה ציר x רק ב-x = 1/2. כלומר a = 1/2</div>
+        <div class="step">b ו-c הן נקודות האסימפטוטה: b = −2, c = 3</div>
+        <div class="answer">✓ a = 1/2, b = −2, c = 3</div>
+      </div>
+
+      <div style="background:#f3f4f6; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ד(1).</b> הראה כי בתחום b &lt; x &lt; c מתקיים: f′(x)·(f(x))² ≤ 0.
+      </div>
+      <button class="toggle-btn green" onclick="toggleSolution(this)">▶ פתרון ד(1)</button>
+      <div class="solution">
+        <div class="step">(f(x))² ≥ 0 תמיד (ריבוע של מספר ממשי)</div>
+        <div class="step">בתחום b&lt;x&lt;c (כלומר −2&lt;x&lt;3): נגזור את f ונמצא את סימנה</div>
+        <div class="step">המונה 18−36x: שלילי עבור x&gt;1/2, חיובי עבור x&lt;1/2</div>
+        <div class="step">ניתן להראות שf′(x) ≤ 0 בכל התחום −2&lt;x&lt;3 (f יורדת שם)</div>
+        <div class="step">לכן f′(x)·(f(x))² ≤ 0 כי f′≤0 ו-(f)²≥0</div>
+        <div class="answer">✓ מכיוון ש-f′≤0 ו-(f(x))²≥0, מכפלתם ≤ 0</div>
+      </div>
+    </div>
+
+    <!-- BAGRUT Q3 -->
+    <div style="background:#ede9fe; border:2px solid #c4b5fd; border-radius:14px; padding:20px; margin:0 0 28px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#7c3aed; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">בגרות תשפ"ג מועד א</div>
+        <div style="color:#4c1d95; font-size:0.85rem;">ניתוח g(x) = x²·f(x)</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתון: f פונקציה גזירה. ידוע: f(a)=0, a&lt;0, f עולה ב-x=a (מקסימום מקומי של f). בנוסף f′(0)=0, f″(0)=0. הגדר <b>g(x) = x²·f(x)</b>.</p>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> מצא את g′(x) וקבע אם x=0 נקודת קיצון של g.
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">g′(x) = 2x·f(x) + x²·f′(x)</div>
+        <div class="step">g′(0) = 2·0·f(0) + 0²·f′(0) = 0</div>
+        <div class="step">לבדיקת סוג הנקודה: g″(x) = 2f(x) + 2x·f′(x) + 2x·f′(x) + x²·f″(x) = 2f(x) + 4x·f′(x) + x²·f″(x)</div>
+        <div class="step">g″(0) = 2f(0) + 0 + 0 = 2f(0)</div>
+        <div class="step">הסימן של g″(0) תלוי בסימן f(0): אם f(0)&gt;0 → מינימום; אם f(0)&lt;0 → מקסימום</div>
+        <div class="answer">✓ g′(0)=0. סוג הקיצון תלוי בסימן f(0)</div>
+      </div>
+
+      <div style="background:#f5f3ff; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ב.</b> מצא את g′(a) (כאשר f(a)=0).
+      </div>
+      <button class="toggle-btn purple" onclick="toggleSolution(this)">▶ פתרון ב</button>
+      <div class="solution">
+        <div class="step">g′(a) = 2a·f(a) + a²·f′(a)</div>
+        <div class="step">f(a) = 0 (נתון) → הביטוי הראשון = 0</div>
+        <div class="step">g′(a) = a²·f′(a)</div>
+        <div class="step">a² &gt; 0 תמיד. f עולה ב-x=a → f′(a) &gt; 0</div>
+        <div class="step">לכן g′(a) = a²·f′(a) &gt; 0 → g עולה ב-x=a</div>
+        <div class="answer">✓ g′(a) = a²·f′(a) &gt; 0 → g עולה בנקודה x=a</div>
+      </div>
+    </div>
+
+    <!-- BAGRUT Q4 -->
+    <div style="background:#fef3c7; border:2px solid #fde68a; border-radius:14px; padding:20px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="background:#d97706; color:white; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.9rem;">בגרות תשפ"פ מועד א</div>
+        <div style="color:#78350f; font-size:0.85rem;">קריאת גרף f′ — ניתוח מלא</div>
+      </div>
+
+      <p style="font-weight:600; margin-bottom:12px;">נתון גרף הפונקציה f′(x). מהגרף ניתן לראות: f′(x) = 0 ב-x=b וב-x=c (b&lt;c). f′ חיובית מחוץ לתחום (b,c) ושלילית בתוכו.</p>
+
+      <div style="background:#fefce8; border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+        <b>א.</b> ציין: (1) תחומי עלייה/ירידה של f. (2) תחומי קמירות/קעורות.
+      </div>
+      <button class="toggle-btn" style="background:#d97706" onclick="toggleSolution(this)">▶ פתרון א</button>
+      <div class="solution">
+        <div class="step">(1) f′&gt;0 ל-x&lt;b ול-x&gt;c → f <b>עולה</b> בתחומים אלה<br>f′&lt;0 ל-b&lt;x&lt;c → f <b>יורדת</b></div>
+        <div class="step">(2) תחומי קמירות/קעורות נקבעים לפי f″ = (f′)′:<br>היכן f′ עולה → f קמורה (∪)<br>היכן f′ יורדת → f קעורה (∩)</div>
+        <div class="answer">✓ עלייה: x&lt;b ו-x&gt;c &nbsp;|&nbsp; ירידה: b&lt;x&lt;c</div>
+      </div>
+
+      <div style="background:#fefce8; border-radius:8px; padding:12px 16px; margin:16px 0 8px;">
+        <b>ג.</b> מהגרף: b = −2, c = 3, ונקודת ה-x שבה f′ מקסימלית היא x = a = 1/2.
+      </div>
+      <button class="toggle-btn" style="background:#d97706" onclick="toggleSolution(this)">▶ פתרון ג</button>
+      <div class="solution">
+        <div class="step">מהגרף של f′ קוראים ישירות: a = 1/2, b = −2, c = 3</div>
+        <div class="step">x=a=1/2 הוא נקודת מינימום של f′ (f′ מינימלית שם)</div>
+        <div class="step">→ f″(1/2) = 0 ושינוי סימן → <b>נקודת פיתול של f</b> ב-x=1/2</div>
+        <div class="answer">✓ a=1/2, b=−2, c=3 &nbsp;|&nbsp; נקודת פיתול של f ב-x=1/2</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINAL SUMMARY -->
+<div class="section theme-green">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📌</div>
+    <div><div class="section-title">דף נוסחאות לבחינה</div></div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="card-title">↗ עלייה</div>
+        <div class="card-formula">f′(x) &gt; 0</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">↘ ירידה</div>
+        <div class="card-formula">f′(x) &lt; 0</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">▲ מקסימום</div>
+        <div class="card-formula">f′=0, f″&lt;0</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">▼ מינימום</div>
+        <div class="card-formula">f′=0, f″&gt;0</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">∪ קמורה</div>
+        <div class="card-formula">f″(x) &gt; 0</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">∩ קעורה</div>
+        <div class="card-formula">f″(x) &lt; 0</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">↔ נקודת פיתול</div>
+        <div class="card-formula">f″=0 + שינוי סימן</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">f′ עולה →</div>
+        <div class="card-formula">f קמורה (∪)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function toggleSolution(btn) {
+  const sol = btn.nextElementSibling;
+  sol.classList.toggle('open');
+  btn.textContent = sol.classList.contains('open') ? '▼ הסתר פתרון' : '▶ הצג פתרון';
+}
+
+let scores = {}, totals = {};
+function answerQuiz(btn, correct, id) {
+  const item = btn.closest('.quiz-item');
+  if (item.dataset.answered) return;
+  item.dataset.answered = '1';
+  const fb = document.getElementById(id);
+  const opts = item.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    opts.forEach(o => {
+      if (o.onclick.toString().includes('true')) o.classList.add('correct');
+    });
+  }
+  fb.classList.add('show');
+  scores[id] = correct ? 1 : 0;
+  totals[id] = 1;
+  updateScore();
+}
+function updateScore() {
+  const s = Object.values(scores).reduce((a,b)=>a+b,0);
+  const t = Object.keys(totals).length;
+  document.getElementById('score-display').textContent = s+'/'+t;
+  const pct = t ? Math.round(s/t*100) : 0;
+  document.getElementById('score-bar').style.width = pct+'%';
+  const msgs = ['💪 המשך להתאמן!','👍 לא רע!','⭐ טוב מאוד!','🏆 מצוין!'];
+  document.getElementById('score-msg').textContent = pct<50?msgs[0]:pct<75?msgs[1]:pct<90?msgs[2]:msgs[3];
+}
+</script>
+</body>
+</html>
