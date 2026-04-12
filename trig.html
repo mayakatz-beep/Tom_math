@@ -28,7 +28,9 @@
   .toc { display:flex; align-items:center; gap:10px; background:white; border-bottom:2px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
   .toc-home { flex-shrink:0; background:var(--dark); color:white !important; text-decoration:none; border-radius:20px; padding:4px 12px; font-size:0.85rem; font-weight:700; white-space:nowrap; }
   .toc-home:hover { background:var(--primary); }
-  .toc-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; flex:1; }
+  .toc-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; flex:1; scrollbar-width:thin; scrollbar-color:rgba(0,0,0,0.2) transparent; }
+  .toc-scroll::-webkit-scrollbar { height:3px; }
+  .toc-scroll::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.2); border-radius:99px; }
   .toc-inner { display:flex; gap:8px; flex-wrap:nowrap; width:max-content; align-items:center; padding:2px 0; }
   .toc-inner span { color:#6b7280; font-size:0.82rem; flex-shrink:0; }
   .toc-inner a { color:var(--primary); text-decoration:none; font-size:0.82rem; padding:3px 10px; border-radius:20px; background:var(--vlight); white-space:nowrap; flex-shrink:0; }
@@ -50,7 +52,7 @@
   .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
   .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
   .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .fcard .fformula { color: #fdba74; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; }
+  .fcard .fformula { color: #fde047; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; }
   .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
 
   .tip { background: var(--vlight); border-right: 4px solid var(--primary); padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.92rem; }
@@ -82,7 +84,7 @@
   .quiz-item { border: 1.5px solid var(--border); border-radius: 12px; padding: 18px; margin: 14px 0; background: white; }
   .q-text { font-weight: 600; margin-bottom: 10px; font-size: 1rem; }
   .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .quiz-opt { border: 1.5px solid var(--border-std); border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; }
+  .quiz-opt { border: 1.5px solid var(--border-std); border-radius: 8px; padding: 12px 16px; min-height: 44px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; display: flex; align-items: center; gap: 8px; }
   .quiz-opt:hover { border-color: var(--primary); background: var(--vlight); }
   .quiz-opt.correct { background: #d1fae5; border-color: #059669; color: #065f46; font-weight: 700; }
   .quiz-opt.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
