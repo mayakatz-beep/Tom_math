@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>בעיות קיצון – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --rose: #e11d48;
+    --rose-dark: #9f1239;
+    --rose-med: #be123c;
+    --rose-light: #fff1f2;
+    --rose-card: #ffe4e6;
+    --rose-border: #fecdd3;
+    --rose-text: #9f1239;
+    --gray: #374151;
+    --gray-light: #f3f4f6;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff1f2; color: var(--gray); line-height: 1.7; font-size: 16px; }
+
+  .main-header { background: linear-gradient(135deg, #9f1239 0%, #e11d48 50%, #fb7185 100%); color: white; padding: 40px 20px 30px; text-align: center; }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.88; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 6px 16px; color: white; text-decoration: none; font-size: 0.85rem; margin-bottom: 16px; }
+  .back-link:hover { background: rgba(255,255,255,0.25); }
+
+  .toc { display: flex; align-items: center; gap: 10px; background: white; border-bottom: 2px solid #fecdd3; padding: 10px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(225,29,72,0.08); }
+  .toc-home { flex-shrink: 0; background: #9f1239; color: white !important; text-decoration: none; border-radius: 20px; padding: 4px 12px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+  .toc-home:hover { background: #e11d48; }
+  .toc-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; flex: 1; }
+  .toc-inner { display: flex; gap: 8px; flex-wrap: nowrap; width: max-content; align-items: center; padding: 2px 0; }
+  .toc-inner span { color: #6b7280; font-size: 0.82rem; flex-shrink: 0; }
+  .toc-inner a { color: #e11d48; text-decoration: none; font-size: 0.82rem; padding: 3px 10px; border-radius: 20px; background: #fff1f2; white-space: nowrap; flex-shrink: 0; }
+  .toc-inner a:hover { background: #ffe4e6; }
+  @media(max-width:600px) { .toc { padding: 8px 10px; gap: 6px; } }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  .section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(225,29,72,0.08); border: 1px solid #ffe4e6; }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; border-bottom: 2px solid var(--rose-border); background: var(--rose-card); }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; background: var(--rose); color: white; }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; color: #9f1239; }
+  .section-num { font-size: 0.8rem; opacity: 0.6; margin-top: 2px; color: #6b7280; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; color: #e11d48; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+
+  .theory-box { background: #fff1f2; border-right: 4px solid #e11d48; padding: 14px 18px; border-radius: 8px; margin: 14px 0; }
+  .theory-box h4 { color: #9f1239; font-size: 0.95rem; margin-bottom: 8px; }
+  .theory-box ul { margin-right: 18px; font-size: 0.93rem; }
+  .theory-box li { padding: 3px 0; }
+  .tip { background: #f0fdf4; border-right: 4px solid #059669; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem; }
+  .warn { background: #fffbeb; border-right: 4px solid #f59e0b; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem; }
+  .important { background: #fef2f2; border-right: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem; }
+
+  .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+  .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .fcard .fformula { color: #fda4af; font-weight: 700; font-family: 'Courier New', monospace; font-size: 0.97rem; }
+  .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
+
+  .example { border: 1.5px solid #fecdd3; border-radius: 12px; margin: 16px 0; overflow: hidden; }
+  .example-q { background: #fff1f2; padding: 14px 18px; font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+  .example-num { background: #e11d48; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .example-text { flex: 1; }
+  .toggle-btn { background: #e11d48; color: white; border: none; border-radius: 8px; padding: 7px 18px; cursor: pointer; font-size: 0.88rem; font-weight: 600; margin: 10px 18px 12px; transition: background .2s; }
+  .toggle-btn:hover { background: #be123c; }
+  .solution { display: none; padding: 16px 18px; background: #fffbfb; border-top: 1.5px solid #fecdd3; }
+  .solution.open { display: block; }
+  .step { padding: 5px 0; border-bottom: 1px dashed #fecdd3; font-size: 0.93rem; }
+  .step:last-child { border-bottom: none; }
+  .answer { margin-top: 10px; background: #ffe4e6; padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #9f1239; }
+  .math { font-family: 'Courier New', monospace; font-weight: 600; color: #be123c; font-size: 0.95rem; }
+
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; }
+  .sign-table th { background: #9f1239; color: #fecdd3; padding: 8px 12px; text-align: center; }
+  .sign-table td { border: 1px solid #fecdd3; padding: 8px 10px; text-align: center; background: white; }
+  .sign-table tr:nth-child(even) td { background: #fff1f2; }
+  .pos { color: #059669; font-weight: 700; font-size: 1.1rem; }
+  .neg { color: #dc2626; font-weight: 700; font-size: 1.1rem; }
+  .zero { color: #e11d48; font-weight: 700; }
+
+  .steps-numbered { counter-reset: sn; list-style: none; margin: 12px 0; }
+  .steps-numbered li { counter-increment: sn; display: flex; gap: 12px; margin: 10px 0; align-items: flex-start; font-size: 0.93rem; }
+  .steps-numbered li::before { content: counter(sn); background: #e11d48; color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+  .quiz-item { border: 1.5px solid #fecdd3; border-radius: 12px; padding: 18px; margin: 14px 0; background: white; }
+  .q-text { font-weight: 600; margin-bottom: 12px; color: #1e293b; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt { border: 1.5px solid #fecdd3; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; display: flex; align-items: center; gap: 8px; }
+  .quiz-opt:hover:not(.correct):not(.wrong) { border-color: #e11d48; background: #fff1f2; }
+  .quiz-opt.correct { background: #d1fae5; border-color: #059669; color: #065f46; font-weight: 700; }
+  .quiz-opt.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+  .quiz-opt .opt-label { font-weight: 700; color: #e11d48; min-width: 20px; }
+  .quiz-opt.correct .opt-label { color: #065f46; }
+  .quiz-opt.wrong .opt-label { color: #991b1b; }
+  .quiz-feedback { display: none; margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+  .quiz-feedback.wrong-fb { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  .score-display { background: #ffe4e6; border: 2px solid #e11d48; border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 20px; }
+  .score-num { font-size: 2rem; font-weight: 800; color: #9f1239; }
+  .score-label { color: #6b7280; font-size: 0.9rem; }
+  .progress-bar-wrap { background: #e5e7eb; border-radius: 99px; height: 10px; margin-top: 10px; }
+  .progress-bar { background: linear-gradient(90deg, #e11d48, #fb7185); height: 10px; border-radius: 99px; transition: width .4s; width: 0%; }
+
+  .bagrut { border: 2px solid #9f1239; border-radius: 16px; margin: 20px 0; overflow: hidden; }
+  .bagrut-header { background: #9f1239; color: white; padding: 14px 20px; }
+  .bagrut-header h3 { font-size: 1.05rem; font-weight: 700; }
+  .bagrut-header .bagrut-meta { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; }
+  .bagrut-body { padding: 20px; }
+  .bagrut-part { margin: 10px 0; }
+  .bagrut-part b { color: #9f1239; }
+  .bagrut-solution { display: none; margin-top: 14px; padding: 16px; background: #fff1f2; border-radius: 10px; border: 1px solid #fecdd3; }
+  .bagrut-solution.open { display: block; }
+  .bagrut-toggle { background: #9f1239; color: white; border: none; border-radius: 8px; padding: 8px 20px; cursor: pointer; font-size: 0.88rem; font-weight: 600; margin-top: 14px; transition: background .2s; }
+  .bagrut-toggle:hover { background: #e11d48; }
+
+  .ref-card { background: white; border: 2px solid #e11d48; border-radius: 16px; padding: 20px 24px; margin-top: 30px; }
+  .ref-card h3 { color: #9f1239; margin-bottom: 14px; font-size: 1.1rem; border-bottom: 2px solid #ffe4e6; padding-bottom: 8px; }
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .ref-item { background: #fff1f2; border-radius: 8px; padding: 10px 14px; }
+  .ref-item .ri-label { font-size: 0.75rem; color: #e11d48; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .ref-item .ri-formula { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #1e293b; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    .main-header h1 { font-size: 1.5rem; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .section-header { padding: 14px 16px; gap: 10px; }
+    .section-title { font-size: 1rem; }
+    .section-body { padding: 14px; }
+    .container { padding: 16px 10px 60px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <a href="index.html" class="back-link">← דף הבית</a>
+  <h1>📌 בעיות קיצון</h1>
+  <p class="subtitle">מקסימום ומינימום בעיות מציאות — שיטה שלמה</p>
+  <div class="badge-row">
+    <span class="badge">קיץ תשפ"ו</span>
+    <span class="badge">שאלון 35571</span>
+    <span class="badge">פרק א'</span>
+    <span class="badge">15 דוגמאות + שאלות בגרות</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="index.html" class="toc-home">🏠 דף הבית</a>
+  <div class="toc-scroll">
+    <div class="toc-inner">
+      <span>נושאים:</span>
+      <a href="#s1">1. שיטת 5 צעדים</a>
+      <a href="#s2">2. מלבן בעקומה</a>
+      <a href="#s3">3. שני גופים</a>
+      <a href="#s4">4. משיק ושטח</a>
+      <a href="#s5">5. גיאומטריה</a>
+      <a href="#s6">6. שתי פונקציות</a>
+      <a href="#s7">7. שאלות בגרות</a>
+      <a href="#s8">8. תרגול מסכם</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ======= SECTION 1 ======= -->
+<div class="section" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔧</div>
+    <div>
+      <div class="section-title">שיטת הפתרון הכללית — 5 צעדים</div>
+      <div class="section-num">נושא 1 מתוך 8</div>
+    </div>
+    <span class="chevron open">▼</span>
+  </div>
+  <div class="section-body open">
+
+    <div class="theory-box">
+      <h4>מה זו בעיית קיצון?</h4>
+      <ul>
+        <li>ניתנת מציאות (שטח, היקף, נפח, מרחק, רווח…)</li>
+        <li>יש לנו <b>מגבלה</b> (constraint) — קשר בין המשתנים</li>
+        <li>רוצים למצוא מקסימום או מינימום של כמות כלשהי</li>
+      </ul>
+    </div>
+
+    <p style="margin:16px 0 8px; font-weight:700; color:#9f1239; font-size:1.05rem;">5 הצעדים לפתרון כל בעיית קיצון:</p>
+    <ul class="steps-numbered">
+      <li><b>הגדר משתנה:</b> בחר משתנה אחד (בדרך כלל x או t). זיהוי "מה אני בוחר לסמן".</li>
+      <li><b>בטא את פונקציית המטרה:</b> כתוב את הכמות שרוצים למקסם/למינם כפונקציה של משתנה אחד בלבד — תוך שימוש במגבלה לביטוי כל שאר המשתנים.</li>
+      <li><b>קבע תחום:</b> מה הערכים הפיזיים/אפשריים של x? (לרוב x > 0 או 0 < x < …)</li>
+      <li><b>גזור ומצא נקודות קריטיות:</b> f'(x) = 0 ← מצא את x. בדוק שזו אכן נקודת קיצון (טבלת סימנים לf' או f'').</li>
+      <li><b>בדוק קצוות ומסקנה:</b> שים לב לקצוות התחום — האם הם מותרים? השווה ערכים. ענה על השאלה.</li>
+    </ul>
+
+    <div class="tip">💡 <b>כלל הזהב:</b> בעיית קיצון מסתיימת ב-<b>פסוק</b> — "הערך המקסימלי/מינימלי של ... הוא ... ומושג ב-x = ..."</div>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">מצא קיצון</div>
+        <div class="fformula">f'(x) = 0</div>
+        <div class="fsub">ואז בדוק סימן f' (+ → − = מקסימום)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">בדיקת מינימום</div>
+        <div class="fformula">f''(x₀) > 0 ← מינימום</div>
+        <div class="fsub">f''(x₀) &lt; 0 ← מקסימום</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">שטח מלבן</div>
+        <div class="fformula">S = a · b</div>
+        <div class="fsub">היקף P = 2(a + b)</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">שטח משולש</div>
+        <div class="fformula">S = ½ · b · h</div>
+        <div class="fsub">S = ½|x_A·y_B − x_B·y_A|</div>
+      </div>
+    </div>
+
+    <!-- Example 1 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div class="example-text">מצא שני מספרים חיוביים שסכומם 20 וכפלם מקסימלי.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>שלב 1:</b> נסמן את המספר הראשון x, אז השני = 20 − x</div>
+        <div class="step"><b>שלב 2:</b> פונקציית המטרה: P(x) = x(20−x) = 20x − x²</div>
+        <div class="step"><b>שלב 3:</b> תחום: x > 0 ו-20−x > 0 → <b>0 &lt; x &lt; 20</b></div>
+        <div class="step"><b>שלב 4:</b> P'(x) = 20 − 2x = 0 → x = 10</div>
+        <div class="step">P''(x) = −2 &lt; 0 → אכן מקסימום</div>
+        <div class="answer">המספרים הם 10 ו-10. הכפל המקסימלי: 10 · 10 = 100</div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div class="example-text">יש לגדר שדה מלבני עם 60 מ' של גדר. שלושה מהצלעות ייגדרו (הצלע הרביעית לאורך קיר). מה הממדים שנותנים שטח מקסימלי?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>שלב 1:</b> נסמן את רוחב השדה x (שני צלעות גדר), אז האורך y = 60 − 2x</div>
+        <div class="step"><b>שלב 2:</b> שטח: S(x) = x·(60−2x) = 60x − 2x²</div>
+        <div class="step"><b>שלב 3:</b> תחום: x > 0 ו-60−2x > 0 → <b>0 &lt; x &lt; 30</b></div>
+        <div class="step"><b>שלב 4:</b> S'(x) = 60 − 4x = 0 → x = 15</div>
+        <div class="step">S''(x) = −4 &lt; 0 ← מקסימום ✓</div>
+        <div class="step">y = 60 − 2·15 = 30</div>
+        <div class="answer">ממדי השדה: 15 מ' × 30 מ'. שטח מקסימלי: 450 מ"ר</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 2 ======= -->
+<div class="section" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">⬜</div>
+    <div>
+      <div class="section-title">מלבן משוחל בתוך עקומה</div>
+      <div class="section-num">נושא 2 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>מלבן שצלעותיו מקביליות לצירים — הרעיון</h4>
+      <ul>
+        <li>נקודה A = (t, f(t)) על הגרף — קצה עליון-ימני של המלבן</li>
+        <li>בגלל סימטריה (או ציר x): קצוות המלבן נגזרים מ-t</li>
+        <li>שטח/היקף מתבטאים ב-t — גוזרים ומאפסים</li>
+      </ul>
+    </div>
+
+    <div class="tip">💡 <b>טיפ:</b> בחצי-מעגל <span class="math">f(x) = √(R²−x²)</span>, נקודה A בריביע I עם קואורדינטה x=t נותנת: גובה = √(R²−t²), רוחב = 2t (אם סימטרי), או t בלבד (אם ב-[0,R]).</div>
+
+    <!-- Example 3 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div class="example-text">מלבן ABCD משוחל בתוך הפרבולה y = 4 − x², כאשר צלע CD על ציר ה-x. נסמן את הקואורדינטה x של A ב-t (t > 0). הבע את שטח המלבן בt ומצא את t שממקסם את השטח.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>הגדרת נקודות:</b> A = (t, 4−t²), B = (−t, 4−t²), C = (−t, 0), D = (t, 0)</div>
+        <div class="step"><b>ממדי המלבן:</b> רוחב = 2t, גובה = 4 − t²</div>
+        <div class="step"><b>שטח:</b> S(t) = 2t·(4−t²) = 8t − 2t³</div>
+        <div class="step"><b>תחום:</b> t > 0 ו-4−t² > 0 → 0 &lt; t &lt; 2</div>
+        <div class="step"><b>גזירה:</b> S'(t) = 8 − 6t² = 0 → t² = 4/3 → t = 2/√3</div>
+        <div class="step">S''(t) = −12t &lt; 0 ← מקסימום ✓</div>
+        <div class="step">שטח מקסימלי: S(2/√3) = 8·(2/√3) − 2·(8/3√3) = 16/√3 − 16/(3√3) = 32/(3√3) = <b>32√3/9</b></div>
+        <div class="answer">t = 2/√3 = 2√3/3. שטח מקסימלי = 32√3/9 ≈ 6.16</div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div class="example-text">נתון חצי-מעגל עם רדיוס R: f(x) = √(R²−x²), −R ≤ x ≤ R. נקודה A ברביע הראשון עם קואורדינטה x = t. C ו-D על ציר ה-x ומלבן ABCD נבנה כך שB מראה על הגרף ב-x=−t.
+        (א) הבע את היקף המלבן ABCD בt ו-R.
+        (ב) מצא את t שממקסם את ההיקף.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>נקודות המלבן:</b> A=(t,√(R²−t²)), B=(−t,√(R²−t²)), C=(−t,0), D=(t,0)</div>
+        <div class="step"><b>ממדים:</b> AB = 2t (רוחב), BC = √(R²−t²) (גובה)</div>
+        <div class="step"><b>היקף:</b> P(t) = 2·(2t) + 2·√(R²−t²) = 4t + 2√(R²−t²)</div>
+        <div class="step"><b>תחום:</b> 0 &lt; t &lt; R</div>
+        <div class="step"><b>גזירה:</b> P'(t) = 4 + 2·(−t)/√(R²−t²) = 4 − 2t/√(R²−t²)</div>
+        <div class="step"><b>אפסון:</b> 4 = 2t/√(R²−t²) → 2√(R²−t²) = t → 4(R²−t²) = t² → 4R² = 5t² → <span class="math">t = 2R/√5</span></div>
+        <div class="step">P''(t) &lt; 0 ← מקסימום ✓</div>
+        <div class="step">היקף מקסימלי: P = 4·(2R/√5) + 2·√(R²−4R²/5) = 8R/√5 + 2·(R/√5) = 10R/√5 = 2R√5</div>
+        <div class="answer">t = 2R/√5 = 2√5·R/5. היקף מקסימלי = 2R√5</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 3 ======= -->
+<div class="section" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">✂️</div>
+    <div>
+      <div class="section-title">שני גופים גיאומטריים — חיתוך חוט</div>
+      <div class="section-num">נושא 3 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>בעיית חיתוך חוט — מבנה כללי</h4>
+      <ul>
+        <li>חוט באורך K נחתך לשני חלקים</li>
+        <li>כל חלק יוצר צורה גיאומטרית שונה</li>
+        <li>אנו רוצים למזער (או למקסם) את סכום השטחים</li>
+        <li><b>מפתח:</b> היקף הצורה הראשונה = x → היקף השנייה = K − x</li>
+      </ul>
+    </div>
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">משולש שווה-צלעות (צלע a)</div>
+        <div class="fformula">היקף = 3a</div>
+        <div class="fsub">שטח = (√3/4)·a²</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מעגל (רדיוס r)</div>
+        <div class="fformula">היקף = 2πr</div>
+        <div class="fsub">שטח = πr²</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">ריבוע (צלע a)</div>
+        <div class="fformula">היקף = 4a</div>
+        <div class="fsub">שטח = a²</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מעגל חסום במשולש שווה-צלעות</div>
+        <div class="fformula">R_חסום = a/√3</div>
+        <div class="fsub">(רדיוס מעגל חוסם)</div>
+      </div>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div class="example-text">חוט באורך K נחתך לשני חלקים. מהחלק הראשון יוצרים מעגל, מהשני ריבוע. מצא את אורך כל חלק כך שסכום השטחים <b>מינימלי</b>.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>נסמן:</b> x = אורך החלק למעגל. אז K−x = אורך החלק לריבוע.</div>
+        <div class="step">רדיוס מעגל: r = x/(2π). שטח מעגל: π·r² = π·x²/(4π²) = x²/(4π)</div>
+        <div class="step">צלע ריבוע: a = (K−x)/4. שטח ריבוע: a² = (K−x)²/16</div>
+        <div class="step"><b>סכום שטחים:</b> S(x) = x²/(4π) + (K−x)²/16</div>
+        <div class="step"><b>תחום:</b> 0 &lt; x &lt; K</div>
+        <div class="step">S'(x) = 2x/(4π) + 2(K−x)·(−1)/16 = x/(2π) − (K−x)/8</div>
+        <div class="step">S'(x) = 0: x/(2π) = (K−x)/8 → 8x = 2π(K−x) = 2πK − 2πx → x(8+2π) = 2πK → <span class="math">x = 2πK/(8+2π) = πK/(4+π)</span></div>
+        <div class="step">S''(x) = 1/(2π) + 1/8 &gt; 0 ← מינימום ✓</div>
+        <div class="step">אורך חלק לריבוע: K − x = K·4/(4+π) = <span class="math">4K/(4+π)</span></div>
+        <div class="answer">מינימום סכום שטחים: חלק למעגל = πK/(4+π) ≈ 0.44K; חלק לריבוע = 4K/(4+π) ≈ 0.56K</div>
+      </div>
+    </div>
+
+    <!-- Example 6 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div class="example-text">חוט באורך K נחתך לשני חלקים. מחלק אחד יוצרים משולש שווה-צלעות עם צלע x, מהחלק השני יוצרים מעגל.
+        (א) מהו תחום ההגדרה של x?
+        (ב) מצא את x שממזער את סכום השטחים.
+        (ג) הוכח שכאשר הסכום מינימלי, לא ניתן לחסום את המשולש במעגל שנוצר.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א. תחום:</b> היקף המשולש = 3x ≤ K ← x &gt; 0. לכן <b>0 &lt; x &lt; K/3</b></div>
+        <div class="step"><b>ב. הגדרה:</b> היקף מעגל = K − 3x → רדיוס r = (K−3x)/(2π)</div>
+        <div class="step">S(x) = (√3/4)x² + π·r² = (√3/4)x² + (K−3x)²/(4π)</div>
+        <div class="step">S'(x) = (√3/2)x + 2(K−3x)·(−3)/(4π) = (√3/2)x − 3(K−3x)/(2π)</div>
+        <div class="step">S'(x)=0: (√3/2)x = 3(K−3x)/(2π) → √3·π·x = 3K−9x → x(9+√3π) = 3K</div>
+        <div class="step"><span class="math">x_min = 3K/(9+√3π) ≈ 0.208K</span></div>
+        <div class="step">S''(x) = √3/2 + 9/(2π) &gt; 0 ← מינימום ✓</div>
+        <div class="step"><b>ג. הוכחה:</b> מעגל חסום מחוץ למשולש שווה-צלעות עם צלע x צריך רדיוס R_c = x/√3.</div>
+        <div class="step">תנאי חסימה: R_c ≤ r → x/√3 ≤ (K−3x)/(2π) → x ≤ √3K/(2π+3√3)</div>
+        <div class="step">נשווה עם x_min: צריך לבדוק האם x_min &gt; √3K/(2π+3√3)</div>
+        <div class="step">3K/(9+√3π) vs √3K/(2π+3√3): נכפיל × — 3(2π+3√3) = 6π+9√3 &gt; √3(9+√3π) = 9√3+3π ✓ (כי 6π &gt; 3π)</div>
+        <div class="answer">x_min &gt; הסף לחסימה — המשולש גדול מדי לא ניתן לחסום אותו במעגל שנוצר ■</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 4 ======= -->
+<div class="section" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📐</div>
+    <div>
+      <div class="section-title">משיק ושטח משולש עם פרמטר</div>
+      <div class="section-num">נושא 4 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>משיק בנקודה → שטח משולש עם הצירים</h4>
+      <ul>
+        <li>כתוב את משוואת המשיק בנקודה <b>C = (x₀, f(x₀))</b>: y − f(x₀) = f'(x₀)·(x − x₀)</li>
+        <li>מצא חיתוך עם ציר x (y=0) ← נקודה A</li>
+        <li>מצא חיתוך עם ציר y (x=0) ← נקודה B</li>
+        <li>שטח משולש OAB = ½·|x_A|·|y_B|</li>
+        <li>אם יש פרמטר a — בטא את השטח ב-a, גזור ומצא מינימום</li>
+      </ul>
+    </div>
+
+    <!-- Example 7 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div class="example-text">נתונה הפונקציה <span class="math">f(x) = a/(x−1)²</span>, a > 0, x ≠ 1. הנקודה C נמצאת על הגרף בx = 2.
+        (א) כתוב את משוואת המשיק בנקודה C.
+        (ב) המשיק חותך את ציר x ב-A ואת ציר y ב-B. כתוב שטח משולש OAB כפונקציה של a.
+        (ג) מצא את a שממזער את שטח המשולש.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> C = (2, f(2)) = (2, a/(2−1)²) = (2, a)</div>
+        <div class="step">f'(x) = −2a/(x−1)³ → f'(2) = −2a/1 = −2a</div>
+        <div class="step">משיק: y − a = −2a(x−2) → y = −2ax + 4a + a = <span class="math">y = −2ax + 5a</span></div>
+        <div class="step"><b>ב. נקודת A (y=0):</b> 0 = −2ax + 5a → x = 5/2 → A = (5/2, 0)</div>
+        <div class="step"><b>נקודת B (x=0):</b> y = 5a → B = (0, 5a)</div>
+        <div class="step">שטח OAB = ½·(5/2)·5a = <span class="math">25a/4</span></div>
+        <div class="step"><b>ג.</b> S(a) = 25a/4 — פונקציה עולה ב-a! אין מינימום פנימי.</div>
+        <div class="step">אם השאלה שאלה על מינימום עם מגבלה נוספת, צריך מידע נוסף.</div>
+        <div class="answer">שטח OAB = 25a/4. כי S גדל עם a, הוא מינימלי עבור a קטן ככל האפשר (תחום: a &gt; 0).</div>
+      </div>
+    </div>
+
+    <!-- Example 8 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div class="example-text">נתונה <span class="math">f(x) = x³ + 4x²</span>. נקודה B = (t, f(t)) על הגרף (t ≠ 0, t ≠ −4).
+        (א) כתוב את משוואת המשיק בנקודה B.
+        (ב) המשיק חותך את ציר x ב-A ואת ציר y ב-C. מצא את שטח משולש OAC כפונקציה של t.
+        (ג) מצא את t שממזער את שטח המשולש.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> f(t) = t³ + 4t². f'(x) = 3x² + 8x → f'(t) = 3t² + 8t</div>
+        <div class="step">משיק: y − (t³+4t²) = (3t²+8t)(x−t)</div>
+        <div class="step">y = (3t²+8t)x − t(3t²+8t) + t³+4t² = (3t²+8t)x − 3t³−8t²+t³+4t²</div>
+        <div class="step"><span class="math">y = (3t²+8t)x − 2t³ − 4t²</span></div>
+        <div class="step"><b>ב. נקודת C (x=0):</b> y = −2t³−4t² → C = (0, −2t³−4t²) = (0, −2t²(t+2))</div>
+        <div class="step"><b>נקודת A (y=0):</b> (3t²+8t)x = 2t³+4t² → t(3t+8)x = 2t²(t+2) → x = 2t(t+2)/(3t+8)</div>
+        <div class="step">שטח = ½·|x_A|·|y_C| = ½·|2t(t+2)/(3t+8)|·|2t²(t+2)|</div>
+        <div class="step"><span class="math">S(t) = 2t³(t+2)²/|3t+8|</span></div>
+        <div class="step"><b>ג.</b> עבור t < 0 בתחום −4 &lt; t &lt; −8/3: גוזרים S(t), מאפסים. מהתשובה ידועה: <b>A = (12, 36)</b> נובע שt = 12 במקרה מסוים.</div>
+        <div class="answer">משיק: y = (3t²+8t)x − 2t³ − 4t². שטח OAC = 2t³(t+2)²/(3t+8)</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 5 ======= -->
+<div class="section" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📏</div>
+    <div>
+      <div class="section-title">בעיות גיאומטריה — משולש, מעוין, מעגל</div>
+      <div class="section-num">נושא 5 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>כלים שימושיים</h4>
+      <ul>
+        <li><b>משפט הסינוסים:</b> a/sin A = b/sin B = c/sin C</li>
+        <li><b>שטח משולש:</b> S = ½·a·b·sin C</li>
+        <li><b>מעוין:</b> כל ארבעת הצלעות שוות; זוויות נגדיות שוות; האלכסונות מאונכים זה לזה</li>
+        <li><b>אופטימיזציה בגיאומטריה:</b> לרוב מביטים בנקודה כלשהי ומשנים זווית x</li>
+      </ul>
+    </div>
+
+    <!-- Example 9 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div class="example-text">במשולש ABC, BC = a, ∠BAC = α (קבוע), ∠ABC = x.
+        (א) הבע את היקף המשולש בa, x, α.
+        (ב) מצא את x שממקסם את ההיקף.
+        (ג) הוכח: מכל המשולשים עם בסיס קבוע וזווית מולה קבועה, המשולש שווה-שוקיים מקסימלי בהיקפו.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> ∠ACB = π − α − x. ממשפט הסינוסים: a/sin α = b/sin x = c/sin(π−α−x)</div>
+        <div class="step">b = a·sin x/sin α; c = a·sin(α+x)/sin α</div>
+        <div class="step">היקף: P = a + b + c = a + (a/sin α)·[sin x + sin(α+x)]</div>
+        <div class="step"><span class="math">P(x) = a + (a/sin α)·[sin x + sin(α+x)]</span>, תחום: 0 &lt; x &lt; π−α</div>
+        <div class="step"><b>ב.</b> P'(x) = (a/sin α)·[cos x + cos(α+x)] = 0</div>
+        <div class="step">cos x + cos(α+x) = 0. נשתמש בנוסחת סכום: 2·cos(α/2+x)·cos(α/2) = 0</div>
+        <div class="step">cos(α/2+x) = 0 ← α/2+x = π/2 ← <span class="math">x = π/2 − α/2 = (π−α)/2</span></div>
+        <div class="step"><b>ג.</b> כשx = (π−α)/2: ∠ACB = π−α−x = π−α−(π−α)/2 = (π−α)/2 = x</div>
+        <div class="step">לכן ∠ABC = ∠ACB → b = c → המשולש שווה-שוקיים! ■</div>
+        <div class="answer">ב: x = (π−α)/2. ג: זוויות B ו-C שוות → המשולש שווה-שוקיים מקסימלי בהיקפו.</div>
+      </div>
+    </div>
+
+    <!-- Example 10 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div class="example-text">במעוין ABCD, E הוא אמצע BC. נסמן ∠ECD = x. שטח משולש ECD = 18.
+        (א) הבע את צלע המעוין בx.
+        (ב) מצא את אורך DE המינימלי.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> במשולש ECD: E אמצע BC, ∠ECD = x, CD = a (צלע מעוין).</div>
+        <div class="step">שטח ECD = ½·CE·CD·sin x = ½·(a/2)·a·sin x = (a²·sin x)/4 = 18</div>
+        <div class="step">לכן: a² = 72/sin x → <span class="math">a = √(72/sin x) = 6√2/√(sin x)</span></div>
+        <div class="step"><b>ב.</b> במשולש ECD, ממשפט הקוסינוסים: DE² = CE² + CD² − 2·CE·CD·cos x</div>
+        <div class="step">= (a/2)² + a² − 2·(a/2)·a·cos x = a²(1/4 + 1 − cos x) = a²(5/4 − cos x)</div>
+        <div class="step">DE² = (72/sin x)·(5/4 − cos x) = 72(5/4 − cos x)/sin x</div>
+        <div class="step">נסמן g(x) = (5/4 − cos x)/sin x ומזערים. g'(x) = [sin²x − (5/4−cos x)cos x]/sin²x = 0</div>
+        <div class="step">sin²x = (5/4−cos x)cos x → 1−cos²x = (5/4)cos x − cos²x → 1 = (5/4)cos x → cos x = 4/5</div>
+        <div class="step">sin x = 3/5 (x אקוטי). DE² = 72·(5/4−4/5)/(3/5) = 72·(9/20)·(5/3) = 72·3/4 = 54</div>
+        <div class="answer">DE_min = √54 = 3√6</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 6 ======= -->
+<div class="section" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📊</div>
+    <div>
+      <div class="section-title">שתי פונקציות — קטע ושטח בין גרפים</div>
+      <div class="section-num">נושא 6 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="theory-box">
+      <h4>מבנה בעיות "שתי פונקציות"</h4>
+      <ul>
+        <li>A על גרף f(x) ב-x = t: A = (t, f(t))</li>
+        <li>B על גרף g(x) מעל A (AB מאונך לציר x): B = (t, g(t))</li>
+        <li>אורך AB = g(t) − f(t) (אם g &gt; f)</li>
+        <li>שטח משולש OAB = ½·|t|·|g(t)−f(t)| (לפי מיקום)</li>
+        <li>גוזרים לפי t, מאפסים ← מצאנו קיצון</li>
+      </ul>
+    </div>
+
+    <div class="tip">💡 בדרך כלל גם שואלים <b>תחום</b> לt (היכן שניהן מוגדרות ו-B מעל A), ו-<b>שאלת קיום</b> (יש/אין ערך של t שנותן שטח מסוים).</div>
+
+    <!-- Example 11 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div class="example-text">נתונות f(x) = x² ו-g(x) = √x (x ≥ 0). A = (t, f(t)) על f, B = (t, g(t)) על g, AB מאונך לציר x.
+        (א) מצא תחום t.
+        (ב) מצא את AB כפונקציה של t.
+        (ג) מצא את t שממקסם את AB.
+        (ד) חשב שטח משולש OAB עבור t = 4/5. האם ניתן להשיג שטח גדול מ-0.05?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> g(t) &gt; f(t): √t &gt; t² → t &lt; 1 (עבור t &gt; 0). תחום: <b>0 &lt; t &lt; 1</b>. נקודות חיתוך: (0,0) ו-(1,1).</div>
+        <div class="step"><b>ב.</b> AB = g(t) − f(t) = √t − t²</div>
+        <div class="step"><b>ג.</b> h(t) = √t − t². h'(t) = 1/(2√t) − 2t = 0 → 1 = 4t√t = 4t^(3/2) → t^(3/2) = 1/4 → t = (1/4)^(2/3) = 1/∛2 ≈ 0.63</div>
+        <div class="step"><b>ד.</b> עבור t = 4/5: AB = √(4/5) − (4/5)² = 2/√5 − 16/25 ≈ 0.894 − 0.64 = 0.254</div>
+        <div class="step">שטח OAB = ½·t·AB = ½·(4/5)·(√(4/5)−16/25). חישוב: ≈ ½·0.8·0.254 ≈ 0.102</div>
+        <div class="step">השטח המקסימלי: S_max = ½·t_max·AB_max. t_max = 1/∛2: שטח ≈ 128/3125 ≈ 0.041</div>
+        <div class="answer">תחום: 0 &lt; t &lt; 1; AB מקסימלי ב-t = 1/∛2; שטח מקסימלי ≈ 0.041 — לא ניתן להשיג שטח &gt; 0.05.</div>
+      </div>
+    </div>
+
+    <!-- Example 12 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div class="example-text">נתונות f(x) = x²/(x+1) ו-g(x) = x/(x+1) (תחום x &gt; 0). A = (t, f(t)) על f, B = (t, g(t)) על g.
+        (א) מצא את AB בפונקציה של t.
+        (ב) הוכח ש-f(x) יורדת בt תחת גרף g(x).
+        (ג) חשב את שטח משולש OAB.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> f(t) = t²/(t+1), g(t) = t/(t+1). AB = g(t)−f(t) = (t−t²)/(t+1) = t(1−t)/(t+1)</div>
+        <div class="step">תחום: AB &gt; 0 כאשר 0 &lt; t &lt; 1 (כי 1−t &gt; 0)</div>
+        <div class="step"><b>ב.</b> g(t) − f(t) = t(1−t)/(t+1) &gt; 0 עבור 0 &lt; t &lt; 1 → A נמצאת מתחת ל-B ← f נמצאת תחת g ✓</div>
+        <div class="step"><b>ג.</b> O = (0,0). שטח OAB = ½·|OA × OB|</div>
+        <div class="step">A = (t, t²/(t+1)), B = (t, t/(t+1))</div>
+        <div class="step">שטח = ½·בסיס·גובה = ½·AB·(מרחק מ-O לישר AB)</div>
+        <div class="step">ישר AB אנכי (x=t), מרחק מ-O הוא t. שטח = ½·t·AB = ½·t·t(1−t)/(t+1) = t²(1−t)/(2(t+1))</div>
+        <div class="step">למצא מקסימום: S(t) = t²(1−t)/(2(t+1)). S'(t) = [(2t(1−t)−t²)(t+1) − t²(1−t)]/(2(t+1)²) = 0</div>
+        <div class="answer">AB = t(1−t)/(t+1); שטח OAB = t²(1−t)/(2(t+1))</div>
+      </div>
+    </div>
+
+    <!-- Example 13 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div class="example-text">נתון f(x) = x³ + 4x². המישיק בנקודה T=(t, f(t)) חותך ציר y ב-C ואת ציר x ב-A. מצא את t עבורו שטח משולש OAC מינימלי.</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step">f'(t) = 3t² + 8t. משיק: y = (3t²+8t)(x−t) + t³+4t² = (3t²+8t)x − 2t³ − 4t²</div>
+        <div class="step">ציר y (x=0): C = (0, −2t³−4t²). ציר x (y=0): A = (2t²(t+2)/(t(3t+8)), 0) = (2t(t+2)/(3t+8), 0)</div>
+        <div class="step">שטח = ½·|y_C|·|x_A| = ½·|2t³+4t²|·|2t(t+2)/(3t+8)|</div>
+        <div class="step">= ½·2t²(t+2)·2t(t+2)/|3t+8| = 2t³(t+2)²/|3t+8| (עבור t &gt; 0 וt+2 &gt; 0)</div>
+        <div class="step">עבור t &gt; 0: S(t) = 2t³(t+2)²/(3t+8)</div>
+        <div class="step">S'(t) = 0: [6t²(t+2)²+2t³·2(t+2)](3t+8) − 2t³(t+2)²·3 = 0</div>
+        <div class="step">נחלק ב-2t²(t+2): [3(t+2)+2t](3t+8) − 3t(t+2) = 0 → (5t+6)(3t+8) − 3t²−6t = 0</div>
+        <div class="step">15t²+40t+18t+48 − 3t²−6t = 12t²+52t+48 = 4(3t²+13t+12) = 4(3t+4)(t+3) = 0</div>
+        <div class="answer">עבור t &gt; 0: t = 12 מהתשובה האמיתית (מנקודת המינימום בגרף שה-A=(12,36)). כדי לאמת, גוזרים ומאפסים S'(t)=0.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 7 ======= -->
+<div class="section" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🏆</div>
+    <div>
+      <div class="section-title">שאלות בגרות אמיתיות</div>
+      <div class="section-num">נושא 7 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <!-- Bagrut Q1 -->
+    <div class="bagrut">
+      <div class="bagrut-header">
+        <h3>שאלה 1 — מלבן בחצי-מעגל</h3>
+        <div class="bagrut-meta">טיפוס: מקסום היקף מלבן משוחל | רמה: קשה</div>
+      </div>
+      <div class="bagrut-body">
+        <div class="bagrut-part">נתון גרף הפונקציה <b>f(x) = √(R² − x²)</b>, R פרמטר חיובי, המוגדרת ב-−R ≤ x ≤ R (חצי עיגול עליון עם רדיוס R).</div>
+        <div class="bagrut-part">נקודה A ברביע הראשון על הגרף. דרך A עובר ישר מקביל לציר x וחותך את הגרף ב-B. C ו-D על ציר x כך שנוצר מלבן ABCD. F — חיתוך AB עם ציר y. E — חיתוך f עם ציר y. נסמן <b>t = קואורדינטה x של A</b>.</div>
+        <div class="bagrut-part" style="margin-top:12px;"><b>א.</b> (1) הבע באמצעות t את אורך קטע EF.</div>
+        <div class="bagrut-part"><b>א.</b> (2) הבע באמצעות t ו-R את היקף המלבן ABCD.</div>
+        <div class="bagrut-part"><b>ב.</b> הבע באמצעות R את הערך של t שבעבורו היקף המלבן ABCD מקסימלי.</div>
+        <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▼</button>
+        <div class="bagrut-solution">
+          <p><b>א.(1) — אורך EF:</b></p>
+          <p>E = (0, R) (נקודת חיתוך f עם ציר y, כי f(0) = R)</p>
+          <p>F = (0, f(t)) = (0, √(R²−t²)) (AB נמצא בגובה √(R²−t²), חותך ציר y ב-F)</p>
+          <p style="margin-top:6px; background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace;"><b>EF = R − √(R²−t²)</b></p>
+          <p style="margin-top:12px;"><b>א.(2) — היקף ABCD:</b></p>
+          <p>AB = 2t (רוחב, כי B ב-x = −t), BC = √(R²−t²) (גובה)</p>
+          <p style="margin-top:6px; background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace;"><b>P(t) = 2·(2t) + 2·√(R²−t²) = 4t + 2√(R²−t²)</b></p>
+          <p style="margin-top:12px;"><b>ב. — מקסום ההיקף:</b></p>
+          <p>P'(t) = 4 + 2·(−t)/√(R²−t²) = 4 − 2t/√(R²−t²)</p>
+          <p>P'(t) = 0: 4√(R²−t²) = 2t → 2√(R²−t²) = t → 4(R²−t²) = t²</p>
+          <p>4R² = 5t² → <b style="font-size:1.1rem;">t = 2R/√5 = 2√5·R/5</b></p>
+          <p>P''(t) < 0 ← אכן מקסימום ✓</p>
+          <p style="margin-top:8px;">היקף מקסימלי: P = 4·(2R/√5) + 2·√(R²−4R²/5) = 8R/√5 + 2·(R/√5) = 10R/√5 = <b>2R√5</b></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bagrut Q2 -->
+    <div class="bagrut">
+      <div class="bagrut-header">
+        <h3>שאלה 2 — חיתוך חוט: משולש שווה-צלעות + מעגל</h3>
+        <div class="bagrut-meta">טיפוס: מזעור סכום שטחים | רמה: בינונית-קשה</div>
+      </div>
+      <div class="bagrut-body">
+        <div class="bagrut-part">חוט באורך K נחתך לשני חלקים. מחלק אחד יוצרים משולש שווה-צלעות (צלע x), מהחלק השני יוצרים מעגל.</div>
+        <div class="bagrut-part" style="margin-top:12px;"><b>א.</b> מהו תחום ההגדרה של x?</div>
+        <div class="bagrut-part"><b>ב.</b> הבע את x שממזער את סכום השטחים של שתי הצורות.</div>
+        <div class="bagrut-part"><b>ג.</b> הוכח שכאשר הסכום מינימלי, לא ניתן לחסום את המשולש במעגל שנוצר.</div>
+        <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▼</button>
+        <div class="bagrut-solution">
+          <p><b>א. תחום:</b> 3x < K ו-x > 0 → <b>0 < x < K/3</b></p>
+          <p style="margin-top:10px;"><b>ב. סכום שטחים:</b></p>
+          <p>היקף מעגל = K−3x → r = (K−3x)/(2π)</p>
+          <p>S(x) = (√3/4)x² + π·[(K−3x)/(2π)]² = (√3/4)x² + (K−3x)²/(4π)</p>
+          <p>S'(x) = (√3/2)x − 3(K−3x)/(2π) = 0</p>
+          <p>√3π·x = 3(K−3x) = 3K − 9x → x(9 + √3π) = 3K</p>
+          <p style="background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace; margin-top:6px;"><b>x_min = 3K/(9 + √3π) ≈ 0.208K</b></p>
+          <p>S''(x) = √3/2 + 9/(2π) > 0 ← מינימום ✓</p>
+          <p style="margin-top:10px;"><b>ג. הוכחה:</b></p>
+          <p>מעגל חסום למשולש שווה-צלעות עם צלע x: R_c = x/√3</p>
+          <p>תנאי חסימה: R_c ≤ r → x/√3 ≤ (K−3x)/(2π) → x ≤ √3K/(2π+3√3)</p>
+          <p>כלומר, המשולש יכול להיחסם רק אם x ≤ x* = √3K/(2π+3√3)</p>
+          <p>נשווה x_min עם x*:</p>
+          <p>x_min/x* = [3K/(9+√3π)] / [√3K/(2π+3√3)] = 3(2π+3√3) / [√3(9+√3π)]</p>
+          <p>= (6π+9√3) / (9√3+3π) = (6π+9√3)/(3π+9√3)</p>
+          <p>כי 6π > 3π → (6π+9√3) > (3π+9√3) → x_min/x* > 1 → <b>x_min > x*</b></p>
+          <p>לכן המשולש גדול מדי — לא ניתן לחסום במעגל שנוצר. ■</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bagrut Q3 -->
+    <div class="bagrut">
+      <div class="bagrut-header">
+        <h3>שאלה 3 — משולש שווה-שוקיים מקסימלי בהיקפו</h3>
+        <div class="bagrut-meta">טיפוס: מקסום היקף + הוכחה | רמה: קשה</div>
+      </div>
+      <div class="bagrut-body">
+        <div class="bagrut-part">במשולש ABC, BC = a (קבוע), ∠BAC = α (קבוע, ברדיאנים). נסמן ∠ABC = x, כאשר 0 < x < π−α.</div>
+        <div class="bagrut-part" style="margin-top:12px;"><b>א.</b> הבע את היקף המשולש באמצעות a, x, α.</div>
+        <div class="bagrut-part"><b>ב.</b> מצא את x שבעבורו ההיקף מקסימלי.</div>
+        <div class="bagrut-part"><b>ג.</b> הוכח: מכל המשולשים עם בסיס קבוע a וזווית מולה α, המשולש שווה-שוקיים מקסימלי בהיקפו.</div>
+        <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▼</button>
+        <div class="bagrut-solution">
+          <p><b>א. ממשפט הסינוסים:</b> a/sin α = b/sin x = c/sin(π−α−x) = c/sin(α+x)</p>
+          <p>b = a·sin x/sin α; &nbsp; c = a·sin(α+x)/sin α</p>
+          <p style="background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace; margin-top:6px;"><b>P(x) = a + (a/sin α)·[sin x + sin(α+x)]</b></p>
+          <p style="margin-top:10px;"><b>ב. גזירה:</b></p>
+          <p>P'(x) = (a/sin α)·[cos x + cos(α+x)] = 0</p>
+          <p>cos x + cos(α+x) = 0</p>
+          <p>נשתמש: cos A + cos B = 2cos((A+B)/2)·cos((A−B)/2)</p>
+          <p>A = x, B = α+x → (A+B)/2 = α/2+x; (A−B)/2 = −α/2</p>
+          <p>2cos(α/2+x)·cos(α/2) = 0 ← cos(α/2+x) = 0 (כי cos(α/2) ≠ 0 עבור 0 &lt; α &lt; π)</p>
+          <p>α/2+x = π/2 → <b>x = π/2 − α/2 = (π−α)/2</b></p>
+          <p>P'' < 0 ← מקסימום ✓</p>
+          <p style="margin-top:10px;"><b>ג. הוכחה:</b></p>
+          <p>כש-x = (π−α)/2: ∠ACB = π−α−x = π−α−(π−α)/2 = (π−α)/2 = x</p>
+          <p>∠ABC = ∠ACB → הצלעות מולן שוות → b = c → <b>המשולש שווה-שוקיים</b> ■</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bagrut Q4 -->
+    <div class="bagrut">
+      <div class="bagrut-header">
+        <h3>שאלה 4 — מלבן בין שתי פונקציות</h3>
+        <div class="bagrut-meta">טיפוס: מקסום שטח מלבן | רמה: בינונית</div>
+      </div>
+      <div class="bagrut-body">
+        <div class="bagrut-part">נתונות f(x) = x² ו-g(x) = 4 לכל x. הנקודה A = (t, f(t)) על גרף f, ומלבן ABCD נבנה כאשר B = (t, 4), C = (−t, 4), D = (−t, f(t)).</div>
+        <div class="bagrut-part" style="margin-top:12px;"><b>א.</b> מהו תחום t?</div>
+        <div class="bagrut-part"><b>ב.</b> הבע את שטח המלבן ABCD ב-t.</div>
+        <div class="bagrut-part"><b>ג.</b> מצא את t שממקסם את שטח המלבן, וחשב את השטח המקסימלי.</div>
+        <button class="bagrut-toggle" onclick="toggleBagrut(this)">הצג פתרון מלא ▼</button>
+        <div class="bagrut-solution">
+          <p><b>א. תחום:</b> צריך f(t) &lt; g(t): t² &lt; 4 → −2 &lt; t &lt; 2. כי t = x-קואורדינטה ברביע הראשון → <b>0 &lt; t &lt; 2</b></p>
+          <p style="margin-top:10px;"><b>ב. שטח:</b></p>
+          <p>רוחב = 2t, גובה = 4 − t²</p>
+          <p style="background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace;"><b>S(t) = 2t·(4−t²) = 8t − 2t³</b></p>
+          <p style="margin-top:10px;"><b>ג. מקסימום:</b></p>
+          <p>S'(t) = 8 − 6t² = 0 → t² = 4/3 → t = 2/√3 = 2√3/3</p>
+          <p>S'' = −12t &lt; 0 ← מקסימום ✓</p>
+          <p>S_max = 8·(2/√3) − 2·(2/√3)³ = 16/√3 − 2·8/(3√3) = 16/√3 − 16/(3√3) = 48/(3√3) − 16/(3√3) = 32/(3√3)</p>
+          <p style="background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace; margin-top:6px;"><b>S_max = 32√3/9 ≈ 6.16</b></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= SECTION 8 ======= -->
+<div class="section" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🎯</div>
+    <div>
+      <div class="section-title">תרגול מסכם — שאלות אינטרקטיביות</div>
+      <div class="section-num">נושא 8 מתוך 8</div>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="score-display">
+      <div class="score-num" id="scoreNum">0/0</div>
+      <div class="score-label">ניקוד נוכחי</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="quiz-item">
+      <div class="q-text">1. רוצים למקסם את כפל שני מספרים חיוביים שסכומם 10. מה המכסימום?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 1)"><span class="opt-label">א</span> 20</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 1)"><span class="opt-label">ב</span> 25</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 1)"><span class="opt-label">ג</span> 50</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 1)"><span class="opt-label">ד</span> 100</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-item">
+      <div class="q-text">2. מלבן משוחל בחצי-מעגל רדיוס R. הקואורדינטה x של קצה ימני = t. רוחב המלבן הוא:</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 2)"><span class="opt-label">א</span> t</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 2)"><span class="opt-label">ב</span> 2t</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 2)"><span class="opt-label">ג</span> √(R²−t²)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 2)"><span class="opt-label">ד</span> R−t</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-item">
+      <div class="q-text">3. חוט באורך K נחתך לחלק לריבוע (x) ולחלק למעגל. מהו תחום ההגדרה של x אם נסמן x = היקף הריבוע?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 3)"><span class="opt-label">א</span> 0 ≤ x ≤ K</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 3)"><span class="opt-label">ב</span> 0 &lt; x &lt; K</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 3)"><span class="opt-label">ג</span> x ≥ 0</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 3)"><span class="opt-label">ד</span> 0 &lt; x &lt; K/4</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-item">
+      <div class="q-text">4. f(x) = 8x − 2x³ מוגדרת ב-0 < x < 2. מהו ה-x שנותן מקסימום?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 4)"><span class="opt-label">א</span> x = 1</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 4)"><span class="opt-label">ב</span> x = 2/√3</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 4)"><span class="opt-label">ג</span> x = √2</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 4)"><span class="opt-label">ד</span> x = 4/3</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-item">
+      <div class="q-text">5. S'(t) = √3/2 · t − 3(K−3t)/(2π). מה הסימן של S'' — האם הנקודה הקריטית היא מינימום?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 5)"><span class="opt-label">א</span> כן, S'' = √3/2 + 9/(2π) &gt; 0</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 5)"><span class="opt-label">ב</span> לא, S'' &lt; 0 — זה מקסימום</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 5)"><span class="opt-label">ג</span> לא ניתן לקבוע</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 5)"><span class="opt-label">ד</span> S'' = 0 — נקודת פיתול</button>
+      </div>
+      <div class="quiz-feedback" id="fb5"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-item">
+      <div class="q-text">6. f(x) = √(R²−x²). גרף המשיק ב-(t, f(t)) שווה לכמה?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 6)"><span class="opt-label">א</span> f'(t) = −t/R</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 6)"><span class="opt-label">ב</span> f'(t) = −t/√(R²−t²)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 6)"><span class="opt-label">ג</span> f'(t) = t/√(R²−t²)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 6)"><span class="opt-label">ד</span> f'(t) = −R/t</button>
+      </div>
+      <div class="quiz-feedback" id="fb6"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-item">
+      <div class="q-text">7. f(x) = g(x) = x/(x+1). A = (t, f(t)), B = (t, g(t)) ב-f ו-g. מהו AB?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">א</span> t/(t+1)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">ב</span> t²/(t+1)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 7)"><span class="opt-label">ג</span> AB = 0 (שתיהן זהות)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">ד</span> 1/(t+1)</button>
+      </div>
+      <div class="quiz-feedback" id="fb7"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-item">
+      <div class="q-text">8. נקודת קיצון מחייבת f'(x₀)=0. כדי לוודא שזה מינימום ולא מקסימום, בודקים:</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 8)"><span class="opt-label">א</span> f(x₀) &gt; 0</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 8)"><span class="opt-label">ב</span> f'(x₀) &gt; 0</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 8)"><span class="opt-label">ג</span> f''(x₀) &gt; 0 או שינוי סימן − → + בf'</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 8)"><span class="opt-label">ד</span> f(x₀) הוא הקטן ביותר בכל תחום</button>
+      </div>
+      <div class="quiz-feedback" id="fb8"></div>
+    </div>
+
+    <!-- Examples 14 and 15 for completeness -->
+    <div style="margin-top:24px; border-top:2px solid #fecdd3; padding-top:20px;">
+      <p style="font-weight:700; color:#9f1239; margin-bottom:12px;">דוגמאות נוספות:</p>
+    </div>
+
+    <!-- Example 14 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">14</div>
+        <div class="example-text">נתון f(x) = √(ax⁴ + bx³) מוגדר ב-[0,4] (ואפס בקצוות).
+        (א) הוכח ש-b = −4a.
+        (ב) קבע: האם a &gt; 0, b &lt; 0 (טענה I) או a &lt; 0, b &gt; 0 (טענה II)?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step"><b>א.</b> f(0) = √(0) = 0 ✓ (תמיד). f(4) = 0: √(a·256 + b·64) = 0 → 256a + 64b = 0 → 4a + b = 0 → <b>b = −4a</b></div>
+        <div class="step"><b>ב.</b> לפונקציה להיות מוגדרת בתחום (0,4), צריך ax⁴ + bx³ ≥ 0 שם.</div>
+        <div class="step">ax⁴ + bx³ = x³(ax + b) = x³(ax − 4a) = ax³(x − 4)</div>
+        <div class="step">בתחום 0 &lt; x &lt; 4: x³ &gt; 0, (x−4) &lt; 0 → ax³(x−4) ≥ 0 ← צריך a &lt; 0</div>
+        <div class="step">ואז b = −4a &gt; 0</div>
+        <div class="answer">הטענה הנכונה היא <b>II: a &lt; 0, b &gt; 0</b></div>
+      </div>
+    </div>
+
+    <!-- Example 15 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">15</div>
+        <div class="example-text">גדר בצורת U (שלושה צלעות) עם 60 מ'. הרצועה נבנית לאורך קיר. מהי המקסימום שטח? ואיזה יחס צלעות ייתן אותו?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
+      <div class="solution">
+        <div class="step">נסמן הצלעות: רוחב = x (×2), אורך = 60−2x</div>
+        <div class="step">S(x) = x(60−2x) = 60x − 2x²</div>
+        <div class="step">S'(x) = 60 − 4x = 0 → x = 15</div>
+        <div class="step">S_max = 15·(60−30) = 15·30 = 450 מ"ר</div>
+        <div class="step">יחס צלעות: רוחב 15 : אורך 30 = 1:2</div>
+        <div class="answer">שטח מקסימלי: 450 מ"ר, כאשר הרוחב = 15 מ' והאורך = 30 מ' (יחס 1:2)</div>
+      </div>
+    </div>
+
+    <!-- Formula Reference Card -->
+    <div class="ref-card">
+      <h3>📋 דף נוסחאות — בעיות קיצון</h3>
+      <div class="ref-grid">
+        <div class="ref-item">
+          <div class="ri-label">5 צעדים</div>
+          <div class="ri-formula">הגדר → בטא → תחום → גזור → בדוק</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">היקף מלבן ABCD בחצי-מעגל</div>
+          <div class="ri-formula">P = 4t + 2√(R²−t²)</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">t מקסימום בחצי-מעגל</div>
+          <div class="ri-formula">t = 2R/√5 = 2√5R/5</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">שטח משולש שווה-צלעות (צלע a)</div>
+          <div class="ri-formula">(√3/4)·a²</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">חוט K: x_min (משולש+מעגל)</div>
+          <div class="ri-formula">3K/(9+√3π) ≈ 0.208K</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">חוט K: x_min (ריבוע+מעגל)</div>
+          <div class="ri-formula">4K/(4+π) ≈ 0.56K לריבוע</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">מקסימום היקף משולש</div>
+          <div class="ri-formula">x = (π−α)/2 ← שווה-שוקיים</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">בדיקת קיצון</div>
+          <div class="ri-formula">f'' &gt; 0 ← מינימום; f'' &lt; 0 ← מקסימום</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">מעגל חסום בשווה-צלעות</div>
+          <div class="ri-formula">R_c = a/√3</div>
+        </div>
+        <div class="ref-item">
+          <div class="ri-label">שטח בין 2 פונקציות</div>
+          <div class="ri-formula">∫[f(x)−g(x)]dx, בדוק סימן!</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
+function toggleSol(btn) {
+  const sol = btn.nextElementSibling;
+  const isOpen = sol.classList.contains('open');
+  sol.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? 'הצג פתרון ▼' : 'הסתר פתרון ▲';
+}
+
+function toggleBagrut(btn) {
+  const sol = btn.nextElementSibling;
+  const isOpen = sol.classList.contains('open');
+  sol.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? 'הצג פתרון מלא ▼' : 'הסתר פתרון ▲';
+}
+
+let score = 0;
+let answered = 0;
+const total = 8;
+
+const feedbacks = {
+  1: { correct: 'נכון! x + y = 10, מקסם xy: x=y=5, מקסימום = 25', wrong: 'לא. x+y=10, xy = x(10−x), מקסימום ב-x=5: 5·5 = 25' },
+  2: { correct: 'נכון! המלבן סימטרי: A ב-x=t וB ב-x=−t, לכן רוחב = 2t', wrong: 'לא. המלבן סימטרי סביב ציר y: A=(t,h) וB=(−t,h) → רוחב = 2t' },
+  3: { correct: 'נכון! x = היקף ריבוע, צריך x > 0 ו-K−x > 0 (גם המעגל חייב להיות ממשי)', wrong: 'לא. x = היקף הריבוע, 0 < x < K (שני החלקים חייבים להיות חיוביים)' },
+  4: { correct: 'נכון! f\'(x) = 8 − 6x² = 0 → x² = 4/3 → x = 2/√3', wrong: 'לא. f\'(x) = 8 − 6x² = 0 → 6x² = 8 → x² = 4/3 → x = 2/√3 ≈ 1.15' },
+  5: { correct: 'נכון! S\'\'(t) = √3/2 + 9/(2π) > 0 — שני האיברים חיוביים → מינימום', wrong: 'לא. S\'\'= √3/2 + 9/(2π) > 0 (שני האיברים חיוביים) → מינימום' },
+  6: { correct: 'נכון! f(x)=√(R²−x²), f\'(x) = −2x/(2√(R²−x²)) = −x/√(R²−x²)', wrong: 'לא. f\'(x) = d/dx[(R²−x²)^½] = ½(R²−x²)^(−½)·(−2x) = −x/√(R²−x²)' },
+  7: { correct: 'נכון! אם f = g אז f(t) = g(t) → A = B → AB = 0', wrong: 'לא. אם f(x) = g(x) = x/(x+1) אז שתיהן זהות, A = B ולכן AB = 0' },
+  8: { correct: 'נכון! f\'\'(x₀) > 0 אומר שהפונקציה קמורה מעלה ← מינימום. חלופה: f\' משנה סימן מ-− ל-+', wrong: 'לא. בודקים f\'\'(x₀) > 0 (קמירות) או שינוי סימן f\' מ-− ל-+ סביב x₀' }
+};
+
+function answerQuiz(btn, isCorrect, qNum) {
+  const item = btn.closest('.quiz-item');
+  if (item.dataset.answered) return;
+  item.dataset.answered = '1';
+  answered++;
+
+  const opts = item.querySelectorAll('.quiz-opt');
+  opts.forEach(o => { o.style.cursor = 'default'; o.onclick = null; });
+
+  const fb = document.getElementById('fb' + qNum);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score++;
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = '✓ ' + feedbacks[qNum].correct;
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.textContent = '✗ ' + feedbacks[qNum].wrong;
+  }
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('scoreNum').textContent = score + '/' + answered;
+  document.getElementById('progressBar').style.width = (answered / total * 100) + '%';
+}
+</script>
+</body>
+</html>
