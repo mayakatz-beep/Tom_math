@@ -612,11 +612,13 @@
       <div class="solution">
         <div class="step"><b>א.</b> g(t) &gt; f(t): √t &gt; t² → t &lt; 1 (עבור t &gt; 0). תחום: <b>0 &lt; t &lt; 1</b>. נקודות חיתוך: (0,0) ו-(1,1).</div>
         <div class="step"><b>ב.</b> AB = g(t) − f(t) = √t − t²</div>
-        <div class="step"><b>ג.</b> h(t) = √t − t². h'(t) = 1/(2√t) − 2t = 0 → 1 = 4t√t = 4t^(3/2) → t^(3/2) = 1/4 → t = (1/4)^(2/3) = 1/∛2 ≈ 0.63</div>
-        <div class="step"><b>ד.</b> עבור t = 4/5: AB = √(4/5) − (4/5)² = 2/√5 − 16/25 ≈ 0.894 − 0.64 = 0.254</div>
-        <div class="step">שטח OAB = ½·t·AB = ½·(4/5)·(√(4/5)−16/25). חישוב: ≈ ½·0.8·0.254 ≈ 0.102</div>
-        <div class="step">השטח המקסימלי: S_max = ½·t_max·AB_max. t_max = 1/∛2: שטח ≈ 128/3125 ≈ 0.041</div>
-        <div class="answer">תחום: 0 &lt; t &lt; 1; AB מקסימלי ב-t = 1/∛2; שטח מקסימלי ≈ 0.041 — לא ניתן להשיג שטח &gt; 0.05.</div>
+        <div class="step"><b>ג.</b> h(t) = √t − t². h'(t) = 1/(2√t) − 2t = 0 → 1 = 4t√t = 4t^(3/2) → t^(3/2) = 1/4 → t = (1/4)^(2/3) = 2^(−4/3) ≈ 0.397</div>
+        <div class="step"><b>שים לב:</b> (1/4)^(2/3) = (2^(−2))^(2/3) = 2^(−4/3) ≈ 0.397, <b>לא</b> 1/∛2 = 2^(−1/3) ≈ 0.794 — שתי כמויות שונות לחלוטין!</div>
+        <div class="step"><b>ד.</b> שטח S(t) = ½·t·AB = ½·(t^(3/2) − t^3). זו פונקציה שונה ממקסימום AB!</div>
+        <div class="step">S'(t) = ½·(3/2·√t − 3t²) = 0 → (3/2)√t = 3t² → √t = 2t² → t^(−3/2) = 2 → t = 2^(−2/3) ≈ 0.630</div>
+        <div class="step">בנקודה זו: t^(3/2) = 1/2 ו-t^3 = 1/4 → S_max = ½·(1/2 − 1/4) = ½·(1/4) = <b>1/8 = 0.125</b></div>
+        <div class="step">בדיקה עם t = 4/5: S(4/5) = ½·(4/5)·(√(4/5)−(4/5)²) ≈ ½·0.8·0.254 ≈ 0.102 — עקבי עם S_max = 0.125 &gt; 0.102 ✓</div>
+        <div class="answer">תחום: 0 &lt; t &lt; 1; AB מקסימלי ב-t = 2^(−4/3) ≈ 0.397; שטח מקסימלי = 1/8 = 0.125 — <b>כן, ניתן</b> להשיג שטח גדול מ-0.05.</div>
       </div>
     </div>
 
@@ -647,19 +649,16 @@
     <div class="example">
       <div class="example-q">
         <div class="example-num">13</div>
-        <div class="example-text">נתון f(x) = x³ + 4x². המישיק בנקודה T=(t, f(t)) חותך ציר y ב-C ואת ציר x ב-A. מצא את t עבורו שטח משולש OAC מינימלי.</div>
+        <div class="example-text">נתונה <span class="math">f(x) = 1/x</span> (x &gt; 0). נקודה T = (t, 1/t) על הגרף. המישיק בנקודה T חותך את ציר x ב-A ואת ציר y ב-B. הוכח ששטח משולש OAB קבוע ואינו תלוי ב-t.</div>
       </div>
       <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
       <div class="solution">
-        <div class="step">f'(t) = 3t² + 8t. משיק: y = (3t²+8t)(x−t) + t³+4t² = (3t²+8t)x − 2t³ − 4t²</div>
-        <div class="step">ציר y (x=0): C = (0, −2t³−4t²). ציר x (y=0): A = (2t²(t+2)/(t(3t+8)), 0) = (2t(t+2)/(3t+8), 0)</div>
-        <div class="step">שטח = ½·|y_C|·|x_A| = ½·|2t³+4t²|·|2t(t+2)/(3t+8)|</div>
-        <div class="step">= ½·2t²(t+2)·2t(t+2)/|3t+8| = 2t³(t+2)²/|3t+8| (עבור t &gt; 0 וt+2 &gt; 0)</div>
-        <div class="step">עבור t &gt; 0: S(t) = 2t³(t+2)²/(3t+8)</div>
-        <div class="step">S'(t) = 0: [6t²(t+2)²+2t³·2(t+2)](3t+8) − 2t³(t+2)²·3 = 0</div>
-        <div class="step">נחלק ב-2t²(t+2): [3(t+2)+2t](3t+8) − 3t(t+2) = 0 → (5t+6)(3t+8) − 3t²−6t = 0</div>
-        <div class="step">15t²+40t+18t+48 − 3t²−6t = 12t²+52t+48 = 4(3t²+13t+12) = 4(3t+4)(t+3) = 0</div>
-        <div class="answer">עבור t &gt; 0: t = 12 מהתשובה האמיתית (מנקודת המינימום בגרף שה-A=(12,36)). כדי לאמת, גוזרים ומאפסים S'(t)=0.</div>
+        <div class="step">f'(x) = −1/x² → f'(t) = −1/t²</div>
+        <div class="step">משיק ב-T: y − 1/t = −1/t²·(x−t) → y = −x/t² + 1/t + 1/t = <span class="math">y = −x/t² + 2/t</span></div>
+        <div class="step"><b>נקודת A (y=0):</b> 0 = −x/t² + 2/t → x = 2t → <b>A = (2t, 0)</b></div>
+        <div class="step"><b>נקודת B (x=0):</b> y = 2/t → <b>B = (0, 2/t)</b></div>
+        <div class="step">שטח OAB = ½·|OA|·|OB| = ½·2t·(2/t) = ½·4 = <b>2</b></div>
+        <div class="answer">שטח משולש OAB = 2 לכל t &gt; 0 — קבוע, ללא תלות ב-t ■</div>
       </div>
     </div>
 
@@ -895,12 +894,12 @@
 
     <!-- Q7 -->
     <div class="quiz-item">
-      <div class="q-text">7. f(x) = g(x) = x/(x+1). A = (t, f(t)), B = (t, g(t)) ב-f ו-g. מהו AB?</div>
+      <div class="q-text">7. נתונה f(x) = 1/x. המישיק ב-(t, 1/t) חותך את הצירים ב-A ו-B. שטח משולש OAB שווה:</div>
       <div class="quiz-options">
-        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">א</span> t/(t+1)</button>
-        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">ב</span> t²/(t+1)</button>
-        <button class="quiz-opt" onclick="answerQuiz(this, true, 7)"><span class="opt-label">ג</span> AB = 0 (שתיהן זהות)</button>
-        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">ד</span> 1/(t+1)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">א</span> 1/t</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, true, 7)"><span class="opt-label">ב</span> 2 (קבוע לכל t)</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">ג</span> t²</button>
+        <button class="quiz-opt" onclick="answerQuiz(this, false, 7)"><span class="opt-label">ד</span> תלוי ב-t</button>
       </div>
       <div class="quiz-feedback" id="fb7"></div>
     </div>
@@ -995,8 +994,8 @@
           <div class="ri-formula">f'' &gt; 0 ← מינימום; f'' &lt; 0 ← מקסימום</div>
         </div>
         <div class="ref-item">
-          <div class="ri-label">מעגל חסום בשווה-צלעות</div>
-          <div class="ri-formula">R_c = a/√3</div>
+          <div class="ri-label">מעגל חוסם (circumscribed) בשווה-צלעות</div>
+          <div class="ri-formula">R = a/√3 (מעגל מחוץ למשולש)</div>
         </div>
         <div class="ref-item">
           <div class="ri-label">שטח בין 2 פונקציות</div>
@@ -1044,7 +1043,7 @@ const feedbacks = {
   4: { correct: 'נכון! f\'(x) = 8 − 6x² = 0 → x² = 4/3 → x = 2/√3', wrong: 'לא. f\'(x) = 8 − 6x² = 0 → 6x² = 8 → x² = 4/3 → x = 2/√3 ≈ 1.15' },
   5: { correct: 'נכון! S\'\'(t) = √3/2 + 9/(2π) > 0 — שני האיברים חיוביים → מינימום', wrong: 'לא. S\'\'= √3/2 + 9/(2π) > 0 (שני האיברים חיוביים) → מינימום' },
   6: { correct: 'נכון! f(x)=√(R²−x²), f\'(x) = −2x/(2√(R²−x²)) = −x/√(R²−x²)', wrong: 'לא. f\'(x) = d/dx[(R²−x²)^½] = ½(R²−x²)^(−½)·(−2x) = −x/√(R²−x²)' },
-  7: { correct: 'נכון! אם f = g אז f(t) = g(t) → A = B → AB = 0', wrong: 'לא. אם f(x) = g(x) = x/(x+1) אז שתיהן זהות, A = B ולכן AB = 0' },
+  7: { correct: 'נכון! משיק: y = −x/t² + 2/t. A=(2t,0), B=(0,2/t). שטח = ½·2t·(2/t) = 2 — קבוע לכל t!', wrong: 'לא. A=(2t,0), B=(0,2/t). שטח = ½·|OA|·|OB| = ½·2t·2/t = 2 — קבוע, ללא תלות ב-t' },
   8: { correct: 'נכון! f\'\'(x₀) > 0 אומר שהפונקציה קמורה מעלה ← מינימום. חלופה: f\' משנה סימן מ-− ל-+', wrong: 'לא. בודקים f\'\'(x₀) > 0 (קמירות) או שינוי סימן f\' מ-− ל-+ סביב x₀' }
 };
 
