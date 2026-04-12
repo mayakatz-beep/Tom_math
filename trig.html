@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פונקציות טריגונומטריות — ניתוח פונקציות – מתמטיקה 5 יח"ל</title>
+<style>
+  :root {
+    --primary: #ea580c;
+    --dark: #9a3412;
+    --medium: #c2410c;
+    --vlight: #fff7ed;
+    --light: #ffedd5;
+    --border: #fed7aa;
+    --gray: #374151;
+    --gray-light: #f3f4f6;
+    --border-std: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: var(--gray); line-height: 1.7; font-size: 16px; }
+
+  .main-header { background: linear-gradient(135deg, #7c2d12 0%, #c2410c 50%, #ea580c 100%); color: white; padding: 40px 20px 30px; text-align: center; }
+  .main-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  .main-header .subtitle { font-size: 1.1rem; opacity: 0.85; }
+  .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; }
+
+  .toc { display:flex; align-items:center; gap:10px; background:white; border-bottom:2px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .toc-home { flex-shrink:0; background:var(--dark); color:white !important; text-decoration:none; border-radius:20px; padding:4px 12px; font-size:0.85rem; font-weight:700; white-space:nowrap; }
+  .toc-home:hover { background:var(--primary); }
+  .toc-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; flex:1; }
+  .toc-inner { display:flex; gap:8px; flex-wrap:nowrap; width:max-content; align-items:center; padding:2px 0; }
+  .toc-inner span { color:#6b7280; font-size:0.82rem; flex-shrink:0; }
+  .toc-inner a { color:var(--primary); text-decoration:none; font-size:0.82rem; padding:3px 10px; border-radius:20px; background:var(--vlight); white-space:nowrap; flex-shrink:0; }
+  .toc-inner a:hover { background:var(--light); }
+  @media(max-width:600px) { .toc { padding:8px 10px; gap:6px; } }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 60px; }
+  .section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; border-bottom: 2px solid var(--border-std); background: var(--light); }
+  .section-header:hover { filter: brightness(0.97); }
+  .section-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; background: var(--primary); color: white; }
+  .section-title { font-size: 1.2rem; font-weight: 700; flex: 1; color: #7c2d12; }
+  .section-num { font-size: 0.8rem; opacity: 0.55; margin-top: 2px; }
+  .chevron { font-size: 1rem; transition: transform .3s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 24px; display: none; }
+  .section-body.open { display: block; }
+
+  .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+  .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .fcard .fformula { color: #fdba74; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; }
+  .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
+
+  .tip { background: var(--vlight); border-right: 4px solid var(--primary); padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.92rem; }
+  .warn { background: #fff7ed; border-right: 4px solid #f97316; padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.92rem; }
+  .rule-box { background: var(--light); border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 14px 0; }
+  .rule-box strong { color: var(--dark); }
+
+  .example { border: 1.5px solid var(--border-std); border-radius: 12px; margin: 16px 0; overflow: hidden; }
+  .example-q { background: var(--gray-light); padding: 14px 18px; font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+  .example-num { background: var(--primary); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .toggle-btn { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin: 12px 18px; transition: background .2s; }
+  .toggle-btn:hover { background: var(--dark); }
+  .solution { display: none; padding: 16px 18px; background: var(--vlight); border-top: 1.5px solid var(--border-std); }
+  .solution.open { display: block; }
+  .step { padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem; }
+  .step:last-child { border-bottom: none; }
+  .answer { margin-top: 10px; background: var(--light); padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #7c2d12; border: 1.5px solid var(--border); }
+
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  .sign-table th { background: #1e293b; color: #e2e8f0; padding: 8px 12px; text-align: center; }
+  .sign-table td { border: 1px solid var(--border-std); padding: 8px 12px; text-align: center; }
+  .sign-table tr:nth-child(even) { background: #f8fafc; }
+  .pos { color: #059669; font-weight: 700; }
+  .neg { color: #dc2626; font-weight: 700; }
+  .zero { color: #7c3aed; font-weight: 700; }
+  .rising { background: #dcfce7 !important; color: #166534; font-weight: 700; }
+  .falling { background: #fee2e2 !important; color: #991b1b; font-weight: 700; }
+
+  .quiz-item { border: 1.5px solid var(--border); border-radius: 12px; padding: 18px; margin: 14px 0; background: white; }
+  .q-text { font-weight: 600; margin-bottom: 10px; font-size: 1rem; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-opt { border: 1.5px solid var(--border-std); border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .2s; background: white; text-align: right; font-size: 0.92rem; }
+  .quiz-opt:hover { border-color: var(--primary); background: var(--vlight); }
+  .quiz-opt.correct { background: #d1fae5; border-color: #059669; color: #065f46; font-weight: 700; }
+  .quiz-opt.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+  .quiz-feedback { display: none; margin-top: 10px; padding: 10px 14px; background: var(--vlight); border-radius: 8px; font-size: 0.88rem; color: #7c2d12; border: 1px solid var(--border); }
+  .quiz-feedback.show { display: block; }
+  .quiz-score { text-align: center; font-weight: 700; color: var(--dark); font-size: 1.1rem; margin: 16px 0 4px; }
+  .progress-bar-wrap { background: #e5e7eb; border-radius: 99px; height: 10px; margin: 8px 0 20px; }
+  .progress-bar { background: var(--primary); height: 10px; border-radius: 99px; transition: width .4s; width: 0; }
+
+  .bagrut-section { background: white; border-radius: 16px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 2px solid var(--border); }
+  .bagrut-header { background: linear-gradient(135deg, #7c2d12, #c2410c); color: white; padding: 18px 24px; display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none; }
+  .bagrut-header:hover { filter: brightness(1.05); }
+  .bagrut-title { font-size: 1.15rem; font-weight: 700; flex: 1; }
+  .bagrut-sub { font-size: 0.82rem; opacity: 0.8; margin-top: 2px; }
+  .bagrut-body { padding: 24px; display: none; }
+  .bagrut-body.open { display: block; }
+  .bagrut-q { background: var(--light); border-right: 4px solid var(--primary); border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+  .bagrut-q strong { color: var(--dark); }
+  .bagrut-sol { display: none; background: var(--vlight); border-radius: 10px; padding: 16px 20px; margin-top: 10px; border: 1.5px solid var(--border); }
+  .bagrut-sol.open { display: block; }
+  .sol-step { padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem; }
+  .sol-step:last-child { border-bottom: none; }
+  .final-answer { background: var(--light); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-weight: 700; color: #7c2d12; }
+
+  .ref-card { background: #1e293b; border-radius: 14px; padding: 24px; margin-top: 40px; color: #e2e8f0; }
+  .ref-card h3 { color: #fdba74; font-size: 1.1rem; margin-bottom: 16px; }
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .ref-col h4 { color: #fb923c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .ref-item { font-family: 'Courier New', monospace; font-size: 0.88rem; padding: 4px 0; border-bottom: 1px solid #334155; color: #e2e8f0; }
+  .ref-item:last-child { border-bottom: none; }
+  .ref-item span { color: #86efac; }
+
+  @media (max-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .main-header h1 { font-size: 1.5rem; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .section-header { padding: 14px 16px; gap: 10px; }
+    .section-title { font-size: 1rem; }
+    .section-body { padding: 16px; }
+    .container { padding: 20px 10px 60px; }
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <h1>🌊 פונקציות טריגונומטריות</h1>
+  <p class="subtitle">ניתוח מלא של פונקציות sin, cos ומורכבות</p>
+  <div class="badge-row">
+    <span class="badge">קיץ תשפ"ו</span>
+    <span class="badge">שאלון 35571</span>
+    <span class="badge">פרק א'</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="index.html" class="toc-home">🏠 דף הבית</a>
+  <div class="toc-scroll">
+    <div class="toc-inner">
+      <span>נושאים:</span>
+      <a href="#s1">1. תחום הגדרה</a>
+      <a href="#s2">2. נגזרות</a>
+      <a href="#s3">3. עלייה וקיצון</a>
+      <a href="#s4">4. זוגיות</a>
+      <a href="#s5">5. ניתוח מלא</a>
+      <a href="#s6">6. גרפים</a>
+      <a href="#s7">7. אינטגרלים</a>
+      <a href="#s8">8. תרגול</a>
+      <a href="#bagrut1">בגרות א</a>
+      <a href="#bagrut2">בגרות ב</a>
+      <a href="#bagrut3">בגרות ג</a>
+      <a href="#bagrut4">בגרות ד</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================== SECTION 1 ============================== -->
+<div class="section" id="s1">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📐</div>
+    <div>
+      <div class="section-title">תחום הגדרה</div>
+      <div class="section-num">נושא 1 מתוך 8</div>
+    </div>
+    <div class="chevron open">▼</div>
+  </div>
+  <div class="section-body open">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">sin x, cos x</div>
+        <div class="fformula">לכל x ∈ ℝ</div>
+        <div class="fsub">מוגדרות לכל מספר ממשי</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">tan x</div>
+        <div class="fformula">x ≠ π/2 + kπ</div>
+        <div class="fsub">לא מוגדרת כשcos x = 0</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">√(sin x)</div>
+        <div class="fformula">sin x ≥ 0</div>
+        <div class="fsub">x ∈ [2kπ, π+2kπ]</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">√(cos x)</div>
+        <div class="fformula">cos x ≥ 0</div>
+        <div class="fsub">x ∈ [-π/2+2kπ, π/2+2kπ]</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <strong>כלל כללי:</strong> עבור f(x)/g(x) דרוש g(x) ≠ 0; עבור √(h(x)) דרוש h(x) ≥ 0.<br>
+      עבור √(h(x)) במכנה — דרוש h(x) <strong>&gt; 0</strong> (חזק!)<br>
+      בתחום נתון (למשל 0≤x≤π): מחשבים את התנאי <em>בתוך</em> הטווח הנתון.
+    </div>
+
+    <!-- Example 1 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">1</div>
+        <div>מצאו את תחום ההגדרה של f(x) = cos x / √(sin x) בתחום [0, 2π]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">דרוש: √(sin x) במכנה → sin x <strong>&gt; 0</strong> (ממש חיובי)</div>
+        <div class="step">sin x &gt; 0 בתחום [0, 2π]: sin x &gt; 0 ב- (0, π)</div>
+        <div class="step">sin x = 0 ב- x=0, x=π, x=2π — נקודות אלה לא בתחום</div>
+        <div class="answer">תחום ההגדרה: (0, π)</div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">2</div>
+        <div>מצאו את תחום ההגדרה של f(x) = √(sin x · cos²x) בתחום [0, π]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">דרוש: sin x · cos²x ≥ 0</div>
+        <div class="step">cos²x ≥ 0 תמיד (ריבוע), לכן מספיק לדרוש sin x ≥ 0</div>
+        <div class="step">בתחום [0, π]: sin x ≥ 0 לכל x (sin x ≥ 0 על [0, π])</div>
+        <div class="answer">תחום ההגדרה: [0, π] — כל התחום הנתון</div>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">3</div>
+        <div>מצאו את תחום ההגדרה של f(x) = (sin x − 1) / (sin x + 1) בתחום [−2π, 2π]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">דרוש: sin x + 1 ≠ 0 → sin x ≠ −1</div>
+        <div class="step">sin x = −1 כאשר x = −π/2 + 2kπ</div>
+        <div class="step">בתחום [−2π, 2π]: x = −π/2 ו- x = 3π/2</div>
+        <div class="answer">תחום ההגדרה: [−2π, −π/2) ∪ (−π/2, 3π/2) ∪ (3π/2, 2π]</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div class="section" id="s2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">∂</div>
+    <div>
+      <div class="section-title">נגזרות פונקציות טריגונומטריות</div>
+      <div class="section-num">נושא 2 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">נגזרת sin</div>
+        <div class="fformula">(sin x)' = cos x</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נגזרת cos</div>
+        <div class="fformula">(cos x)' = −sin x</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">נגזרת tan</div>
+        <div class="fformula">(tan x)' = 1/cos²x</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">כלל שרשרת</div>
+        <div class="fformula">[f(g(x))]' = f'(g(x))·g'(x)</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <strong>נגזרות נפוצות:</strong><br>
+      • (sin 2x)' = cos 2x · 2 = 2cos 2x<br>
+      • (sin²x)' = 2sin x · cos x = sin 2x<br>
+      • (cos²x)' = 2cos x · (−sin x) = −sin 2x<br>
+      • (√(sin x))' = cos x / (2√(sin x))<br>
+      • כלל מכפלה: (u·v)' = u'v + uv'<br>
+      • כלל מנה: (u/v)' = (u'v − uv') / v²
+    </div>
+
+    <!-- Example 4 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">4</div>
+        <div>חשבו את f'(x) עבור f(x) = sin x · cos²x</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">כלל מכפלה: f'(x) = (sin x)' · cos²x + sin x · (cos²x)'</div>
+        <div class="step">= cos x · cos²x + sin x · (−sin 2x)</div>
+        <div class="step">= cos³x − 2sin²x · cos x</div>
+        <div class="step">= cos x(cos²x − 2sin²x)</div>
+        <div class="step">נשתמש בזהות: cos²x − 2sin²x = cos²x − 2(1−cos²x) = 3cos²x − 2</div>
+        <div class="answer">f'(x) = cos x(3cos²x − 2)</div>
+      </div>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">5</div>
+        <div>חשבו את f'(x) עבור f(x) = (sin x − 1) / (sin x + 1)</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">כלל מנה: f'(x) = [(sin x−1)' · (sin x+1) − (sin x−1) · (sin x+1)'] / (sin x+1)²</div>
+        <div class="step">= [cos x · (sin x+1) − (sin x−1) · cos x] / (sin x+1)²</div>
+        <div class="step">= cos x · [(sin x+1) − (sin x−1)] / (sin x+1)²</div>
+        <div class="step">= cos x · 2 / (sin x+1)²</div>
+        <div class="answer">f'(x) = 2cos x / (sin x + 1)²</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div class="section" id="s3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📈</div>
+    <div>
+      <div class="section-title">עלייה, ירידה ונקודות קיצון</div>
+      <div class="section-num">נושא 3 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">עולה</div>
+        <div class="fformula">f'(x) &gt; 0</div>
+        <div class="fsub">הפונקציה עולה בקטע</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">יורדת</div>
+        <div class="fformula">f'(x) &lt; 0</div>
+        <div class="fsub">הפונקציה יורדת בקטע</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מקסימום מקומי</div>
+        <div class="fformula">f'=0, + → −</div>
+        <div class="fsub">הנגזרת עוברת מחיובית לשלילית</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">מינימום מקומי</div>
+        <div class="fformula">f'=0, − → +</div>
+        <div class="fsub">הנגזרת עוברת משלילית לחיובית</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>חשוב:</strong> בפונקציות טריגונומטריות עם הפסקות בתחום — בדוק כל קטע רצוף בנפרד. גם נקודות הקצה יכולות להיות מינ'/מקס'.
+    </div>
+
+    <!-- Example 6 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">6</div>
+        <div>מצאו את נקודות הקיצון של f(x) = sin x · cos²x בתחום [0, π]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">מדוגמה 4: f'(x) = cos x(3cos²x − 2)</div>
+        <div class="step">f'(x) = 0: (1) cos x = 0 → x = π/2; (2) 3cos²x − 2 = 0 → cos x = ±√(2/3)</div>
+        <div class="step">cos x = +√(2/3) ≈ 0.816 → x₁ = arccos(√(2/3)) ≈ 0.615</div>
+        <div class="step">cos x = −√(2/3) ≈ −0.816 → x₂ = π − arccos(√(2/3)) ≈ 2.526</div>
+        <br>
+        <table class="sign-table">
+          <tr>
+            <th>קטע</th>
+            <th>cos x</th>
+            <th>3cos²x−2</th>
+            <th>f'(x)</th>
+            <th>מגמה</th>
+          </tr>
+          <tr>
+            <td>(0, 0.615)</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(0.615, π/2)</td>
+            <td class="pos">+</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+          <tr>
+            <td>(π/2, 2.526)</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(2.526, π)</td>
+            <td class="neg">−</td>
+            <td class="pos">+</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+        </table>
+        <div class="step"><strong>x ≈ 0.615:</strong> שינוי + → − → <strong>מקסימום מקומי</strong>. f(0.615) = sin(0.615)·cos²(0.615) ≈ 2√3/9 ≈ 0.385</div>
+        <div class="step"><strong>x = π/2:</strong> שינוי − → + → <strong>מינימום מקומי</strong>. f(π/2) = 1·0 = 0</div>
+        <div class="step"><strong>x ≈ 2.526:</strong> שינוי + → − → <strong>מקסימום מקומי</strong>. f(2.526) ≈ 0.385</div>
+        <div class="answer">שלוש נקודות קיצון: מקסימום ב-(0.615, 2√3/9), מינימום ב-(π/2, 0), מקסימום ב-(2.526, 2√3/9)</div>
+      </div>
+    </div>
+
+    <!-- Example 7 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">7</div>
+        <div>מצאו עלייה/ירידה ונקודות קיצון של f(x) = (sin x − 1)/(sin x + 1) בתחום [−2π, 2π]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">מדוגמה 5: f'(x) = 2cos x / (sin x+1)²</div>
+        <div class="step">המכנה (sin x+1)² ≥ 0 תמיד (ובתחום ≠ 0), לכן סימן f' = סימן cos x</div>
+        <div class="step">הנקודות <strong>x = −π/2</strong> ו-<strong>x = 3π/2</strong> אינן בתחום ההגדרה!</div>
+        <br>
+        <table class="sign-table">
+          <tr>
+            <th>קטע (בתחום)</th>
+            <th>cos x</th>
+            <th>f'(x)</th>
+            <th>מגמה</th>
+          </tr>
+          <tr>
+            <td>(−2π, −3π/2)</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(−3π/2, −π/2)</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+          <tr>
+            <td>(−π/2, π/2)</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(π/2, 3π/2)</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+          <tr>
+            <td>(3π/2, 2π]</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+        </table>
+        <div class="step"><strong>x = −3π/2:</strong> שינוי + → − → מקסימום. f(−3π/2) = (sin(−3π/2)−1)/(sin(−3π/2)+1) = (1−1)/(1+1) = 0</div>
+        <div class="step"><strong>x = π/2:</strong> שינוי + → − → מקסימום. f(π/2) = (1−1)/(1+1) = 0</div>
+        <div class="answer">מקסימומים: (−3π/2, 0) ו-(π/2, 0). ליד x=−π/2 ו-x=3π/2 יש אסימפטוטות אנכיות (f→−∞)</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 4 ============================== -->
+<div class="section" id="s4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">⚖️</div>
+    <div>
+      <div class="section-title">פונקציות זוגיות ואי-זוגיות</div>
+      <div class="section-num">נושא 4 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">זוגית</div>
+        <div class="fformula">f(−x) = f(x)</div>
+        <div class="fsub">סימטריה ביחס לציר y</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">אי-זוגית</div>
+        <div class="fformula">f(−x) = −f(x)</div>
+        <div class="fsub">סימטריה ביחס לראשית</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">sin — אי-זוגית</div>
+        <div class="fformula">sin(−x) = −sin x</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">cos — זוגית</div>
+        <div class="fformula">cos(−x) = cos x</div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <strong>תנאי הכרחי:</strong> תחום ההגדרה חייב להיות סימטרי ביחס ל-0 (כלומר: אם x בתחום אז גם −x בתחום). אם התחום אינו סימטרי — לא ניתן להגדיר זוגיות/אי-זוגיות!
+    </div>
+
+    <!-- Example 8 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">8</div>
+        <div>האם f(x) = (sin x − 1)/(sin x + 1) זוגית, אי-זוגית, או אף לא?</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">התחום סימטרי (אם x ∈ תחום אז −x ∈ תחום) ✓</div>
+        <div class="step">f(−x) = (sin(−x)−1)/(sin(−x)+1) = (−sin x−1)/(−sin x+1)</div>
+        <div class="step">= −(sin x+1)/(1−sin x) = (sin x+1)/(sin x−1)</div>
+        <div class="step">f(x) = (sin x−1)/(sin x+1)</div>
+        <div class="step">f(−x) ≠ f(x) ו-f(−x) ≠ −f(x) (אלא f(−x) = 1/f(x))</div>
+        <div class="answer">הפונקציה אינה זוגית ואינה אי-זוגית</div>
+      </div>
+    </div>
+
+    <!-- Example 9 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">9</div>
+        <div>האם g(x) = cos x · √(sin x) זוגית, אי-זוגית, או אף לא? (תחום [0, π])</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">תחום ההגדרה: [0, π]</div>
+        <div class="step">התחום [0, π] אינו סימטרי ביחס ל-0 (אין ערכים שליליים)</div>
+        <div class="answer">הפונקציה מוגדרת בתחום לא-סימטרי — זוגיות/אי-זוגיות לא רלוונטי</div>
+      </div>
+    </div>
+
+    <!-- Example 10 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">10</div>
+        <div>האם f(x) = cos x − cos²x זוגית, אי-זוגית, או אף לא? (תחום [−π, π])</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">תחום [−π, π] סימטרי ✓</div>
+        <div class="step">f(−x) = cos(−x) − cos²(−x) = cos x − cos²x = f(x)</div>
+        <div class="answer">פונקציה זוגית — סימטרית ביחס לציר y</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 5 ============================== -->
+<div class="section" id="s5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">🔬</div>
+    <div>
+      <div class="section-title">ניתוח מלא — שיטה שלמה</div>
+      <div class="section-num">נושא 5 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="rule-box">
+      <strong>6 שלבי הניתוח המלא:</strong><br>
+      <strong>1.</strong> תחום הגדרה<br>
+      <strong>2.</strong> נקודות חיתוך עם הצירים (אפסי הפונקציה + f(0))<br>
+      <strong>3.</strong> זוגיות/אי-זוגיות (אם התחום סימטרי)<br>
+      <strong>4.</strong> נגזרת f'(x) + אפסי הנגזרת<br>
+      <strong>5.</strong> טבלת סימנים → עלייה/ירידה + נקודות קיצון<br>
+      <strong>6.</strong> סרטוט (סקיצה)
+    </div>
+
+    <!-- Example 11 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">11</div>
+        <div>ניתוח מלא של f(x) = cos x − cos²x בתחום [−π, π]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><strong>שלב 1 — תחום:</strong> [−π, π] (cos x מוגדר לכל x)</div>
+        <div class="step"><strong>שלב 2 — חיתוך עם הצירים:</strong><br>
+          cos x − cos²x = 0 → cos x(1 − cos x) = 0<br>
+          cos x = 0: x = ±π/2 | cos x = 1: x = 0<br>
+          אפסים: (−π/2, 0), (0, 0), (π/2, 0)<br>
+          נקודת חיתוך עם y: f(0) = 1−1 = 0 → (0, 0)<br>
+          ערכי קצוות: f(±π) = cos π − cos²π = −1 − 1 = −2
+        </div>
+        <div class="step"><strong>שלב 3 — זוגיות:</strong> f(−x) = cos(−x) − cos²(−x) = cos x − cos²x = f(x) → פונקציה <strong>זוגית</strong></div>
+        <div class="step"><strong>שלב 4 — נגזרת:</strong><br>
+          f'(x) = −sin x − 2cos x · (−sin x) = −sin x + 2sin x cos x = sin x(2cos x − 1)<br>
+          f'(x) = 0: sin x = 0 → x = 0, ±π | 2cos x−1 = 0 → cos x = 1/2 → x = ±π/3
+        </div>
+        <div class="step"><strong>שלב 5 — טבלת סימנים (על [0, π] בלבד, בגלל זוגיות):</strong></div>
+        <table class="sign-table">
+          <tr>
+            <th>קטע</th>
+            <th>sin x</th>
+            <th>2cos x−1</th>
+            <th>f'(x)</th>
+            <th>מגמה</th>
+          </tr>
+          <tr>
+            <td>(0, π/3)</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(π/3, π)</td>
+            <td class="pos">+</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+        </table>
+        <div class="step"><strong>מקסימום</strong> ב- x=π/3: f(π/3) = cos(π/3) − cos²(π/3) = 1/2 − 1/4 = <strong>1/4</strong></div>
+        <div class="step">בגלל זוגיות — <strong>מקסימום</strong> גם ב- x=−π/3: f(−π/3) = 1/4</div>
+        <div class="step">x=0: מינימום מקומי f(0) = 0 | x=±π: f(±π) = −2 (מינימום גלובלי)</div>
+        <div class="answer">
+          <strong>שלב 6 — סרטוט:</strong> פונקציה זוגית. אפסים ב-±π/2 ו-0. מקסימומים ב-(±π/3, 1/4). מינימום ב-(0,0) ו-(±π, −2).<br>
+          <strong>טווח:</strong> [−2, 1/4]
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 12 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">12</div>
+        <div>ניתוח מלא של f(x) = √(cos 2x) בתחום [−π/4, π/4]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step"><strong>שלב 1 — תחום:</strong> דרוש cos 2x ≥ 0. ב-[−π/4, π/4]: 2x ∈ [−π/2, π/2], cos ≥ 0 בכל מקום → תחום: [−π/4, π/4] ✓</div>
+        <div class="step"><strong>שלב 2 — אפסים:</strong> cos 2x = 0 → 2x = ±π/2 → x = ±π/4 (נקודות הקצה)<br>
+          חיתוך עם y: f(0) = √(cos 0) = √1 = 1 → (0, 1)
+        </div>
+        <div class="step"><strong>שלב 3 — זוגיות:</strong> f(−x) = √(cos(−2x)) = √(cos 2x) = f(x) → <strong>זוגית</strong></div>
+        <div class="step"><strong>שלב 4 — נגזרת:</strong><br>
+          f'(x) = (cos 2x)^(−1/2) / 2 · (−2sin 2x) = −sin 2x / √(cos 2x)<br>
+          f'(x) = 0: sin 2x = 0 → x = 0 (בתחום)
+        </div>
+        <div class="step"><strong>שלב 5 — טבלת סימנים:</strong></div>
+        <table class="sign-table">
+          <tr>
+            <th>קטע</th>
+            <th>−sin 2x</th>
+            <th>f'(x)</th>
+            <th>מגמה</th>
+          </tr>
+          <tr>
+            <td>(−π/4, 0)</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(0, π/4)</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+        </table>
+        <div class="answer">מקסימום ב- x=0: f(0) = 1 → <strong>(0, 1)</strong>. הפונקציה מגיעה ל-0 בנקודות הקצה x=±π/4</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 6 ============================== -->
+<div class="section" id="s6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">📊</div>
+    <div>
+      <div class="section-title">גרף פונקציות טריגונומטריות</div>
+      <div class="section-num">נושא 6 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">y = A·sin(Bx+C)+D</div>
+        <div class="fformula">אמפליטודה: |A|</div>
+        <div class="fsub">מחזור: 2π/|B| | היסט אופקי: −C/B | היסט אנכי: D</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">y = sin²x</div>
+        <div class="fformula">= (1 − cos 2x)/2</div>
+        <div class="fsub">לא שלילי, מחזור π, עוצמה 1/2 סביב y=1/2</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">y = |sin x|</div>
+        <div class="fformula">≥ 0, מחזור π</div>
+        <div class="fsub">כל הקשתות כלפי מעלה</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">טרנספורמציות</div>
+        <div class="fformula">f(x)+k, f(x−a)</div>
+        <div class="fsub">הזזה אנכית/אופקית; −f(x): השתקפות; f(−x): כפל x ב-−1</div>
+      </div>
+    </div>
+
+    <!-- Example 13 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">13</div>
+        <div>השוו בין f(x) = cos 2x ו- g(x) = √(cos 2x) על [−π/4, π/4]</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">שתי הפונקציות מוגדרות על [−π/4, π/4] ✓</div>
+        <div class="step">שתיהן עם אפסים בנקודות הקצה x=±π/4, ומקסימום ב-(0, 1)</div>
+        <div class="step">על [−π/4, π/4]: 0 ≤ cos 2x ≤ 1</div>
+        <div class="step">לכל t ∈ [0, 1]: √t ≥ t (כי √t−t = √t(1−√t) ≥ 0)</div>
+        <div class="step">לכן: g(x) = √(cos 2x) ≥ cos 2x = f(x) על כל התחום</div>
+        <div class="answer">g(x) ≥ f(x) על [−π/4, π/4]. גרף g "רחב יותר" ויושב מעל f. השוויון רק ב-x=0 ו-x=±π/4.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 7 ============================== -->
+<div class="section" id="s7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">∫</div>
+    <div>
+      <div class="section-title">שטח ואינטגרלים</div>
+      <div class="section-num">נושא 7 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="formula-grid">
+      <div class="fcard">
+        <div class="flabel">∫ sin x dx</div>
+        <div class="fformula">= −cos x + C</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">∫ cos x dx</div>
+        <div class="fformula">= sin x + C</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">∫ sin 2x dx</div>
+        <div class="fformula">= −cos 2x / 2 + C</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">∫ cos 2x dx</div>
+        <div class="fformula">= sin 2x / 2 + C</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <strong>תכונות שימושיות:</strong><br>
+      • אינטגרל של פונקציה <strong>זוגית</strong>: ∫₋ₐᵃ f(x)dx = 2∫₀ᵃ f(x)dx<br>
+      • אינטגרל של פונקציה <strong>אי-זוגית</strong>: ∫₋ₐᵃ f(x)dx = 0<br>
+      • שטח כשf חיובית וגם שלילית: השתמש ב-∫|f(x)|dx
+    </div>
+
+    <!-- Example 14 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">14</div>
+        <div>חשבו: ∫₀^(π/3) sin x · cos²x dx</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">הצבה: u = cos x, du = −sin x dx → sin x dx = −du</div>
+        <div class="step">גבולות: x=0 → u=cos 0=1; x=π/3 → u=cos(π/3)=1/2</div>
+        <div class="step">∫₀^(π/3) cos²x · sin x dx = ∫₁^(1/2) u² · (−du) = ∫_(1/2)^1 u² du</div>
+        <div class="step">= [u³/3]_(1/2)^1 = 1/3 − (1/2)³/3 = 1/3 − 1/24</div>
+        <div class="step">= 8/24 − 1/24 = 7/24</div>
+        <div class="answer">∫₀^(π/3) sin x · cos²x dx = <strong>7/24</strong></div>
+      </div>
+    </div>
+
+    <!-- Example 15 -->
+    <div class="example">
+      <div class="example-q">
+        <div class="example-num">15</div>
+        <div>
+          נתונה f(x) זוגית, S = ∫₀^(π/2) f(x)dx. נתון g(x) = k − f(x).<br>
+          שטח האזור בין גרפי f ו-g מ-−π/2 עד π/2 שווה ל-10S. מצאו k.
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▾</button>
+      <div class="solution">
+        <div class="step">g(x) − f(x) = k − f(x) − f(x) = k − 2f(x)</div>
+        <div class="step">שטח = ∫₋_(π/2)^(π/2) |g(x)−f(x)| dx = ∫₋_(π/2)^(π/2) |k−2f(x)| dx</div>
+        <div class="step">בהנחה ש-k−2f(x) שומר סימן: שטח = ∫₋_(π/2)^(π/2) (k−2f(x)) dx</div>
+        <div class="step">= [k·x]₋_(π/2)^(π/2) − 2∫₋_(π/2)^(π/2) f(x) dx</div>
+        <div class="step">= k·π − 2·(2S) (בגלל זוגיות f: ∫₋_(π/2)^(π/2) f = 2S)</div>
+        <div class="step">= kπ − 4S = 10S</div>
+        <div class="step">kπ = 14S → k = 14S/π</div>
+        <div class="answer">k = 14S/π</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== SECTION 8 — QUIZ ============================== -->
+<div class="section" id="s8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-icon">✏️</div>
+    <div>
+      <div class="section-title">תרגול מסכם — 8 שאלות אינטרקטיביות</div>
+      <div class="section-num">נושא 8 מתוך 8</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="quiz-score" id="quiz-score">ענה על שאלות כדי לראות ציון</div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="quiz-progress"></div></div>
+
+    <!-- Q1 -->
+    <div class="quiz-item" id="q1">
+      <div class="q-text">שאלה 1: מהו תחום ההגדרה של f(x) = √(sin x) בתחום [0, 2π]?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q1',false,'sin x ≥ 0 על [0,π], כולל הנקודות x=0 ו-x=π שבהן sin x=0')">א. (0, 2π)</button>
+        <button class="quiz-opt" onclick="answer(this,'q1',true,'sin x ≥ 0 בדיוק על [0,π]: sin x=0 ב-x=0 ו-x=π אך מותר (שורש של 0 מוגדר)')">ב. [0, π]</button>
+        <button class="quiz-opt" onclick="answer(this,'q1',false,'x=0 ו-x=π כלולים (sin 0=sin π=0 ≥ 0)')">ג. (0, π)</button>
+        <button class="quiz-opt" onclick="answer(this,'q1',false,'sin π=0 ≥ 0, ולכן x=π כן בתחום; אין פסיקה ב-π')">ד. [0, π) ∪ {2π}</button>
+      </div>
+      <div class="quiz-feedback" id="q1-fb"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-item" id="q2">
+      <div class="q-text">שאלה 2: נתון f(x) = sin²x. אז f'(x) = ?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q2',false,'נגזרת sin²x היא 2sin x · cos x = sin 2x, לא 2sin x')">א. 2sin x</button>
+        <button class="quiz-opt" onclick="answer(this,'q2',true,'f\'(x) = 2sin x · (sin x)\' = 2sin x · cos x = sin 2x')">ב. sin 2x</button>
+        <button class="quiz-opt" onclick="answer(this,'q2',false,'2cos x היא נגזרת 2sin x, לא של sin²x')">ג. 2cos x</button>
+        <button class="quiz-opt" onclick="answer(this,'q2',false,'−sin 2x היא נגזרת cos²x, לא sin²x')">ד. −sin 2x</button>
+      </div>
+      <div class="quiz-feedback" id="q2-fb"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-item" id="q3">
+      <div class="q-text">שאלה 3: f(x) = cos x − cos²x בתחום [−π, π]. הפונקציה היא:</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q3',true,'f(−x) = cos(−x) − cos²(−x) = cos x − cos²x = f(x) ✓')">א. זוגית</button>
+        <button class="quiz-opt" onclick="answer(this,'q3',false,'f(−x) = f(x) ≠ −f(x), לכן לא אי-זוגית')">ב. אי-זוגית</button>
+        <button class="quiz-opt" onclick="answer(this,'q3',false,'התחום סימטרי ו-f(−x)=f(x), לכן היא זוגית')">ג. לא זוגית ולא אי-זוגית</button>
+        <button class="quiz-opt" onclick="answer(this,'q3',false,'ניתן לקבוע בוודאות: f(−x)=f(x) → זוגית')">ד. לא ניתן לקבוע</button>
+      </div>
+      <div class="quiz-feedback" id="q3-fb"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-item" id="q4">
+      <div class="q-text">שאלה 4: f(x) = sin x · cos²x על [0,π]. כמה נקודות קיצון יש לפונקציה?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q4',false,'f\'=0 ב-3 נקודות בתוך (0,π), לא רק אחת')">א. 1</button>
+        <button class="quiz-opt" onclick="answer(this,'q4',false,'יש 3 נקודות בהן f\'=0 וסימן f\' משתנה')">ב. 2</button>
+        <button class="quiz-opt" onclick="answer(this,'q4',true,'x≈0.615 (מקסימום), x=π/2 (מינימום), x≈2.526 (מקסימום)')">ג. 3</button>
+        <button class="quiz-opt" onclick="answer(this,'q4',false,'3cos²x−2=0 נותן 2 פתרונות ו-cos x=0 נותן 1, סה\"כ 3')">ד. 4</button>
+      </div>
+      <div class="quiz-feedback" id="q4-fb"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-item" id="q5">
+      <div class="q-text">שאלה 5: ∫₀^(π/2) sin x dx = ?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q5',false,'∫sin x = −cos x; ערכים: −cos(π/2)+cos(0) = 0+1 = 1')">א. 0</button>
+        <button class="quiz-opt" onclick="answer(this,'q5',true,'[−cos x]₀^(π/2) = −cos(π/2) + cos(0) = 0 + 1 = 1')">ב. 1</button>
+        <button class="quiz-opt" onclick="answer(this,'q5',false,'2 = ∫₀^π sin x dx, לא ∫₀^(π/2)')">ג. 2</button>
+        <button class="quiz-opt" onclick="answer(this,'q5',false,'π/2 אינו נכון; ∫sin x = −cos x + C')">ד. π/2</button>
+      </div>
+      <div class="quiz-feedback" id="q5-fb"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-item" id="q6">
+      <div class="q-text">שאלה 6: f(x) = (sin x−1)/(sin x+1) — אילו ערכי x אינם בתחום ההגדרה על [−2π, 2π]?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q6',false,'sin 0 = 0 ≠ −1, sin π = 0 ≠ −1 — ערכים אלה בתחום')">א. x=0, x=π</button>
+        <button class="quiz-opt" onclick="answer(this,'q6',false,'sin(π/2)=1 ≠ −1; sin(−3π/2)=1 ≠ −1 — ערכים אלה בתחום')">ב. x=π/2, x=−3π/2</button>
+        <button class="quiz-opt" onclick="answer(this,'q6',true,'sin(−π/2)=−1 ו-sin(3π/2)=−1 → sin x+1=0 → אינם בתחום')">ג. x=−π/2, x=3π/2</button>
+        <button class="quiz-opt" onclick="answer(this,'q6',false,'sin(±π)=0 ≠ −1 — ערכים אלה בתחום')">ד. x=±π</button>
+      </div>
+      <div class="quiz-feedback" id="q6-fb"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-item" id="q7">
+      <div class="q-text">שאלה 7: ערך המקסימום של f(x) = √(cos 2x) על [−π/4, π/4] הוא:</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q7',false,'f(0) = √(cos 0) = √1 = 1, לא √2')">א. √2</button>
+        <button class="quiz-opt" onclick="answer(this,'q7',true,'x=0 נותן f(0) = √(cos 0) = √1 = 1 — זה המקסימום')">ב. 1</button>
+        <button class="quiz-opt" onclick="answer(this,'q7',false,'π/4 הוא ערך של x, לא ערך הפונקציה')">ג. π/4</button>
+        <button class="quiz-opt" onclick="answer(this,'q7',false,'f מוגדרת על [0,1] כי cos 2x ∈ [0,1] בתחום — ערכה ≤ 1')">ד. 2</button>
+      </div>
+      <div class="quiz-feedback" id="q7-fb"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-item" id="q8">
+      <div class="q-text">שאלה 8: עבור פונקציה זוגית f(x) על [−π, π]: ∫₋π^π f(x) dx = ?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q8',false,'0 הוא תוצאת אינטגרל של פונקציה אי-זוגית, לא זוגית')">א. 0</button>
+        <button class="quiz-opt" onclick="answer(this,'q8',false,'∫₋π^π f = 2∫₀^π f, לא ∫₀^π f')">ב. ∫₀^π f(x)dx</button>
+        <button class="quiz-opt" onclick="answer(this,'q8',true,'לפונקציה זוגית: ∫₋ₐᵃ f(x)dx = 2∫₀ᵃ f(x)dx')">ג. 2∫₀^π f(x)dx</button>
+        <button class="quiz-opt" onclick="answer(this,'q8',false,'ניתן לקבוע: לפונקציה זוגית יש תכונה ספציפית')">ד. לא ניתן לקבוע</button>
+      </div>
+      <div class="quiz-feedback" id="q8-fb"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================== BAGRUT QUESTIONS ============================== -->
+<div class="bagrut-section" id="bagrut1">
+  <div class="bagrut-header" onclick="toggleBagrut(this)">
+    <div>
+      <div class="bagrut-title">🎓 שאלת בגרות א — f(x) = sin x · cos²x</div>
+      <div class="bagrut-sub">תשפ"ג מועד א · ניתוח מלא + זיהוי גרפים</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-q">
+      נתונה הפונקציה f(x) = sin x · cos²x בתחום 0 ≤ x ≤ π.<br><br>
+      <strong>א.</strong> מצאו את שיעורי נקודות החיתוך של גרף f(x) עם הצירים.<br>
+      <strong>ב.</strong> מצאו את שיעורי נקודות הקיצון של f(x) וקבעו את סוגן.<br>
+      <strong>ג.</strong> סרטטו סקיצה של גרף f(x) בתחום הנתון.<br>
+      <strong>ד.</strong> לפניכם שלושה גרפים. אחד מהם הוא f(x), אחד הוא g(x) = cos x · √(sin x), ואחד הוא h(x) = √(sin x · cos²x). קבעו לכל גרף איזו פונקציה הוא מתאר. נמקו.
+    </div>
+    <button class="toggle-btn" onclick="toggleBagrutSol(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-sol">
+      <div class="sol-step">
+        <strong>א. נקודות חיתוך עם הצירים:</strong><br>
+        f(x) = 0 → sin x · cos²x = 0 → sin x = 0 או cos x = 0<br>
+        sin x = 0 על [0,π]: x = 0, x = π<br>
+        cos x = 0 על [0,π]: x = π/2<br>
+        חיתוך עם ציר x: <strong>(0, 0), (π/2, 0), (π, 0)</strong><br>
+        חיתוך עם ציר y: f(0) = 0 → <strong>(0, 0)</strong>
+      </div>
+      <div class="sol-step">
+        <strong>ב. נגזרת ונקודות קיצון:</strong><br>
+        f'(x) = cos x(3cos²x − 2)<br>
+        f'(x) = 0: cos x = 0 → x = π/2<br>
+        OR: 3cos²x − 2 = 0 → cos²x = 2/3 → cos x = ±√(2/3)<br>
+        cos x = √(2/3) ≈ 0.816 → x₁ = arccos(√(2/3)) ≈ 0.615<br>
+        cos x = −√(2/3) → x₂ = π − 0.615 ≈ 2.526<br><br>
+        מטבלת הסימנים (ראה דוגמה 6):<br>
+        <strong>מקסימום מקומי</strong> ב-(0.615, 2√3/9 ≈ 0.385)<br>
+        <strong>מינימום מקומי</strong> ב-(π/2, 0)<br>
+        <strong>מקסימום מקומי</strong> ב-(2.526, 2√3/9 ≈ 0.385)
+      </div>
+      <div class="sol-step">
+        <strong>ג. סקיצה:</strong><br>
+        הפונקציה יוצאת מ-(0,0), עולה למקסימום ≈ 0.385 ב-x≈0.615, יורדת ל-0 ב-x=π/2, עולה שוב למקסימום ≈ 0.385 ב-x≈2.526, יורדת ל-(π,0). f ≥ 0 בכל התחום.
+      </div>
+      <div class="sol-step">
+        <strong>ד. זיהוי הגרפים:</strong><br>
+        הפונקציה <strong>g(x) = cos x · √(sin x)</strong>: cos x &lt; 0 על (π/2, π), ולכן g(x) &lt; 0 שם. גרף שיורד מתחת לציר x על (π/2, π) — זה g.<br>
+        הפונקציה <strong>h(x) = √(f(x)) = √(sin x · cos²x)</strong>: ≥ 0 תמיד, ו-h(x) ≥ f(x) (כי √t ≥ t עבור t ∈ [0,1]). גרף שנשאר מעל f — זה h.<br>
+        הגרף האמצעי (שומר חיוביות, עם שני מקסימומים ממש) — זה <strong>f(x)</strong>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bagrut-section" id="bagrut2">
+  <div class="bagrut-header" onclick="toggleBagrut(this)">
+    <div>
+      <div class="bagrut-title">🎓 שאלת בגרות ב — f(x) = (sin x − 1)/(sin x + 1)</div>
+      <div class="bagrut-sub">תשפ"ב נבצרים · ניתוח מלא עם פרמטר</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-q">
+      נתונה הפונקציה f(x) = (sin x − a)/(sin x + a), a &gt; 0. נתון כי גרף f(x) משיק לציר x בכל נקודות הקיצון שלה.<br><br>
+      <strong>א.</strong> מצאו את ערך הפרמטר a.<br>
+      <strong>ב.</strong> הציבו a=1 ועבדו בתחום −2π ≤ x ≤ 2π. מצאו: (1) תחום הגדרה; (2) נקודות חיתוך עם הצירים; (3) נקודות קיצון.<br>
+      <strong>ג.</strong> סרטטו סקיצה.<br>
+      <strong>ד.</strong> מצאו את מספר הפתרונות של f(x) = −1.<br>
+      <strong>ה.</strong> הוכיחו ש-∫₀^π (f(x)+1) dx &gt; π/2.
+    </div>
+    <button class="toggle-btn" onclick="toggleBagrutSol(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-sol">
+      <div class="sol-step">
+        <strong>א. מציאת a:</strong><br>
+        f'(x) = 2a·cos x / (sin x + a)². f'=0 ↔ cos x = 0 ↔ sin x = ±1.<br>
+        בנקודות קיצון f(x) = 0 (ריצפה לציר x):<br>
+        כאשר sin x = 1: f = (1−a)/(1+a) = 0 → a = 1.<br>
+        (כאשר sin x = −1: f = (−1−a)/(−1+a) — עם a=1 זה לא מוגדר, כלומר אסימפטוטה)
+        <div class="final-answer">a = 1</div>
+      </div>
+      <div class="sol-step">
+        <strong>ב. עם a=1, בתחום [−2π, 2π]:</strong><br>
+        (1) תחום: sin x ≠ −1 → x ≠ −π/2, x ≠ 3π/2<br>
+        (2) חיתוך עם ציר x: f=0 ↔ sin x=1 → x=π/2, x=−3π/2 → נקודות <strong>(π/2, 0)</strong> ו-<strong>(−3π/2, 0)</strong><br>
+        חיתוך עם ציר y: f(0) = (0−1)/(0+1) = −1 → <strong>(0, −1)</strong><br>
+        (3) נקודות קיצון: f'=0 ↔ cos x=0<br>
+        מקסימומים ב-<strong>(−3π/2, 0)</strong> ו-<strong>(π/2, 0)</strong>
+      </div>
+      <div class="sol-step">
+        <strong>ג. סקיצה:</strong> אסימפטוטות אנכיות ב-x=−π/2 ו-x=3π/2. f→−∞ ליד האסימפטוטות. שני מקסימומים ב-y=0. f(0)=−1.
+      </div>
+      <div class="sol-step">
+        <strong>ד. f(x) = −1:</strong><br>
+        (sin x−1)/(sin x+1) = −1 → sin x−1 = −sin x−1 → 2sin x = 0 → sin x = 0<br>
+        → x = 0, ±π, ±2π (בתחום [−2π, 2π])<br>
+        <div class="final-answer">5 פתרונות</div>
+      </div>
+      <div class="sol-step">
+        <strong>ה. הוכחה ש-∫₀^π (f(x)+1) dx &gt; π/2:</strong><br>
+        f(x)+1 = (sin x−1)/(sin x+1) + 1 = (sin x−1+sin x+1)/(sin x+1) = 2sin x/(sin x+1)<br>
+        על (0,π): sin x &gt; 0 ולכן f(x)+1 &gt; 0 ✓<br>
+        f(π−x)+1 = 2sin(π−x)/(sin(π−x)+1) = 2sin x/(sin x+1) = f(x)+1 → סימטריה ב-π/2<br>
+        בנקודה x=π/4: f(π/4)+1 = 2·(√2/2)/((√2/2)+1) = √2/(1+√2/2) &gt; 1/2<br>
+        כיוון ש-f(x)+1 &gt; 0 על כל (0,π) ובפרט &gt; 0 ולא זהותית 0:<br>
+        ∫₀^π (f(x)+1) dx &gt; 0. אך נדגים חסם נמוך יותר:<br>
+        בתחום [π/4, 3π/4]: sin x ≥ √2/2, לכן f(x)+1 = 2sin x/(sin x+1) ≥ 2·(√2/2)/(√2/2+1) = √2/(1+√2/2) ≈ 0.828 &gt; π/(2π) ...<br>
+        שיטה ישירה: ∫₀^(π/2)(f(x)+1)dx = ∫₀^(π/2)2sin x/(sin x+1)dx. ב-[0,π/2]: sin x/(sin x+1) ≥ sin x/2 (כי sin x+1 ≤ 2), לכן 2sin x/(sin x+1) ≥ sin x.<br>
+        ∫₀^(π/2)sin x dx = 1, ולכן ∫₀^(π/2)(f(x)+1)dx ≥ 1.<br>
+        מסימטריה: ∫₀^π(f(x)+1)dx = 2∫₀^(π/2)(f(x)+1)dx ≥ 2 &gt; π/2 ✓
+        <div class="final-answer">הטענה נכונה: ∫₀^π (f(x)+1) dx ≥ 2 &gt; π/2 ≈ 1.57</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bagrut-section" id="bagrut3">
+  <div class="bagrut-header" onclick="toggleBagrut(this)">
+    <div>
+      <div class="bagrut-title">🎓 שאלת בגרות ג — f(x) = cos x / √(sin x)</div>
+      <div class="bagrut-sub">תשפ"א קיץ · ניתוח פונקציה עם שורש</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-q">
+      נתונה הפונקציה f(x) = cos x / √(sin x) בתחום 0 &lt; x &lt; 2π.<br><br>
+      <strong>א.</strong> מצאו את תחום ההגדרה של f(x).<br>
+      <strong>ב.</strong> מצאו את נקודות הקיצון של f(x) (אם יש).<br>
+      <strong>ג.</strong> מצאו את נקודות האפס של f(x).<br>
+      <strong>ד.</strong> סרטטו סקיצה של הגרף.
+    </div>
+    <button class="toggle-btn" onclick="toggleBagrutSol(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-sol">
+      <div class="sol-step">
+        <strong>א. תחום הגדרה:</strong><br>
+        דרוש: √(sin x) ≠ 0 (במכנה) וגם sin x ≥ 0 → sin x &gt; 0<br>
+        sin x &gt; 0 בתחום (0, 2π): x ∈ (0, π)<br>
+        <div class="final-answer">תחום ההגדרה: (0, π)</div>
+      </div>
+      <div class="sol-step">
+        <strong>ב. נגזרת:</strong><br>
+        f(x) = cos x · (sin x)^(−1/2)<br>
+        f'(x) = −sin x · (sin x)^(−1/2) + cos x · (−1/2)(sin x)^(−3/2) · cos x<br>
+        = −sin x/√(sin x) − cos²x/(2sin x · √(sin x))<br>
+        = [−2sin²x − cos²x] / (2sin x · √(sin x))<br>
+        = −(sin²x + sin²x + cos²x) / (2sin x · √(sin x))<br>
+        = −(sin²x + 1) / (2sin x · √(sin x))<br>
+        מכיוון שsin²x + 1 &gt; 0 וsin x &gt; 0 בתחום: f'(x) &lt; 0 תמיד!
+        <div class="final-answer">אין נקודות קיצון — f יורדת מונוטונית על כל (0, π)</div>
+      </div>
+      <div class="sol-step">
+        <strong>ג. אפסי הפונקציה:</strong><br>
+        f(x) = 0 ↔ cos x = 0 (sin x &gt; 0 בתחום)<br>
+        cos x = 0 ב-x = π/2
+        <div class="final-answer">נקודת אפס: (π/2, 0)</div>
+      </div>
+      <div class="sol-step">
+        <strong>ד. מאפייני הגרף:</strong><br>
+        • x→0⁺: cos x → 1, sin x → 0⁺ → f(x) → +∞ (אסימפטוטה אנכית)<br>
+        • x=π/2: f(π/2) = 0 (אפס הפונקציה)<br>
+        • x→π⁻: cos x → −1, sin x → 0⁺ → f(x) → −∞ (אסימפטוטה אנכית)<br>
+        • f יורדת מ-+∞ דרך 0 ל--∞ — ללא עצירות!
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bagrut-section" id="bagrut4">
+  <div class="bagrut-header" onclick="toggleBagrut(this)">
+    <div>
+      <div class="bagrut-title">🎓 שאלת בגרות ד — f(x) = cos x − cos²x</div>
+      <div class="bagrut-sub">תשפ"ג מועד ב · ניתוח מלא + טווח</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="bagrut-body">
+    <div class="bagrut-q">
+      נתונה הפונקציה f(x) = cos x − cos²x בתחום −π ≤ x ≤ π.<br><br>
+      <strong>א.</strong> מצאו את נקודות החיתוך של גרף f(x) עם הצירים.<br>
+      <strong>ב.</strong> הוכיחו שהפונקציה f(x) היא זוגית.<br>
+      <strong>ג.</strong> מצאו את שיעורי נקודות הקיצון של f(x) וקבעו את סוגן.<br>
+      <strong>ד.</strong> סרטטו סקיצה של גרף f(x).<br>
+      <strong>ה.</strong> מהו טווח הפונקציה?
+    </div>
+    <button class="toggle-btn" onclick="toggleBagrutSol(this)">הצג פתרון מלא ▾</button>
+    <div class="bagrut-sol">
+      <div class="sol-step">
+        <strong>א. נקודות חיתוך עם הצירים:</strong><br>
+        cos x − cos²x = 0 → cos x(1 − cos x) = 0<br>
+        cos x = 0: x = ±π/2 | cos x = 1: x = 0<br>
+        חיתוך עם ציר x: <strong>(−π/2, 0), (0, 0), (π/2, 0)</strong><br>
+        חיתוך עם ציר y: f(0) = 1−1 = 0 → <strong>(0, 0)</strong><br>
+        ערכי קצה: f(±π) = cos π − cos²π = −1 − 1 = <strong>−2</strong>
+      </div>
+      <div class="sol-step">
+        <strong>ב. הוכחת זוגיות:</strong><br>
+        f(−x) = cos(−x) − cos²(−x) = cos x − cos²x = f(x)<br>
+        ∴ f(−x) = f(x) לכל x בתחום → <strong>f זוגית</strong> ✓
+      </div>
+      <div class="sol-step">
+        <strong>ג. נגזרת ונקודות קיצון:</strong><br>
+        f'(x) = −sin x − 2cos x·(−sin x) = −sin x + 2sin x cos x = sin x(2cos x − 1)<br>
+        f'(x) = 0: sin x = 0 → x = 0, ±π | 2cos x−1=0 → cos x=1/2 → x = ±π/3<br><br>
+        טבלת סימנים על [0, π] (בגלל זוגיות):
+        <table class="sign-table">
+          <tr>
+            <th>קטע</th>
+            <th>sin x</th>
+            <th>2cos x−1</th>
+            <th>f'(x)</th>
+            <th>מגמה</th>
+          </tr>
+          <tr>
+            <td>(0, π/3)</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="pos">+</td>
+            <td class="rising">↑ עולה</td>
+          </tr>
+          <tr>
+            <td>(π/3, π)</td>
+            <td class="pos">+</td>
+            <td class="neg">−</td>
+            <td class="neg">−</td>
+            <td class="falling">↓ יורדת</td>
+          </tr>
+        </table>
+        <strong>מקסימום</strong> ב-x = ±π/3: f(π/3) = 1/2 − 1/4 = <strong>1/4</strong><br>
+        x=0: f'=0, מגמה − → + → <strong>מינימום מקומי</strong>: f(0) = 0<br>
+        x=±π: נקודות קצה, f(±π) = −2 — מינימום גלובלי
+      </div>
+      <div class="sol-step">
+        <strong>ד. סקיצה:</strong><br>
+        פונקציה זוגית (סמטרית ל-y). אפסים ב-±π/2 ו-0. מקסימומים ב-(±π/3, 1/4). מינימום ב-(0,0) ומינימומים גלובליים ב-(±π, −2).
+      </div>
+      <div class="sol-step">
+        <strong>ה. טווח הפונקציה:</strong><br>
+        מינימום: f(±π) = −2 | מקסימום: f(±π/3) = 1/4
+        <div class="final-answer">טווח הפונקציה: [−2, 1/4]</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== REFERENCE CARD ============================== -->
+<div class="ref-card">
+  <h3>📋 כרטיס נוסחאות מהיר</h3>
+  <div class="ref-grid">
+    <div class="ref-col">
+      <h4>נגזרות</h4>
+      <div class="ref-item">(sin x)' <span>= cos x</span></div>
+      <div class="ref-item">(cos x)' <span>= −sin x</span></div>
+      <div class="ref-item">(tan x)' <span>= 1/cos²x</span></div>
+      <div class="ref-item">(sin²x)' <span>= sin 2x</span></div>
+      <div class="ref-item">(cos²x)' <span>= −sin 2x</span></div>
+      <div class="ref-item">(√sinx)' <span>= cosx/(2√sinx)</span></div>
+    </div>
+    <div class="ref-col">
+      <h4>אינטגרלים</h4>
+      <div class="ref-item">∫sin x dx <span>= −cos x + C</span></div>
+      <div class="ref-item">∫cos x dx <span>= sin x + C</span></div>
+      <div class="ref-item">∫sin 2x dx <span>= −cos2x/2 + C</span></div>
+      <div class="ref-item">∫cos 2x dx <span>= sin2x/2 + C</span></div>
+      <div class="ref-item">∫₋ₐᵃ זוגית <span>= 2∫₀ᵃ</span></div>
+      <div class="ref-item">∫₋ₐᵃ אי-זוגית <span>= 0</span></div>
+    </div>
+    <div class="ref-col">
+      <h4>זהויות טריגונומטריות</h4>
+      <div class="ref-item">sin²x + cos²x <span>= 1</span></div>
+      <div class="ref-item">sin 2x <span>= 2sin x cos x</span></div>
+      <div class="ref-item">cos 2x <span>= cos²x − sin²x</span></div>
+      <div class="ref-item">cos 2x <span>= 1 − 2sin²x</span></div>
+      <div class="ref-item">cos 2x <span>= 2cos²x − 1</span></div>
+      <div class="ref-item">sin²x <span>= (1−cos 2x)/2</span></div>
+      <div class="ref-item">cos²x <span>= (1+cos 2x)/2</span></div>
+    </div>
+    <div class="ref-col">
+      <h4>ערכים מיוחדים</h4>
+      <div class="ref-item">sin 0 <span>= 0</span></div>
+      <div class="ref-item">sin π/6 <span>= 1/2</span></div>
+      <div class="ref-item">sin π/4 <span>= √2/2</span></div>
+      <div class="ref-item">sin π/3 <span>= √3/2</span></div>
+      <div class="ref-item">sin π/2 <span>= 1</span></div>
+      <div class="ref-item">cos π/3 <span>= 1/2</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+  // Section toggle
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  // Solution toggle
+  function toggleSol(btn) {
+    const sol = btn.nextElementSibling;
+    const isOpen = sol.classList.contains('open');
+    sol.classList.toggle('open', !isOpen);
+    btn.textContent = isOpen ? 'הצג פתרון ▾' : 'הסתר פתרון ▴';
+  }
+
+  // Bagrut toggle
+  function toggleBagrut(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  // Bagrut solution toggle
+  function toggleBagrutSol(btn) {
+    const sol = btn.nextElementSibling;
+    const isOpen = sol.classList.contains('open');
+    sol.classList.toggle('open', !isOpen);
+    btn.textContent = isOpen ? 'הצג פתרון מלא ▾' : 'הסתר פתרון ▴';
+  }
+
+  // Quiz logic
+  let quizScore = 0;
+  let quizAnswered = 0;
+  const totalQuestions = 8;
+
+  function answer(btn, qId, correct, explanation) {
+    const item = document.getElementById(qId);
+    if (item.dataset.answered) return;
+    item.dataset.answered = 'true';
+
+    const opts = item.querySelectorAll('.quiz-opt');
+    opts.forEach(o => o.style.pointerEvents = 'none');
+
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      opts.forEach(o => {
+        if (o.onclick && o.onclick.toString().includes('true')) {
+          o.classList.add('correct');
+        }
+      });
+    }
+
+    const fb = document.getElementById(qId + '-fb');
+    fb.textContent = (correct ? '✅ נכון! ' : '❌ לא נכון. ') + explanation;
+    fb.classList.add('show');
+
+    if (correct) quizScore++;
+    quizAnswered++;
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = (quizAnswered / totalQuestions) * 100;
+    document.getElementById('quiz-progress').style.width = pct + '%';
+    const scoreEl = document.getElementById('quiz-score');
+    if (quizAnswered === totalQuestions) {
+      scoreEl.textContent = `סיימת! ציון: ${quizScore}/${totalQuestions} (${Math.round(quizScore/totalQuestions*100)}%)`;
+    } else {
+      scoreEl.textContent = `ענית על ${quizAnswered}/${totalQuestions} שאלות — ${quizScore} נכונות`;
+    }
+  }
+</script>
+</body>
+</html>
