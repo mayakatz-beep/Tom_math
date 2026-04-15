@@ -52,7 +52,7 @@
   .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
   .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
   .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .fcard .fformula { color: #fde047; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; }
+  .fcard .fformula { color: #fde047; font-weight: 700; font-family: 'Courier New', monospace; font-size: 1rem; direction: ltr; unicode-bidi: embed; }
   .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
 
   .tip { background: var(--vlight); border-right: 4px solid var(--primary); padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.92rem; }
@@ -67,11 +67,11 @@
   .toggle-btn:hover { background: var(--dark); }
   .solution { display: none; padding: 16px 18px; background: var(--vlight); border-top: 1.5px solid var(--border-std); }
   .solution.open { display: block; }
-  .step { padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem; }
+  .step { padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem; unicode-bidi: plaintext; }
   .step:last-child { border-bottom: none; }
   .answer { margin-top: 10px; background: var(--light); padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #7c2d12; border: 1.5px solid var(--border); }
 
-  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; direction: ltr; }
   .sign-table th { background: #1e293b; color: #e2e8f0; padding: 8px 12px; text-align: center; }
   .sign-table td { border: 1px solid var(--border-std); padding: 8px 12px; text-align: center; }
   .sign-table tr:nth-child(even) { background: #f8fafc; }
@@ -126,6 +126,8 @@
     .section-body { padding: 16px; }
     .container { padding: 20px 10px 60px; }
     .ref-grid { grid-template-columns: 1fr; }
+    .sign-table { overflow-x: auto; display: block; font-size: 0.78rem; }
+    .sign-table td, .sign-table th { padding: 6px 7px; }
   }
 </style>
 </head>

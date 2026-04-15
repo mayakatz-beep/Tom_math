@@ -69,7 +69,7 @@
   .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
   .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
   .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .fcard .fformula { color: #67e8f9; font-weight: 700; font-family: 'Courier New', monospace; font-size: 0.97rem; }
+  .fcard .fformula { color: #67e8f9; font-weight: 700; font-family: 'Courier New', monospace; font-size: 0.97rem; direction: ltr; unicode-bidi: embed; }
   .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
 
   /* ========== EXAMPLES ========== */
@@ -81,13 +81,13 @@
   .toggle-btn:hover { background: #0e7490; }
   .solution { display: none; padding: 16px 18px; background: #f8fbff; border-top: 1.5px solid #bae6fd; }
   .solution.open { display: block; }
-  .step { padding: 5px 0; border-bottom: 1px dashed #bae6fd; font-size: 0.93rem; }
+  .step { padding: 5px 0; border-bottom: 1px dashed #bae6fd; font-size: 0.93rem; unicode-bidi: plaintext; }
   .step:last-child { border-bottom: none; }
   .answer { margin-top: 10px; background: #e0f2fe; padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #164e63; }
-  .math { font-family: 'Courier New', monospace; font-weight: 600; color: #0e7490; font-size: 0.95rem; }
+  .math { font-family: 'Courier New', monospace; font-weight: 600; color: #0e7490; font-size: 0.95rem; direction: ltr; unicode-bidi: embed; display: inline-block; }
 
   /* ========== SIGN TABLES ========== */
-  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; }
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; direction: ltr; }
   .sign-table th { background: #164e63; color: #bae6fd; padding: 8px 12px; text-align: center; }
   .sign-table td { border: 1px solid #bae6fd; padding: 8px 10px; text-align: center; background: white; }
   .sign-table tr:nth-child(even) td { background: #f0f9ff; }
@@ -154,6 +154,9 @@
     .container { padding: 16px 10px 60px; }
     .quiz-options { grid-template-columns: 1fr; }
     .ref-grid { grid-template-columns: 1fr; }
+    .sign-table { overflow-x: auto; display: block; font-size: 0.78rem; }
+    .sign-table td, .sign-table th { padding: 6px 7px; }
+    .math { font-size: 0.85rem; }
   }
 </style>
 </head>
@@ -161,7 +164,7 @@
 
 <!-- ========== HEADER ========== -->
 <div class="main-header">
-  <a href="index.html" class="back-link">← דף הבית</a>
+  <a href="index.html" class="back-link">→ דף הבית</a>
   <h1>√ פונקציה משולבת שורש ריבועי</h1>
   <p class="subtitle">ניתוח פונקציות מסוג √x, √(ax+b) ומרכיבות</p>
   <div class="badge-row">

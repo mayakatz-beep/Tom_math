@@ -63,7 +63,7 @@
   .formula-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
   .fcard { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 14px 16px; }
   .fcard .flabel { font-size: 0.72rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .fcard .fformula { color: #fbcfe8; font-weight: 700; font-family: 'Courier New', monospace; font-size: 0.97rem; }
+  .fcard .fformula { color: #fbcfe8; font-weight: 700; font-family: 'Courier New', monospace; font-size: 0.97rem; direction: ltr; unicode-bidi: embed; }
   .fcard .fsub { color: #93c5fd; font-size: 0.82rem; margin-top: 4px; }
 
   .example { border: 1.5px solid #fecdd3; border-radius: 12px; margin: 16px 0; overflow: hidden; }
@@ -74,12 +74,12 @@
   .toggle-btn:hover { background: #be123c; }
   .solution { display: none; padding: 16px 18px; background: #fff5f5; border-top: 1.5px solid #fecdd3; }
   .solution.open { display: block; }
-  .step { padding: 5px 0; border-bottom: 1px dashed #fecdd3; font-size: 0.93rem; }
+  .step { padding: 5px 0; border-bottom: 1px dashed #fecdd3; font-size: 0.93rem; unicode-bidi: plaintext; }
   .step:last-child { border-bottom: none; }
   .answer { margin-top: 10px; background: #ffe4e6; padding: 10px 14px; border-radius: 8px; font-weight: 700; color: #9f1239; }
-  .math { font-family: 'Courier New', monospace; font-weight: 600; color: #be123c; font-size: 0.95rem; }
+  .math { font-family: 'Courier New', monospace; font-weight: 600; color: #be123c; font-size: 0.95rem; direction: ltr; unicode-bidi: embed; display: inline-block; }
 
-  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; }
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; direction: ltr; }
   .sign-table th { background: #9f1239; color: white; padding: 8px 12px; text-align: center; }
   .sign-table td { border: 1px solid #fecdd3; padding: 8px 10px; text-align: center; background: white; }
   .sign-table tr:nth-child(even) td { background: #fff1f2; }
@@ -139,13 +139,17 @@
     .container { padding: 16px 10px 60px; }
     .quiz-options { grid-template-columns: 1fr; }
     .ref-grid { grid-template-columns: 1fr; }
+    .sign-table { font-size: 0.78rem; overflow-x: auto; display: block; }
+    .sign-table td, .sign-table th { padding: 6px 7px; }
+    .math { font-size: 0.85rem; }
+    .fcard .fformula { font-size: 0.88rem; }
   }
 </style>
 </head>
 <body>
 
 <div class="main-header">
-  <a href="index.html" class="back-link">← דף הבית</a>
+  <a href="index.html" class="back-link">→ דף הבית</a>
   <h1>📌 בעיות קיצון</h1>
   <p class="subtitle">מקסימום ומינימום בעיות מציאות — שיטה שלמה</p>
   <div class="badge-row">
@@ -198,11 +202,11 @@
 
     <p style="margin:16px 0 8px; font-weight:700; color:#9f1239; font-size:1.05rem;">5 הצעדים לפתרון כל בעיית קיצון:</p>
     <ul class="steps-numbered">
-      <li><b>הגדר משתנה:</b> בחר משתנה אחד (בדרך כלל x או t). זיהוי "מה אני בוחר לסמן".</li>
-      <li><b>בטא את פונקציית המטרה:</b> כתוב את הכמות שרוצים למקסם/למינם כפונקציה של משתנה אחד בלבד — תוך שימוש במגבלה לביטוי כל שאר המשתנים.</li>
-      <li><b>קבע תחום:</b> מה הערכים הפיזיים/אפשריים של x? (לרוב x > 0 או 0 < x < …)</li>
-      <li><b>גזור ומצא נקודות קריטיות:</b> f'(x) = 0 ← מצא את x. בדוק שזו אכן נקודת קיצון (טבלת סימנים לf' או f'').</li>
-      <li><b>בדוק קצוות ומסקנה:</b> שים לב לקצוות התחום — האם הם מותרים? השווה ערכים. ענה על השאלה.</li>
+      <li><b>הגדר משתנה:</b> בחר משתנה אחד (בדרך כלל x או t) שמתאר את הגודל "הנבחר" בבעיה. <em>למה?</em> כי כל שאר הגדלים ייבטאו דרכו.</li>
+      <li><b>בטא פונקציית מטרה:</b> השתמש במגבלה (constraint) כדי לבטא את הכמות שממקסמים/ממזערים כפונקציה של <b>משתנה אחד בלבד</b>. <em>למה?</em> כי נגזרת פועלת על פונקציה של משתנה יחיד.</li>
+      <li><b>קבע תחום:</b> מה הערכים הפיזיים האפשריים? (x&gt;0, 0&lt;x&lt;L, וכו׳). <em>למה?</em> כי קיצון יכול להיות בתחום או בקצוות — צריך לדעת איפה לחפש.</li>
+      <li><b>גזור ומצא נקודות קריטיות:</b> f'(x)=0 → מועמדים לקיצון. <b>אמת</b> ע"י f''(x₀) או טבלת סימנים של f'. <em>למה?</em> כי f'=0 הכרחי אך לא מספיק — יכולה להיות נקודת פיתול.</li>
+      <li><b>השווה קצוות ומסקנה:</b> חשב גם את ערכי הקצוות (אם הם מותרים) והשווה. כתוב פסוק מסקנה מלא. <em>למה?</em> כי הקיצון הגלובלי יכול להיות דווקא בקצה.</li>
     </ul>
 
     <div class="tip">💡 <b>כלל הזהב:</b> בעיית קיצון מסתיימת ב-<b>פסוק</b> — "הערך המקסימלי/מינימלי של ... הוא ... ומושג ב-x = ..."</div>
@@ -238,12 +242,12 @@
       </div>
       <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
       <div class="solution">
-        <div class="step"><b>שלב 1:</b> נסמן את המספר הראשון x, אז השני = 20 − x</div>
-        <div class="step"><b>שלב 2:</b> פונקציית המטרה: P(x) = x(20−x) = 20x − x²</div>
-        <div class="step"><b>שלב 3:</b> תחום: x > 0 ו-20−x > 0 → <b>0 &lt; x &lt; 20</b></div>
-        <div class="step"><b>שלב 4:</b> P'(x) = 20 − 2x = 0 → x = 10</div>
-        <div class="step">P''(x) = −2 &lt; 0 → אכן מקסימום</div>
-        <div class="answer">המספרים הם 10 ו-10. הכפל המקסימלי: 10 · 10 = 100</div>
+        <div class="step"><b>שלב 1:</b> נסמן את המספר הראשון x. אז המספר השני = 20 − x (כי סכומם 20).</div>
+        <div class="step"><b>שלב 2:</b> פונקציית המטרה (הכפל): P(x) = x · (20−x) = 20x − x² &nbsp;← פרוסה, כי קל לגזור פולינום</div>
+        <div class="step"><b>שלב 3:</b> תחום: שני המספרים חיוביים → x &gt; 0 וגם 20−x &gt; 0 → <b>0 &lt; x &lt; 20</b></div>
+        <div class="step"><b>שלב 4:</b> P'(x) = 20 − 2x = 0 → 2x = 20 → <b>x = 10</b></div>
+        <div class="step"><b>אימות:</b> P''(x) = −2 &lt; 0 תמיד → פרבולה פתוחה למטה → x=10 הוא <b>מקסימום</b> גלובלי ✓</div>
+        <div class="answer">המספרים: 10 ו-10. הכפל המקסימלי: P(10) = 10·10 = <b>100</b></div>
       </div>
     </div>
 
@@ -255,13 +259,13 @@
       </div>
       <button class="toggle-btn" onclick="toggleSol(this)">הצג פתרון ▼</button>
       <div class="solution">
-        <div class="step"><b>שלב 1:</b> נסמן את רוחב השדה x (שני צלעות גדר), אז האורך y = 60 − 2x</div>
-        <div class="step"><b>שלב 2:</b> שטח: S(x) = x·(60−2x) = 60x − 2x²</div>
-        <div class="step"><b>שלב 3:</b> תחום: x > 0 ו-60−2x > 0 → <b>0 &lt; x &lt; 30</b></div>
-        <div class="step"><b>שלב 4:</b> S'(x) = 60 − 4x = 0 → x = 15</div>
-        <div class="step">S''(x) = −4 &lt; 0 ← מקסימום ✓</div>
-        <div class="step">y = 60 − 2·15 = 30</div>
-        <div class="answer">ממדי השדה: 15 מ' × 30 מ'. שטח מקסימלי: 450 מ"ר</div>
+        <div class="step"><b>שלב 1:</b> נסמן רוחב השדה x. <em>שתי צלעות רוחב משתמשות בגדר</em>, לכן האורך (צלע אחת): y = 60 − 2x</div>
+        <div class="step"><b>שלב 2:</b> שטח: S(x) = x · y = x·(60−2x) = 60x − 2x² &nbsp;← פונקציית המטרה</div>
+        <div class="step"><b>שלב 3:</b> x &gt; 0 (רוחב חיובי), ו-60−2x &gt; 0 → x &lt; 30. תחום: <b>0 &lt; x &lt; 30</b></div>
+        <div class="step"><b>שלב 4:</b> S'(x) = 60 − 4x = 0 → 4x = 60 → <b>x = 15</b></div>
+        <div class="step"><b>אימות:</b> S''(x) = −4 &lt; 0 → מקסימום ✓ &nbsp;|&nbsp; אורך: y = 60 − 2·15 = <b>30</b> מ׳</div>
+        <div class="step"><b>שטח:</b> S(15) = 15 · 30 = <b>450 מ"ר</b></div>
+        <div class="answer">ממדי השדה האופטימלי: 15 מ׳ (רוחב) × 30 מ׳ (אורך). שטח מקסימלי: 450 מ"ר</div>
       </div>
     </div>
 
