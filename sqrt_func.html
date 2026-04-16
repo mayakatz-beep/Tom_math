@@ -87,7 +87,7 @@
   .math { font-family: 'Courier New', monospace; font-weight: 600; color: #0e7490; font-size: 0.95rem; direction: ltr; unicode-bidi: embed; display: inline-block; }
 
   /* ========== SIGN TABLES ========== */
-  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; direction: ltr; }
+  .sign-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; direction: ltr; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .sign-table th { background: #164e63; color: #bae6fd; padding: 8px 12px; text-align: center; }
   .sign-table td { border: 1px solid #bae6fd; padding: 8px 10px; text-align: center; background: white; }
   .sign-table tr:nth-child(even) td { background: #f0f9ff; }
@@ -163,7 +163,7 @@
     .container { padding: 16px 10px 60px; }
     .quiz-options { grid-template-columns: 1fr; }
     .ref-grid { grid-template-columns: 1fr; }
-    .sign-table { overflow-x: auto; display: block; font-size: 0.78rem; }
+    .sign-table { font-size: 0.78rem; }
     .sign-table td, .sign-table th { padding: 6px 7px; }
     .math { font-size: 0.85rem; }
   }
