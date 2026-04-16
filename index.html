@@ -226,9 +226,14 @@
 
   </div>
 
-  <div class="section-label">מה יש בכל חוברת?</div>
-  <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-    <table style="width:100%; border-collapse:collapse; font-size:0.92rem;">
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+    <div class="section-label" style="margin-bottom:0;">מה יש בכל חוברת?</div>
+    <button onclick="downloadSummary()" style="display:inline-flex; align-items:center; gap:7px; background:linear-gradient(135deg,#1e3a8a,#2563eb); color:white; border:none; border-radius:20px; padding:8px 18px; font-size:0.85rem; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:0 2px 8px rgba(37,99,235,0.25);">
+      ⬇️ הורד כקובץ
+    </button>
+  </div>
+  <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,0.06); overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.92rem; min-width:640px;">
       <tr style="background:#f8fafc;">
         <th style="padding:10px 14px; text-align:right; font-weight:700; color:#374151; border-bottom:2px solid #e5e7eb;">רכיב</th>
         <th style="padding:10px 14px; text-align:center; color:#1d4ed8; border-bottom:2px solid #e5e7eb;">🎲 הסתברות</th>
@@ -249,6 +254,96 @@
   </div>
 
 </div>
+
+<script>
+function downloadSummary() {
+  const html = `<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>סיכום חוברות — מתמטיקה 5 יח"ל | תום</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f9ff; color: #1e293b; padding: 40px 20px; }
+  .header { background: linear-gradient(135deg, #1e3a8a, #2563eb, #7c3aed); color: white; border-radius: 20px; padding: 36px 28px; text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+  .header p { opacity: 0.85; font-size: 1rem; }
+  .header .meta { margin-top: 10px; font-size: 0.85rem; opacity: 0.7; }
+  .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; color: #64748b; margin-bottom: 14px; text-transform: uppercase; }
+  .table-wrap { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 640px; }
+  th { padding: 10px 14px; font-weight: 700; border-bottom: 2px solid #e5e7eb; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; }
+  tr:nth-child(even) { background: #f8fafc; }
+  td:first-child { font-weight: 600; }
+  td:not(:first-child) { text-align: center; }
+  .links { margin-top: 28px; background: white; border-radius: 16px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .links h3 { font-size: 1rem; font-weight: 700; color: #374151; margin-bottom: 14px; }
+  .links ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+  .links li a { display: block; padding: 8px 14px; border-radius: 10px; text-decoration: none; font-size: 0.88rem; font-weight: 600; }
+  .links li a:hover { opacity: 0.8; }
+  footer { text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 32px; }
+  @media print { body { background: white; padding: 0; } .header { border-radius: 0; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📚 חומר עזר — מתמטיקה 5 יח"ל</h1>
+  <p>סיכום חוברות לימוד אינטרקטיביות לבחינת הבגרות</p>
+  <div class="meta">קיץ תשפ"ו · שאלון 35571 · פרק ב'</div>
+</div>
+
+<div class="label">מה יש בכל חוברת?</div>
+<div class="table-wrap">
+  <table>
+    <tr style="background:#f8fafc;">
+      <th style="text-align:right; color:#374151;">רכיב</th>
+      <th style="color:#1d4ed8;">🎲 הסתברות</th>
+      <th style="color:#0f766e;">📈 סדרות</th>
+      <th style="color:#881337;">📐 גיאומטריה</th>
+      <th style="color:#065f46;">📉 נגזרות</th>
+      <th style="color:#4c1d95;">📊 רציונלית</th>
+      <th style="color:#9a3412;">🌊 טריגו</th>
+      <th style="color:#164e63;">√ שורש</th>
+      <th style="color:#9f1239;">📌 קיצון</th>
+    </tr>
+    <tr><td>הסברים + נוסחאות</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>דוגמאות עם פתרון מוסתר</td><td>15</td><td>23</td><td>17</td><td>15</td><td>15</td><td>15</td><td>15</td><td>15</td></tr>
+    <tr><td>שאלות אינטרקטיביות</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td></tr>
+    <tr><td>שאלות בגרות אמיתיות</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td></tr>
+    <tr><td>דף נוסחאות לבחינה</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+  </table>
+</div>
+
+<div class="links">
+  <h3>קישורים לחוברות (דרך GitHub Pages)</h3>
+  <ul>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/probability.html" style="background:#dbeafe; color:#1d4ed8;">🎲 הסתברות</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/sequences.html" style="background:#ccfbf1; color:#0f766e;">📈 סדרות</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/geometry.html" style="background:#ffe4e6; color:#881337;">📐 גיאומטריה</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/calculus.html" style="background:#d1fae5; color:#065f46;">📉 נגזרות</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/rational.html" style="background:#ede9fe; color:#4c1d95;">📊 רציונלית</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/trig.html" style="background:#ffedd5; color:#9a3412;">🌊 טריגו</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/sqrt_func.html" style="background:#e0f2fe; color:#164e63;">√ שורש</a></li>
+    <li><a href="https://mayakatz-beep.github.io/Tom_math/optimization.html" style="background:#ffe4e6; color:#9f1239;">📌 קיצון</a></li>
+  </ul>
+</div>
+
+<footer>מתמטיקה 5 יח"ל · תשפ"ו · בהצלחה בבחינה! 🍀</footer>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tom_math_summary.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <footer>מתמטיקה 5 יח"ל · תשפ"ו · בהצלחה בבחינה! 🍀</footer>
 
