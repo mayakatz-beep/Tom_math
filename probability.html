@@ -255,6 +255,16 @@
   ul, ol { padding-right: 20px; margin: 8px 0; }
   li { margin: 4px 0; }
   .highlight { background: #fef9c3; padding: 1px 4px; border-radius: 4px; }
+
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #eff6ff 100%); border: 1.5px solid #93c5fd; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #1e3a8a; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #1d4ed8; border-right: 4px solid #60a5fa; padding: 10px 14px; margin: 12px 0; display: block; background: rgba(37,99,235,0.04); border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #1e3a8a; }
+
   @media (max-width: 600px) {
     .quiz-options { grid-template-columns: 1fr; }
     .main-header h1 { font-size: 1.5rem; }
@@ -313,6 +323,18 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">🎲 "כמה סיכוי?" — הסתברות כדרך מחשבה</div>
+      <p>הסתברות היא <strong>מדע חוסר הוודאות</strong>. אנחנו לא יודעים מה יקרה — אבל אנחנו יכולים לכמת <em>כמה סביר</em> שמשהו יקרה. ערך הסתברות הוא תמיד בין 0 ל-1: 0 = בלתי אפשרי, 1 = וודאי, 0.5 = "מטבע הוגן".</p>
+      <span class="ci-quote">
+        <strong>מרחב מדגם (Ω):</strong> "כל מה שיכול לקרות" — הרשימה המלאה של תוצאות אפשריות.<br>
+        <strong>אירוע (A):</strong> תת-קבוצה של Ω — "מה שמעניין אותנו". למשל, "יצא מספר זוגי".<br>
+        <strong>הסתברות:</strong> P(A) = |A| / |Ω| — כמה תוצאות מעניינות מתוך כל התוצאות. (כשכולן שוות-סיכוי)
+      </span>
+      <p>שתי תכונות בסיסיות שחשוב לזכור: <strong>P(Ā) = 1 − P(A)</strong> — ההסתברות שמשהו לא יקרה. ו-<strong>P(Ω) = 1</strong> — משהו בוודאות יקרה. מהן נגזרות <em>כל</em> שאר הנוסחאות.</p>
+      <p>טיפ: לפני שמחשבים — <strong>הגדר מרחב מדגם ברור</strong>. הרבה שגיאות נובעות מ-Ω לא מוגדר היטב.</p>
+    </div>
 
     <div class="def-box">
       <div class="def-title">ניסוי הסתברותי</div>
@@ -455,6 +477,17 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">🔗 "עדכון המציאות" — הסתברות מותנית</div>
+      <p>הסתברות מותנית היא הרעיון <strong>המרתק ביותר</strong> בהסתברות: כשמקבלים מידע חדש, ההסתברויות משתנות. ידעת שהמדגם הוא Ω. עכשיו נאמר לך "B התקיים" — לפתע, המרחב שלך מצטמצם ל-B בלבד!</p>
+      <span class="ci-quote">
+        P(A|B) = "מתוך B, כמה יש גם A?" = P(A∩B) / P(B)<br>
+        <strong>אינטואיציה:</strong> B הוא "העולם החדש" שלנו. אנחנו שואלים כמה מ"העולם החדש" הוא גם A.
+      </span>
+      <p>דוגמה: בכיתה יש 10 בנים ו-10 בנות. 6 מהבנות אוהבות מתמטיקה. נבחרה בחורה — <strong>מה הסיכוי שהיא אוהבת מתמטיקה?</strong> P(מתמטיקה|בת) = 6/10 = 0.6. שמנו את הבנות כ"עולם" שלנו.</p>
+      <p><strong>שים לב:</strong> P(A|B) ≠ P(B|A)! "הסיכוי שחולה בהינתן בדיקה חיובית" ≠ "הסיכוי לבדיקה חיובית בהינתן שחולה". זו טעות קלאסית.</p>
+    </div>
 
     <div class="def-box orange">
       <div class="def-title">הסתברות מותנית — P(A|B)</div>

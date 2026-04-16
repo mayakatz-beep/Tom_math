@@ -109,6 +109,15 @@
   .sol-step:last-child { border-bottom: none; }
   .final-answer { background: var(--light); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-weight: 700; color: #7c2d12; }
 
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fff7ed 100%); border: 1.5px solid #fdba74; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #7c2d12; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #9a3412; border-right: 4px solid #fb923c; padding: 10px 14px; margin: 12px 0; display: block; background: rgba(234,88,12,0.04); border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #7c2d12; }
+
   .ref-card { background: #1e293b; border-radius: 14px; padding: 24px; margin-top: 40px; color: #e2e8f0; }
   .ref-card h3 { color: #fdba74; font-size: 1.1rem; margin-bottom: 16px; }
   .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
@@ -177,6 +186,18 @@
     <div class="chevron open">▼</div>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">🌊 "גלים בלתי נגמרים" — הפונקציות הטריגונומטריות</div>
+      <p>sin ו-cos הן <strong>פונקציות מחזוריות</strong> — הן חוזרות על עצמן כל 2π. דמיין גל ים: הוא עולה, מגיע לשיא, יורד, מגיע לתחתית — ומתחיל שוב. sin ו-cos הן בדיוק כך: גלים מושלמים עם תבנית קבועה.</p>
+      <span class="ci-quote">
+        <strong>sin(x):</strong> מתחיל ב-0, עולה ל-1 (ב-π/2), חוזר ל-0 (ב-π), יורד ל-−1 (ב-3π/2), חוזר ל-0 (ב-2π).<br>
+        <strong>cos(x):</strong> מתחיל ב-1, יורד ל-0 (ב-π/2), ל-−1 (ב-π), עולה ל-0 (ב-3π/2), ל-1 (ב-2π).<br>
+        <strong>היחס ביניהם:</strong> cos(x) = sin(x + π/2). cos הוא sin שהוזזת π/2 שמאלה.
+      </span>
+      <p>לניתוח טריגונומטרי, הנגזרות הן המפתח: <strong>(sin x)′ = cos x</strong> ו-<strong>(cos x)′ = −sin x</strong>. שים לב: נגזרת sin היא cos, ונגזרת cos היא <em>מינוס</em> sin. הסימן המינוס חשוב — בלעדיו תחשב מקסימום שהוא מינימום.</p>
+      <p><strong>tan x = sin x / cos x</strong>: מוגדרת בכל מקום שcos x ≠ 0, כלומר x ≠ π/2 + kπ.</p>
+    </div>
 
     <div class="formula-grid">
       <div class="fcard">

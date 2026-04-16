@@ -140,6 +140,15 @@
   .ref-item .ri-label { font-size: 0.75rem; color: #7c3aed; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
   .ref-item .ri-formula { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #1e293b; font-weight: 600; }
 
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 50%, #faf5ff 100%); border: 1.5px solid #c4b5fd; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #4c1d95; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #5b21b6; border-right: 4px solid #a78bfa; padding: 10px 14px; margin: 12px 0; display: block; background: rgba(124,58,237,0.04); border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #4c1d95; }
+
   /* ========== SUMMARY STEPS ========== */
   .steps-list { counter-reset: step-counter; list-style: none; margin: 12px 0; }
   .steps-list li { counter-increment: step-counter; display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
@@ -206,6 +215,17 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">🚧 "חוק הנהיגה" של פונקציה רציונלית — לאן אסור ללכת</div>
+      <p>פונקציה רציונלית היא <strong>שבר</strong>: מונה פולינומי מחולק במכנה פולינומי. הכלל הברזל: <strong>אסור לחלק באפס</strong>. בכל מקום שהמכנה מתאפס — הפונקציה מפסיקה להתקיים, ושם מופיעה <em>אסימפטוטה</em>.</p>
+      <span class="ci-quote">
+        <strong>אסימפטוטה אנכית</strong> ב-x=a: כשq(a)=0 (ולא p(a)=0 גם). הפונקציה "מתפוצצת" לאינסוף כשמתקרבים ל-x=a.<br>
+        <strong>אסימפטוטה אופקית</strong> y=L: כשx→±∞, f(x)→L. נמצאת ע"י גבולות או חלוקת הדרגה הגבוהה.<br>
+        <strong>חוק המעלות:</strong> אם דרגת המונה &lt; דרגת המכנה → y=0. שוות דרגה → מנת המקדמים. מונה גבוה יותר → אין אסימפטוטה אופקית.
+      </span>
+      <p>נקודה חשובה: אפשר ש-p(a)=0 וגם q(a)=0 — <strong>נקודת "חור"</strong> (לא אסימפטוטה, אלא חסר ניתן לסילוק). תמיד <em>פשט לפני</em> שמחליט אם זה אסימפטוטה.</p>
+    </div>
 
     <div class="theory-box">
       <h4>פונקציה רציונלית</h4>

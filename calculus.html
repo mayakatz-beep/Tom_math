@@ -118,6 +118,15 @@
   .progress-bar { background: var(--green); height: 10px; border-radius: 99px; transition: width .4s; }
 
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 16px 0; }
+
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #6ee7b7; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #065f46; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #047857; border-right: 4px solid #34d399; padding-right: 14px; margin: 12px 0; display: block; background: rgba(6,95,70,0.04); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #065f46; }
   .summary-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
   .card-title { font-weight: 700; color: var(--green); margin-bottom: 6px; font-size: 0.9rem; }
   .card-formula { font-family: 'Courier New', monospace; font-size: 0.95rem; color: #1e293b; font-weight: 600; }
@@ -180,6 +189,14 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">🚗 הנגזרת — מד המהירות של פונקציה</div>
+      <p>דמיין שאתה נוסע ברכב. מד המהירות לא מראה לך <strong>איפה</strong> אתה על המפה — הוא מראה לך <strong>כמה מהר</strong> אתה זזת. כך בדיוק הנגזרת f′(x): הפונקציה f(x) מתארת <em>מיקום</em>, ו-f′(x) מתארת <em>קצב השינוי</em> — כמה מהר הפונקציה עולה או יורדת בכל נקודה.</p>
+      <span class="ci-quote">כשf′(x) > 0 — אתה נוסע "קדימה": הפונקציה עולה.<br>כשf′(x) &lt; 0 — אתה נוסע "אחורה": הפונקציה יורדת.<br>כשf′(x) = 0 — הרכב עצר לרגע לפני שמשנה כיוון: נקודה קריטית.</span>
+      <p>הנגזרת השנייה f″(x) היא ה<strong>תאוצה</strong> — כמה מהר משתנה המהירות עצמה. f″ > 0 אומר שאתה <em>מאיץ</em> (השיפוע גדל, גרף קמור ∪ — כמו קערה שאוספת מים). f″ &lt; 0 אומר שאתה <em>מאט</em> (השיפוע קטן, גרף קעור ∩ — כמו גבעה שמים מתגלגלים ממנה).</p>
+      <p><strong>שלושת השכבות:</strong> f → מיקום | f′ → מהירות | f″ → תאוצה. כל שכבה "גוזרת" את השכבה שלפניה.</p>
+    </div>
 
     <div class="formula-grid">
       <div class="fcard">
@@ -250,6 +267,14 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">🗺️ טבלת הסימנים — "מפת הדרכים" של הפונקציה</div>
+      <p>בדיוק כמו מפת כבישים שמראה איפה יש עליות וירידות בדרך, טבלת הסימנים מראה לנו בדיוק <strong>איפה הפונקציה עולה ואיפה יורדת</strong>. הגאון של השיטה הוא עיקרון פשוט:</p>
+      <span class="ci-quote">סימן f′ לא יכול להתהפך בלי לעבור דרך אפס — ואפס קורה רק בשורשים של f′. לכן: בין שני שורשים עוקבים, הסימן <em>קבוע</em>. מספיק לבדוק נקודה אחת בכל תחום!</span>
+      <p>השורשים של f′ = 0 הם "שלטי הכביש" — הם מחלקים את ציר x לתחומים. בכל תחום, f עושה דבר אחד בלבד: רק עולה, או רק יורדת. <strong>לא יכולות להיות הפתעות באמצע</strong>.</p>
+      <p>נקודה שבה f′ מחליפה סימן היא נקודת קיצון של f — הרגע שבו הפונקציה "מחליטה" לשנות כיוון.</p>
+    </div>
 
     <div class="tip">
       <b>שיטת טבלת הסימנים — 3 שלבים:</b><br>
@@ -329,6 +354,18 @@
   </div>
   <div class="section-body">
 
+    <div class="concept-intro">
+      <div class="ci-title">⛰️ פסגת ההר ותחתית העמק</div>
+      <p>נקודת מקסימום היא כמו <strong>פסגת הר</strong>: הפונקציה עלתה, הגיעה לשיא, ואז ירדה. נקודת מינימום היא כמו <strong>תחתית עמק</strong>: הפונקציה ירדה, נגעה בתחתית, ואז עלתה. בשתי הנקודות, הפונקציה "עמדה" לרגע — לכן f′(x₀) = 0 הכרחי.</p>
+      <span class="ci-quote">⚠️ f′(x₀) = 0 <em>הכרחי</em> לנקודת קיצון, אבל לא <em>מספיק</em>! ייתכן ש-f′=0 ב-x₀ אבל הסימן לא מתהפך — אז x₀ היא נקודת פיתול, לא קיצון.</span>
+      <p>יש שתי שיטות לסיווג — בחר כל אחת מהן:</p>
+      <ul>
+        <li><strong>מבחן f′ (הראשונה):</strong> הסתכל אם הסימן עובר + → − (מקסימום) או − → + (מינימום). אמין תמיד.</li>
+        <li><strong>מבחן f″ (השנייה):</strong> אם f″(x₀) &lt; 0 — הגרף "כפוף למטה" = פסגת הר = מקסימום. אם f″(x₀) &gt; 0 — "כפוף למעלה" = תחתית עמק = מינימום. <em>לא עובד כשf″=0</em>.</li>
+      </ul>
+      <p>לרוב <strong>מבחן f″ מהיר יותר</strong>, אבל אם f″=0 חייבים לחזור למבחן f′.</p>
+    </div>
+
     <div class="formula-grid">
       <div class="fcard">
         <div class="flabel">מבחן הנגזרת הראשונה</div>
@@ -392,6 +429,14 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">😊😔 "הפנים" של הגרף — קמורה וקעורה</div>
+      <p>גרף פונקציה לא רק <em>עולה ויורד</em> — הוא גם "מחייך" או "עצוב". האם הוא כפוף כלפי מעלה כמו קערה, או כלפי מטה כמו גג?</p>
+      <span class="ci-quote">קמורה ∪ (f″ &gt; 0): כמו קערה. שים כדור בקערה — הוא ייפול <em>פנימה</em>. השיפוע <strong>עולה</strong> משמאל לימין.<br>קעורה ∩ (f″ &lt; 0): כמו גג. שים כדור על הגג — הוא יתגלגל <em>הצידה</em>. השיפוע <strong>יורד</strong> משמאל לימין.</span>
+      <p><strong>נקודת פיתול</strong> היא המקום שבו הגרף "מחליף פנים" — מקערה לגג, או להפך. בנקודה זו f″ = 0 <em>וגם</em> הסימן של f″ משתנה. אם f″ = 0 אבל <em>לא</em> משנה סימן — אין פיתול (כמו f(x) = x⁴ ב-x=0).</p>
+      <p>דרך אחרת לחשוב עליה: נקודת פיתול היא המקום שבו f′ מגיע למקסימום או מינימום <em>שלו</em> — הרגע שהשיפוע הגיע לקיצון.</p>
+    </div>
 
     <div class="tip">
       <b>קמורה (∪)</b>: f″ &gt; 0 — f′ עולה — הגרף "חייך" כלפי מעלה.<br>
@@ -462,6 +507,13 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">🔎 בלש הפונקציות — קריאת גרף f′</div>
+      <p>נניח שמישהו הסתיר ממך את הגרף של f, ונתן לך רק את גרף f′. כמה אפשר לגלות? <strong>כמעט הכל.</strong> גרף f′ הוא כמו עד ראייה שמספר לך כל מה שקרה, בלי שאתה רואה את f ישירות.</p>
+      <span class="ci-quote">כשגרף f′ <strong>מעל ציר x</strong> (f′ &gt; 0) — f עולה שם. פשוט.<br>כשגרף f′ <strong>מתחת לציר x</strong> (f′ &lt; 0) — f יורדת שם.<br>כשגרף f′ <strong>חוצה את ציר x</strong> — f מגיע לנקודת קיצון (פסגה/עמק).<br>כשגרף f′ <strong>עולה</strong> — f קמורה (∪). כשגרף f′ <strong>יורד</strong> — f קעורה (∩).<br>מקסימום/מינימום <em>של f′</em> = נקודת פיתול <em>של f</em>.</span>
+      <p>הכלל: f′ מספר על f כמו שf′ מספר — כי f′ היא הנגזרת של f. ו-f″ מספרת על f′ כמו שf′ מספרת על f. <strong>כל שכבה קוראת לשכבה שמתחתיה.</strong></p>
+    </div>
 
     <div class="tip">
       <b>מגרף f′ נלמד על f:</b><br>
@@ -557,6 +609,13 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">🖼️ ניתוח מלא — "הדיוקן" של הפונקציה</div>
+      <p>ניתוח פונקציה מלא הוא כמו לצייר דיוקן מפורט של אדם: אתה לא רוצה לדלג על שום פרט. כל אחד מהשלבים מוסיף שכבה אחרת לתמונה. יחד הם נותנים לך תמונה <strong>מלאה ומדויקת</strong> של התנהגות הפונקציה.</p>
+      <span class="ci-quote">שלב 1 (תחום): <strong>היכן הפונקציה בכלל קיימת?</strong> (חלוקה באפס, שורש שלילי…)<br>שלב 2 (חיתוכים): <strong>איפה הפונקציה פוגשת את הצירים?</strong> (f(0) לציר y, f(x)=0 לציר x)<br>שלב 3 (f′): <strong>איפה עולה, יורדת, ומה נקודות הקיצון?</strong><br>שלב 4 (f″): <strong>איפה קמורה, קעורה, ומה נקודות הפיתול?</strong><br>שלב 5 (גבולות): <strong>מה קורה בקצוות התחום?</strong> (אסימפטוטות, ∞±)</span>
+      <p>אחרי כל השלבים האלה — שרטוט הפונקציה הוא פשוט <em>חיבור הנקודות</em>. אין הפתעות.</p>
+    </div>
 
     <div class="tip">
       <b>סדר ניתוח פונקציה מלא:</b><br>

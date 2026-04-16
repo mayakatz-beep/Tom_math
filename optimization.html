@@ -123,6 +123,15 @@
   .bagrut-toggle { background: #9f1239; color: white; border: none; border-radius: 8px; padding: 8px 20px; cursor: pointer; font-size: 0.88rem; font-weight: 600; margin-top: 14px; transition: background .2s; }
   .bagrut-toggle:hover { background: #e11d48; }
 
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); border: 1.5px solid #fda4af; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #9f1239; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #be123c; border-right: 4px solid #fb7185; padding: 10px 14px; margin: 12px 0; display: block; background: rgba(225,29,72,0.04); border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #9f1239; }
+
   .ref-card { background: white; border: 2px solid #e11d48; border-radius: 16px; padding: 20px 24px; margin-top: 30px; }
   .ref-card h3 { color: #9f1239; margin-bottom: 14px; font-size: 1.1rem; border-bottom: 2px solid #ffe4e6; padding-bottom: 8px; }
   .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
@@ -190,6 +199,18 @@
     <span class="chevron open">▼</span>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">🎯 בעיית קיצון — "החיים מלאים מגבלות, אבל תמיד יש פתרון אופטימלי"</div>
+      <p>בחיים האמיתיים, לעולם לא ניתן לנו לעשות "הכל". יש תמיד <strong>מגבלה</strong>: תקציב קבוע, חוט באורך מסוים, שטח קיר מוגבל. השאלה היא: בתוך המגבלה הזו — <strong>מה הפתרון הטוב ביותר?</strong></p>
+      <span class="ci-quote">
+        <strong>פונקציית המטרה</strong> — מה אנחנו רוצים למקסם/למזער? (שטח, רווח, עלות, מרחק…)<br>
+        <strong>המגבלה (constraint)</strong> — מה הקשר הכפוי בין המשתנים? (היקף = 60, סכום = 20…)<br>
+        <strong>הרעיון:</strong> השתמש במגבלה כדי "לסלק" משתנה אחד — ולהפוך את הבעיה לפונקציה של משתנה יחיד.
+      </span>
+      <p>ברגע שיש לנו פונקציה של משתנה אחד — <strong>הנגזרת עושה את שאר העבודה</strong>. הנגזרת מוצאת את הנקודה שבה הפונקציה "עוצרת" — ושם המקסימום/מינימום.</p>
+      <p>בעיות קיצון מופיעות בכל תחום: ארכיטקטורה (מקסום שטח), כלכלה (מקסום רווח), פיזיקה (מזעור זמן), הנדסה (חיסכון בחומרים). ה<strong>שיטה</strong> זהה תמיד.</p>
+    </div>
 
     <div class="theory-box">
       <h4>מה זו בעיית קיצון?</h4>
@@ -284,6 +305,13 @@
   </div>
   <div class="section-body">
 
+    <div class="concept-intro">
+      <div class="ci-title">📦 "להכניס קופסה לתוך עקומה" — האינטואיציה</div>
+      <p>דמיין שאתה רוצה לחתוך מלבן הכי גדול שיכנס בתוך גרף פרבולה. המלבן לא יכול לבלוט מחוץ לגרף — הפינות העליונות חייבות <em>לגעת</em> בגרף. זה בדיוק הרעיון: הגרף הוא "גבול הכלוב", והמלבן הוא מה שמנסים למקסם בתוכו.</p>
+      <span class="ci-quote">הטריק המרכזי: אנחנו מגדירים <strong>נקודה אחת</strong> על הגרף (נקודה A) ומבטאים את כל שאר הנקודות דרכה. ברגע שנקודה אחת נקבעת — המלבן נקבע לחלוטין. מספר אחד (t) שולט בכל.</span>
+      <p>לאחר הגדרת t: <strong>רוחב ← גובה ← שטח/היקף</strong> — כולם ב-t. גוזרים, מאפסים, מאמתים. זה תבנית שחוזרת שוב ושוב.</p>
+    </div>
+
     <div class="theory-box">
       <h4>מלבן שצלעותיו מקביליות לצירים — הרעיון</h4>
       <ul>
@@ -350,6 +378,13 @@
     <span class="chevron">▼</span>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">✂️ "לחלק את העוגה" — האומנות של חלוקה אופטימלית</div>
+      <p>יש חוט באורך K ואתה חייב לחתוך אותו לשני חלקים. מכל חלק תיצור צורה — מעגל, ריבוע, משולש. <strong>איפה לחתוך?</strong> זו שאלת הלב של בעיות אלה.</p>
+      <span class="ci-quote">הרגע המכריע: כשמסמנים x = אורך חלק אחד, אז החלק השני = K − x <em>אוטומטית</em>. מגבלת הבעיה (שניהם = K) "נבלעת" בתוך ההגדרה. עכשיו יש לנו פונקציה אחת S(x) שמבטאת סכום השטחים — וכל מה שצריך זה לגזור ולמצוא מינימום/מקסימום.</span>
+      <p>שים לב: לא תמיד המינימום מושג בנקודה פנימית — לפעמים הוא בקצה (x=0 או x=K). תמיד <strong>בדוק את הקצוות</strong> גם אם הם לא פיזיים.</p>
+    </div>
 
     <div class="theory-box">
       <h4>בעיית חיתוך חוט — מבנה כללי</h4>
@@ -445,6 +480,13 @@
     <span class="chevron">▼</span>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">📐 "הקו שנוגע ויוצא" — משיק כגשר בין שאלה גיאומטרית לחשבון</div>
+      <p>קו משיק בנקודה C על גרף הוא הקו שנוגע בגרף רק שם — עם אותו שיפוע שיש לגרף בנקודה. כשהקו הזה חוצה את שני הצירים, הוא יוצר משולש עם ראשית הצירים. <strong>שטח המשולש תלוי בנקודת המגע</strong> — וזה מה שנרצה לאופטימיזציה.</p>
+      <span class="ci-quote">השלבים: נקודה C על הגרף → משיק (שיפוע = f') → חיתוך עם ציר x נקודה A → חיתוך עם ציר y נקודה B → שטח = ½·|OA|·|OB|.</span>
+      <p>כשיש פרמטר (למשל a), השטח הופך לפונקציה של אותו פרמטר. ואז — שוב — גוזרים, מאפסים, מאמתים. אותה שיטה, הקשר חדש.</p>
+    </div>
 
     <div class="theory-box">
       <h4>משיק בנקודה → שטח משולש עם הצירים</h4>

@@ -140,6 +140,15 @@
   .ref-item .ri-label { font-size: 0.75rem; color: #0891b2; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
   .ref-item .ri-formula { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #1e293b; font-weight: 600; }
 
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%); border: 1.5px solid #7dd3fc; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #164e63; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #0e7490; border-right: 4px solid #22d3ee; padding: 10px 14px; margin: 12px 0; display: block; background: rgba(8,145,178,0.04); border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #164e63; }
+
   /* ========== STEPS LIST ========== */
   .steps-list { counter-reset: step-counter; list-style: none; margin: 12px 0; }
   .steps-list li { counter-increment: step-counter; display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
@@ -206,6 +215,18 @@
     <span class="chevron open">▼</span>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">√ "הגבול הבלתי נראה" — מדוע השורש דורש תנאי</div>
+      <p>שורש ריבועי של מספר שלילי <strong>לא קיים</strong> במספרים ממשיים. לכן כל פונקציה עם שורש מביאה עמה "תנאי קיום" — הדרישה שתוכן השורש יהיה אי-שלילי. זה <strong>מגביל את תחום ההגדרה</strong>.</p>
+      <span class="ci-quote">
+        <strong>שורש במונה:</strong> √(ביטוי) מוגדר כש-ביטוי ≥ 0. כולל אפס — כי √0 = 0 זה בסדר.<br>
+        <strong>שורש במכנה:</strong> √(ביטוי) במכנה → ביטוי &gt; 0 (חמור!). √0 במכנה = חלוקה ב-0 = אסור.<br>
+        <strong>שיטה לפתרון:</strong> רשום אי-שוויון → פתור → ציר מספרים עם נקודות חלוקה → בדוק סימן בכל תחום.
+      </span>
+      <p>כשיש <em>כמה תנאים ביחד</em> (שורש ומכנה, שני שורשים) — תחום ההגדרה הוא <strong>חיתוך</strong> של כל התנאים. כל תנאי חייב להתקיים <em>בו-זמנית</em>.</p>
+      <p>שים לב לסימטריה: אם f(x) = √(a² − x²) — זה חצי-מעגל! תחום: −a ≤ x ≤ a.</p>
+    </div>
 
     <div class="theory-box">
       <h4>כלל בסיסי – תנאי קיום שורש ריבועי</h4>

@@ -118,11 +118,20 @@
   .box-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; }
   .induction-step { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; margin: 10px 0; }
   .induction-step .step-title { font-weight: 700; color: var(--purple); margin-bottom: 8px; }
+  /* ── הסבר נרטיבי עמוק ── */
+  .concept-intro { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #f0fdfa 100%); border: 1.5px solid #5eead4; border-radius: 14px; padding: 20px 24px; margin: 0 0 20px; line-height: 1.9; }
+  .concept-intro .ci-title { font-size: 1.05rem; font-weight: 800; color: #134e4a; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .concept-intro p { margin: 8px 0; color: #1e293b; font-size: 0.95rem; }
+  .concept-intro .ci-quote { font-style: italic; font-size: 0.97rem; color: #0f766e; border-right: 4px solid #2dd4bf; padding: 10px 14px; margin: 12px 0; display: block; background: rgba(13,148,136,0.04); border-radius: 0 8px 8px 0; }
+  .concept-intro ul { margin-right: 18px; margin-top: 8px; }
+  .concept-intro li { margin: 5px 0; font-size: 0.94rem; color: #1e293b; }
+  .concept-intro strong { color: #134e4a; }
+
   @media (max-width: 600px) {
     .quiz-options { grid-template-columns: 1fr; }
     .main-header h1 { font-size: 1.5rem; }
     .main-header .subtitle { font-size: 0.95rem; }
-    .two-col { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; gap: 12px; }
     .section-header { padding: 14px 16px; gap: 10px; }
     .section-title { font-size: 1rem; }
     .section-body { padding: 16px; }
@@ -176,6 +185,18 @@
     <div class="chevron open">▼</div>
   </div>
   <div class="section-body open">
+
+    <div class="concept-intro">
+      <div class="ci-title">📏 "סולם עם שלבים שווים" — הסדרה החשבונית</div>
+      <p>דמיין סולם. כל שלב גבוה בדיוק אותו גובה מהשלב הקודם. אם כל שלב = 20 ס"מ, ואתה מתחיל מגובה מסוים — אתה תמיד יודע בדיוק באיזה גובה תהיה אחרי n שלבים. <strong>זו הסדרה החשבונית.</strong></p>
+      <span class="ci-quote">
+        <strong>d > 0:</strong> סולם שעולה — כל איבר גדול מקודמו. לדוגמה: 2, 5, 8, 11, … (d=3)<br>
+        <strong>d < 0:</strong> סולם שיורד — כל איבר קטן מקודמו. לדוגמה: 10, 7, 4, 1, −2, … (d=−3)<br>
+        <strong>d = 0:</strong> אין תנועה — סדרה קבועה. כל האיברים זהים.
+      </span>
+      <p>הנוסחה <strong>aₙ = a₁ + (n−1)·d</strong> היא פשוט: "איבר ראשון + כמה שלבים עשינו × גובה כל שלב". אין צורך לחשב כל האיברים — נוסחה ישירה לכל n.</p>
+      <p>תכונה יפה: האיבר האמצעי של שלושה איברים עוקבים הוא תמיד הממוצע של שני הקצוות: aₙ = (aₙ₋₁ + aₙ₊₁)/2. כי הם "שווה רחוקים" ממנו.</p>
+    </div>
 
     <div class="def-box">
       <div class="def-title">מה זו סדרה חשבונית?</div>
@@ -327,6 +348,19 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body">
+
+    <div class="concept-intro">
+      <div class="ci-title">📈 "כדור שלג" — הסדרה ההנדסית</div>
+      <p>בסדרה חשבונית <em>מוסיפים</em> קבוע. בסדרה הנדסית <strong>מכפילים</strong> בקבוע. ההבדל הוא דרמטי: הכפלה גורמת לצמיחה (או ירידה) <em>אקספוננציאלית</em> — מהירה הרבה יותר מכל תוספת קבועה.</p>
+      <span class="ci-quote">
+        <strong>q &gt; 1:</strong> הסדרה גדלה וגדלה — כמו כדור שלג מתגלגל. 2, 4, 8, 16, 32… (q=2)<br>
+        <strong>0 &lt; q &lt; 1:</strong> הסדרה קטנה ומתכנסת לאפס — 1, 1/2, 1/4, 1/8… (q=1/2)<br>
+        <strong>q &lt; 0:</strong> הסדרה "קופצת" — חיובי, שלילי, חיובי — משנה סימן בכל שלב.<br>
+        <strong>q = 1:</strong> כל האיברים זהים — סדרה קבועה.
+      </span>
+      <p>הנוסחה <strong>aₙ = a₁ · qⁿ⁻¹</strong>: אנחנו מכפילים q בעצמו (n−1) פעמים — כי מ-a₁ ל-a₂ יש כפל אחד, מ-a₁ ל-a₃ שני כפלים, וכו׳.</p>
+      <p>יישום אמיתי: ריבית דריבית היא סדרה הנדסית! אם מפקידים 1000 ₪ עם ריבית שנתית 5%, אחרי n שנים: <strong>aₙ = 1000 · (1.05)ⁿ⁻¹</strong>.</p>
+    </div>
 
     <div class="def-box green">
       <div class="def-title">מה זו סדרה הנדסית?</div>
