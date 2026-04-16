@@ -413,9 +413,9 @@
         <div class="fsub">שטח = a²</div>
       </div>
       <div class="fcard">
-        <div class="flabel">מעגל חסום במשולש שווה-צלעות</div>
-        <div class="fformula">R_חסום = a/√3</div>
-        <div class="fsub">(רדיוס מעגל חוסם)</div>
+        <div class="flabel">מעגל חוסם במשולש שווה-צלעות</div>
+        <div class="fformula">R_חוסם = a/√3</div>
+        <div class="fsub">(רדיוס המעגל המקיף את המשולש)</div>
       </div>
     </div>
 
@@ -458,7 +458,7 @@
         <div class="step">S'(x)=0: (√3/2)x = 3(K−3x)/(2π) → √3·π·x = 3K−9x → x(9+√3π) = 3K</div>
         <div class="step"><span class="math">x_min = 3K/(9+√3π) ≈ 0.208K</span></div>
         <div class="step">S''(x) = √3/2 + 9/(2π) &gt; 0 ← מינימום ✓</div>
-        <div class="step"><b>ג. הוכחה:</b> מעגל חסום מחוץ למשולש שווה-צלעות עם צלע x צריך רדיוס R_c = x/√3.</div>
+        <div class="step"><b>ג. הוכחה:</b> מעגל חוסם (מקיף) סביב משולש שווה-צלעות עם צלע x צריך רדיוס R_c = x/√3.</div>
         <div class="step">תנאי חסימה: R_c ≤ r → x/√3 ≤ (K−3x)/(2π) → x ≤ √3K/(2π+3√3)</div>
         <div class="step">נשווה עם x_min: צריך לבדוק האם x_min &gt; √3K/(2π+3√3)</div>
         <div class="step">3K/(9+√3π) vs √3K/(2π+3√3): נכפיל × — 3(2π+3√3) = 6π+9√3 &gt; √3(9+√3π) = 9√3+3π ✓ (כי 6π &gt; 3π)</div>
@@ -541,8 +541,14 @@
         <div class="step"><b>נקודת A (y=0):</b> (3t²+8t)x = 2t³+4t² → t(3t+8)x = 2t²(t+2) → x = 2t(t+2)/(3t+8)</div>
         <div class="step">שטח = ½·|x_A|·|y_C| = ½·|2t(t+2)/(3t+8)|·|2t²(t+2)|</div>
         <div class="step"><span class="math">S(t) = 2t³(t+2)²/|3t+8|</span></div>
-        <div class="step"><b>ג.</b> עבור t < 0 בתחום −4 &lt; t &lt; −8/3: גוזרים S(t), מאפסים. מהתשובה ידועה: <b>A = (12, 36)</b> נובע שt = 12 במקרה מסוים.</div>
-        <div class="answer">משיק: y = (3t²+8t)x − 2t³ − 4t². שטח OAC = 2t³(t+2)²/(3t+8)</div>
+        <div class="step"><b>ג.</b> נגזור S(t) = 2t³(t+2)²/(3t+8) בתחום −4 &lt; t &lt; −8/3 (שם S&gt;0 ומשולש OAC מוגדר).</div>
+        <div class="step">S′(t) = 8t²(t+2)(3t+4)(t+3) / (3t+8)²</div>
+        <div class="step">גורמי מונה: t²≥0 תמיד; (3t+8)²&gt;0 תמיד. נבדוק סימן (t+2)(3t+4)(t+3) בתחום (−4, −8/3):<br>
+        — עבור t∈(−4, −3): (t+2)&lt;0, (3t+4)&lt;0, (t+3)&lt;0 → מכפלה שלילית → S′&lt;0 (יורד)<br>
+        — עבור t∈(−3, −8/3): (t+2)&lt;0, (3t+4)&lt;0, (t+3)&gt;0 → מכפלה חיובית → S′&gt;0 (עולה)<br>
+        → S′ עובר מ(−) ל(+) ב-<b>t = −3</b> → מינימום ✓</div>
+        <div class="step">S(−3) = 2·(−27)·(−1)² / (−9+8) = 2·(−27)·1/(−1) = <b>54</b></div>
+        <div class="answer">משיק: y = (3t²+8t)x − 2t³ − 4t². שטח: S(t) = 2t³(t+2)²/(3t+8). מינימום שטח = <b>54</b> ב-t = −3.</div>
       </div>
     </div>
 
@@ -778,7 +784,7 @@
           <p style="background:#ffe4e6; padding:8px; border-radius:6px; font-family:monospace; margin-top:6px;"><b>x_min = 3K/(9 + √3π) ≈ 0.208K</b></p>
           <p>S''(x) = √3/2 + 9/(2π) > 0 ← מינימום ✓</p>
           <p style="margin-top:10px;"><b>ג. הוכחה:</b></p>
-          <p>מעגל חסום למשולש שווה-צלעות עם צלע x: R_c = x/√3</p>
+          <p>מעגל חוסם (מקיף) סביב משולש שווה-צלעות עם צלע x: R_c = x/√3</p>
           <p>תנאי חסימה: R_c ≤ r → x/√3 ≤ (K−3x)/(2π) → x ≤ √3K/(2π+3√3)</p>
           <p>כלומר, המשולש יכול להיחסם רק אם x ≤ x* = √3K/(2π+3√3)</p>
           <p>נשווה x_min עם x*:</p>
